@@ -66,6 +66,7 @@ export const SIDEBAR_SECTIONS: Record<SectionKey, SidebarSectionConfig> = {
       'Stay updated with announcements, upcoming programs, and notices from the temple administration.',
     tip: 'Subscribe to alerts so you never miss an important circular or festival update.',
     links: [
+      { label: 'News Overview', to: '/news' },
       { label: 'Temple News', to: '/news/news' },
       { label: 'Announcements', to: '/news/announcements' },
       { label: 'Upcoming Events', to: '/news/upcoming' },

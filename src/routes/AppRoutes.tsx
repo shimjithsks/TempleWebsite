@@ -31,6 +31,7 @@ import GalleryEvents from '../pages/gallery/Events';
 import GalleryPremises from '../pages/gallery/Premises';
 
 // News pages
+import NewsOverview from '../pages/NewsOverview';
 import TempleNews from '../pages/news/News';
 import Announcements from '../pages/news/Announcements';
 import UpcomingEvents from '../pages/news/Upcoming';
@@ -58,6 +59,7 @@ import ContactInfo from '../pages/contact/Info';
 import ContactMap from '../pages/contact/Map';
 import Feedback from '../pages/contact/Feedback';
 import OfficeNumbers from '../pages/contact/Office';
+import CartPage from '../pages/Cart';
 
 export default function AppRoutes() {
   return (
@@ -89,6 +91,7 @@ export default function AppRoutes() {
       <Route path="/gallery/premises" element={<GalleryPremises />} />
       
       {/* News/Events Routes */}
+      <Route path="/news" element={<NewsOverview />} />
       <Route path="/news/news" element={<TempleNews />} />
       <Route path="/news/announcements" element={<Announcements />} />
       <Route path="/news/upcoming" element={<UpcomingEvents />} />
@@ -119,6 +122,9 @@ export default function AppRoutes() {
       <Route path="/contact/map" element={<ContactMap />} />
       <Route path="/contact/feedback" element={<Feedback />} />
       <Route path="/contact/office" element={<OfficeNumbers />} />
+
+      {/* Cart Route */}
+      <Route path="/cart" element={<CartPage />} />
       
       {/* Legacy Routes */}
       <Route path="/administration" element={<Administration />} />

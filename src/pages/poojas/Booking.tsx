@@ -1,159 +1,215 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import {
+  Container,
+  Grid,
+  Typography,
+  TextField,
+  InputAdornment,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Button,
+  Paper,
+  Box,
+  Badge,
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useNavigate } from 'react-router-dom';
+
 import PageBanner from '../../components/PageBanner';
-import PoojaSidebar from '../../components/PoojaSidebar';
-import { Container, Typography, Box, Paper, TextField, Button, Grid, MenuItem } from '@mui/material';
+import PoojaCard from '../../components/PoojaCard';
+import PoojaBookingModal from '../../components/PoojaBookingModal';
+import { poojas as allPoojas, Pooja } from '../../data/pooja-data';
+import { useCart } from '../../context/CartContext';
 
-export default function PoojaBooking() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    pooja: '',
-    date: '',
-    star: '',
-    message: ''
-  });
+const deities = ['All', 'Devi', 'Ganapathy', 'Vishnu', 'Shiva', 'Ayyappa', 'Murugan', 'Others'];
 
-  const poojaTypes = [
-    'Daily Pooja',
-    'Ganapathi Homam',
-    'Saraswathi Pooja',
-    'Lakshmi Pooja',
-    'Navagraha Pooja',
-    'Ayush Homam',
-    'Special Archana'
-  ];
+export default function Booking() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDeity, setSelectedDeity] = useState('All');
+  const { cart } = useCart();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert('Booking request submitted! Our team will contact you shortly.');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPooja, setSelectedPooja] = useState<Pooja | null>(null);
+  const [selectedPoojaIds, setSelectedPoojaIds] = useState<number[]>([]);
+
+  const handlePoojaSelect = (poojaId: number) => {
+    setSelectedPoojaIds(prev =>
+      prev.includes(poojaId)
+        ? prev.filter(id => id !== poojaId)
+        : [...prev, poojaId]
+    );
   };
+
+  const handleOpenModal = () => {
+    const firstSelectedId = selectedPoojaIds[0];
+    if (firstSelectedId) {
+      const pooja = allPoojas.find(p => p.id === firstSelectedId);
+      if (pooja) {
+        setSelectedPooja(pooja);
+        setModalOpen(true);
+      }
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedPooja(null);
+    setSelectedPoojaIds([]); // Hide Book Selected button after adding to cart
+  };
+
+  const filteredPoojas = useMemo(() => {
+    return allPoojas.filter(p => {
+      const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesDeity = selectedDeity === 'All' || p.deity === selectedDeity;
+      return matchesSearch && matchesDeity;
+    });
+  }, [searchTerm, selectedDeity]);
+
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <>
-      <PageBanner title="Pooja Booking / Offerings" />
+      <PageBanner title="Book a Pooja / Vazhipad" />
       <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={8} lg={9}>
-            <Paper elevation={3} sx={{ p: 4 }}>
-              <Typography variant="body1" sx={{ mb: 4, fontSize: '1.1rem', textAlign: 'center' }}>
-                Book your pooja or make offerings online. Fill in the details below and our team will confirm your booking.
-              </Typography>
+        <Paper elevation={3} sx={{ p: { xs: 2, md: 4 } }}>
+          {/* CONTROLS: SEARCH AND FILTER */}
+          <Grid container spacing={2} sx={{ mb: 4 }} alignItems="center">
+            <Grid item xs={12} md={8}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                placeholder="Search for a pooja by name..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon color="action" />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel>Filter by Deity</InputLabel>
+                <Select
+                  value={selectedDeity}
+                  onChange={(e) => setSelectedDeity(e.target.value)}
+                  label="Filter by Deity"
+                >
+                  {deities.map(deity => (
+                    <MenuItem key={deity} value={deity}>{deity}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
 
-              <Box component="form" onSubmit={handleSubmit}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Full Name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      fullWidth
-                      label="Email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      fullWidth
-                      label="Phone Number"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      fullWidth
-                      select
-                      label="Select Pooja"
-                      value={formData.pooja}
-                      onChange={(e) => setFormData({ ...formData, pooja: e.target.value })}
-                      required
-                    >
-                      {poojaTypes.map((type) => (
-                        <MenuItem key={type} value={type}>
-                          {type}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      fullWidth
-                      label="Preferred Date"
-                      type="date"
-                      value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      InputLabelProps={{ shrink: true }}
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Birth Star (Nakshatra)"
-                      value={formData.star}
-                      onChange={(e) => setFormData({ ...formData, star: e.target.value })}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Additional Message"
-                      multiline
-                      rows={4}
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      size="large"
-                      fullWidth
-                      sx={{
-                        bgcolor: '#E63946',
-                        py: 1.5,
-                        '&:hover': { bgcolor: '#d62839' },
-                      }}
-                    >
-                      Submit Booking Request
-                    </Button>
-                  </Grid>
+          {/* POOJA GRID */}
+          <Grid container spacing={3}>
+            {filteredPoojas.length > 0 ? (
+              filteredPoojas.map(pooja => (
+                <Grid item xs={12} sm={6} md={4} key={pooja.id}>
+                  <PoojaCard
+                    pooja={pooja}
+                    onSelect={handlePoojaSelect}
+                    isSelected={selectedPoojaIds.includes(pooja.id)}
+                  />
                 </Grid>
-              </Box>
+              ))
+            ) : (
+              <Grid item xs={12}>
+                <Typography align="center" sx={{ py: 5, color: 'text.secondary' }}>
+                  No poojas found matching your criteria.
+                </Typography>
+              </Grid>
+            )}
+          </Grid>
+        </Paper>
 
-              <Box sx={{ mt: 4, p: 3, bgcolor: '#ffebee', borderRadius: 2 }}>
-                <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Important Notes</Typography>
-                <Typography>• Advance booking recommended (minimum 2 days)</Typography>
-                <Typography>• Confirmation will be sent via email/SMS</Typography>
-                <Typography>• Payment can be made at temple or online</Typography>
-                <Typography>• For urgent bookings, call: +91-XXXXXXXXXX</Typography>
-              </Box>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={4} lg={3}>
-            <PoojaSidebar activePath="/poojas/booking" />
-          </Grid>
-        </Grid>
+        {/* FLOATING ACTION BUTTONS */}
+        <Box
+          sx={{
+            position: 'fixed',
+            bottom: 30,
+            right: 30,
+            zIndex: 1000,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            animation: 'fadeIn .3s ease-in-out'
+          }}
+        >
+          {selectedPoojaIds.length > 0 && (
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleOpenModal}
+              sx={{
+                borderRadius: '50px',
+                py: 1.5,
+                px: 3,
+                bgcolor: '#E63946',
+                color: 'white',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
+                '&:hover': {
+                  bgcolor: '#D62828',
+                  transform: 'scale(1.05)'
+                },
+                transition: 'all .2s'
+              }}
+            >
+              Book Selected ({selectedPoojaIds.length})
+            </Button>
+          )}
+          {totalItems > 0 && (
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => navigate('/cart')}
+              sx={{
+                borderRadius: '50px',
+                py: 1.5,
+                px: 3,
+                bgcolor: '#1D3557',
+                color: 'white',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
+                '&:hover': {
+                  bgcolor: '#457B9D',
+                  transform: 'scale(1.05)'
+                },
+                transition: 'all .2s'
+              }}
+              startIcon={
+                <Badge badgeContent={totalItems} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+              }
+            >
+              View Cart
+            </Button>
+          )}
+        </Box>
       </Container>
+
+      <PoojaBookingModal
+        open={modalOpen}
+        handleClose={handleCloseModal}
+        pooja={selectedPooja}
+      />
+
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </>
   );
 }
+

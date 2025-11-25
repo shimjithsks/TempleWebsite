@@ -2,6 +2,10 @@ import React from 'react';
 import { Box, Grid, Paper, Typography, Button, Stack, Divider } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import ImageSlider from '../components/ImageSlider';
+import FeaturedPoojas from '../components/FeaturedPoojas';
+import LatestAnnouncements from '../components/LatestAnnouncements';
+import GalleryPreview from '../components/GalleryPreview';
+import NearbyPreview from '../components/NearbyPreview';
 import InfoIcon from '@mui/icons-material/Info';
 import TempleHinduIcon from '@mui/icons-material/TempleHindu';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
@@ -145,6 +149,74 @@ export default function Home() {
     <Box sx={{ mt: { xs: -4, md: -6 }, pb: 6 }}>
       <ImageSlider />
 
+      
+
+      {/* About Temple section (placed above Featured Offerings) */}
+      <Box
+        sx={{
+          mt: 4,
+          mb: 4,
+          p: { xs: 2.5, md: 4 },
+          borderRadius: 3,
+          bgcolor: '#fff',
+          border: '1px solid rgba(230,57,70,0.12)',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.04)',
+        }}
+      >
+        <Grid container spacing={3} alignItems="center">
+          <Grid item xs={12} md={6}>
+            <Box
+              component="img"
+              src="/assets/header_god_image.png"
+              alt="Temple"
+              sx={{
+                width: '100%',
+                borderRadius: 2,
+                height: 260,
+                objectFit: 'contain',
+                objectPosition: 'center',
+                bgcolor: '#fff',
+                p: 0.5,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography variant="overline" sx={{ color: '#E63946', letterSpacing: 2 }}>
+              ABOUT TEMPLE
+            </Typography>
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+              A Brief Introduction
+            </Typography>
+            <Typography variant="body1" sx={{ color: '#555', mb: 2 }}>
+              Muchukunnu Temple is a sacred place of worship with rich traditions, daily rituals, and festival
+              celebrations. Explore the temple history, deities, and community programs — whether you're visiting in
+              person or connecting from afar.
+            </Typography>
+            <Button component={RouterLink} to="/about" variant="contained" sx={{ bgcolor: '#E63946', fontWeight: 700 }}>
+              Learn More
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+
+      <FeaturedPoojas />
+
+      <Grid container spacing={3} sx={{ mt: 2 }}>
+        <Grid item xs={12} md={6} lg={4}>
+          <LatestAnnouncements />
+        </Grid>
+
+        <Grid item xs={12} md={6} lg={4}>
+          <GalleryPreview />
+        </Grid>
+
+        <Grid item xs={12} md={6} lg={4}>
+          <NearbyPreview />
+        </Grid>
+      </Grid>
+
+      
+
       <Box sx={{ pt: { xs: 5, md: 7 }, pb: 5 }}>
         <Typography variant="overline" sx={{ color: '#E63946', letterSpacing: 2 }}>
           TEMPLE ESSENTIALS
@@ -159,101 +231,53 @@ export default function Home() {
       </Box>
 
       <Grid container spacing={3}>
-        {quickNav.map((item) => {
-          const Icon = item.icon;
-          return (
-            <Grid item xs={12} md={3} key={item.title}>
-              <Paper sx={{ p: 3, borderRadius: 3, height: '100%', borderTop: '4px solid #E63946' }}>
-                <Stack direction="row" spacing={2} alignItems="flex-start" mb={2}>
-                  <Box sx={{ bgcolor: '#fff2f4', p: 1.2, borderRadius: 2 }}>
-                    <Icon sx={{ color: '#E63946', fontSize: 28 }} />
-                  </Box>
-                  <Box>
-                    <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                      {item.title}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: '#555' }}>
-                      {item.description}
-                    </Typography>
-                  </Box>
-                </Stack>
-                <Button
-                  component={RouterLink}
-                  to={item.to}
-                  size="small"
-                  sx={{ color: '#E63946', fontWeight: 700 }}
-                >
-                  Open Section →
-                </Button>
-              </Paper>
-            </Grid>
-          );
-        })}
-      </Grid>
+        {navigatorSections.map((section) => (
+          <Grid item xs={12} md={4} lg={3} key={section.title}>
+            <Paper
+              sx={{
+                p: 3,
+                borderRadius: 3,
+                height: '100%',
+                borderTop: '4px solid #E63946',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'transform 220ms ease, box-shadow 220ms ease',
+                '&:hover': { transform: 'translateY(-6px)', boxShadow: '0 12px 30px rgba(0,0,0,0.12)' },
+              }}
+            >
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+                {section.title}
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#555', mb: 2 }}>
+                {section.description}
+              </Typography>
 
-      <Box
-        sx={{
-          mt: 5,
-          p: { xs: 3, md: 4 },
-          borderRadius: 4,
-          bgcolor: '#fff7f7',
-          border: '1px solid #ffd6d9',
-        }}
-      >
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, textAlign: 'center', color: '#d62839' }}>
-          Temple Navigator
-        </Typography>
-        <Typography variant="body1" sx={{ color: '#555', textAlign: 'center', maxWidth: 860, mx: 'auto', mb: 4 }}>
-          Each block groups every single sub page available on the site so you can deep dive without searching the menu.
-          Tap a quick link or the bold button to move directly into that module.
-        </Typography>
-        <Grid container spacing={3}>
-          {navigatorSections.map((section) => (
-            <Grid item xs={12} md={6} key={section.title}>
-              <Paper sx={{ p: 3, borderRadius: 3, height: '100%', boxShadow: '0 15px 40px rgba(0,0,0,0.08)' }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-                  {section.title}
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#555', mb: 2 }}>
-                  {section.description}
-                </Typography>
-                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                  {section.links.map((link) => (
-                    <Button
-                      key={`${section.title}-${link.label}`}
-                      component={RouterLink}
-                      to={link.to}
-                      size="small"
-                      variant="text"
-                      sx={{
-                        px: 1.4,
-                        color: '#E63946',
-                        '&:hover': { bgcolor: 'rgba(230,57,70,0.08)' },
-                      }}
-                    >
-                      {link.label}
-                    </Button>
-                  ))}
-                </Stack>
-                <Divider sx={{ my: 3 }} />
-                <Button
-                  component={RouterLink}
-                  to={section.primary.to}
-                  variant="contained"
-                  sx={{
-                    bgcolor: '#E63946',
-                    fontWeight: 700,
-                    px: 3,
-                    '&:hover': { bgcolor: '#c92f3f' },
-                  }}
-                >
+              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                {section.links.slice(0, 5).map((link) => (
+                  <Button
+                    key={`${section.title}-${link.label}`}
+                    component={RouterLink}
+                    to={link.to}
+                    size="small"
+                    variant="text"
+                    sx={{ px: 1.2, color: '#E63946', '&:hover': { bgcolor: 'rgba(230,57,70,0.06)' } }}
+                  >
+                    {link.label}
+                  </Button>
+                ))}
+              </Stack>
+
+              <Box sx={{ mt: 2 }}>
+                <Button component={RouterLink} to={section.primary.to} variant="contained" sx={{ bgcolor: '#E63946', fontWeight: 700 }}>
                   {section.primary.label}
                 </Button>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+              </Box>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+
+      
 
       <Grid container spacing={3} sx={{ mt: 5 }}>
         <Grid item xs={12} md={6}>
@@ -306,6 +330,13 @@ export default function Home() {
                     borderRadius: 3,
                     height: '100%',
                     background: tile.color,
+                    position: 'relative',
+                    overflow: 'hidden',
+                    transition: 'transform 220ms ease, box-shadow 220ms ease',
+                    '&:hover': {
+                      transform: 'translateY(-6px)',
+                      boxShadow: '0 12px 30px rgba(0,0,0,0.12)'
+                    }
                   }}
                 >
                   <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
@@ -317,6 +348,18 @@ export default function Home() {
                   <Button component={RouterLink} to={tile.to} size="small" sx={{ color: '#E63946', fontWeight: 700 }}>
                     Visit Page →
                   </Button>
+
+                  <Box sx={{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    height: 6,
+                    bgcolor: 'rgba(230,57,70,0.18)',
+                    transform: 'scaleX(0)',
+                    transformOrigin: 'left',
+                    transition: 'transform 260ms ease'
+                  }} />
                 </Paper>
               </Grid>
             ))}

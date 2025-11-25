@@ -33,8 +33,11 @@ import AnnouncementIcon from '@mui/icons-material/Announcement';
 import InfoIcon from '@mui/icons-material/Info';
 import ExploreIcon from '@mui/icons-material/Explore';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
+import Badge from '@mui/material/Badge';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import { Link as RouterLink } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 /* -----------------------------
    ⭐ MENU ICONS MAPPING
@@ -56,68 +59,99 @@ const menuIcons = {
 const menu = {
   Home: { to: '/', sub: [] },
   
-  Poojas: [
-    { label: 'Daily Poojas', to: '/poojas/daily' },
-    { label: 'Special Poojas', to: '/poojas/special' },
-    { label: 'Festival Poojas', to: '/poojas/festival' },
-    { label: 'Vazhipad List', to: '/poojas/vazhipad' },
-    { label: 'Booking / Offerings', to: '/poojas/booking' },
-  ],
+  Poojas: {
+    to: '/poojas',
+    sub: [
+      { label: 'Pooja Overview', to: '/poojas' },
+      { label: 'Daily Poojas', to: '/poojas/daily' },
+      { label: 'Special Poojas', to: '/poojas/special' },
+      { label: 'Festival Poojas', to: '/poojas/festival' },
+      { label: 'Vazhipad List', to: '/poojas/vazhipad' },
+      { label: 'Booking / Offerings', to: '/poojas/booking' },
+    ],
+  },
 
-  Donate: [
-    { label: 'Online Donation', to: '/donate/online' },
-    { label: 'Annadanam', to: '/donate/annadanam' },
-    { label: 'Temple Renovation Fund', to: '/donate/renovation' },
-    { label: 'Festival Contribution', to: '/donate/festival' },
-  ],
+  Donate: {
+    to: '/donate',
+    sub: [
+      { label: 'Donate Overview', to: '/donate' },
+      { label: 'Online Donation', to: '/donate/online' },
+      { label: 'Annadanam', to: '/donate/annadanam' },
+      { label: 'Temple Renovation Fund', to: '/donate/renovation' },
+      { label: 'Festival Contribution', to: '/donate/festival' },
+    ],
+  },
 
-  Gallery: [
-    { label: 'Photos', to: '/gallery/photos' },
-    { label: 'Videos', to: '/gallery/videos' },
-    { label: 'Events', to: '/gallery/events' },
-    { label: 'Temple Premises', to: '/gallery/premises' },
-  ],
+  Gallery: {
+    to: '/gallery',
+    sub: [
+      { label: 'Gallery Overview', to: '/gallery' },
+      { label: 'Photos', to: '/gallery/photos' },
+      { label: 'Videos', to: '/gallery/videos' },
+      { label: 'Events', to: '/gallery/events' },
+      { label: 'Temple Premises', to: '/gallery/premises' },
+    ],
+  },
 
   /* 🆕 NEW MENU ITEM */
-  "News / Event": [
-    { label: 'Temple News', to: '/news/news' },
-    { label: 'Announcements', to: '/news/announcements' },
-    { label: 'Upcoming Events', to: '/news/upcoming' },
-    { label: 'Past Events', to: '/news/past' },
-    { label: 'Notices / Circulars', to: '/news/notices' },
-  ],
+  "News / Event": {
+    to: '/news',
+    sub: [
+      { label: 'News Overview', to: '/news' },
+      { label: 'Temple News', to: '/news/news' },
+      { label: 'Announcements', to: '/news/announcements' },
+      { label: 'Upcoming Events', to: '/news/upcoming' },
+      { label: 'Past Events', to: '/news/past' },
+      { label: 'Notices / Circulars', to: '/news/notices' },
+    ],
+  },
 
-  About: [
-    { label: 'Temple History', to: '/about/history' },
-    { label: 'Deities', to: '/about/deities' },
-    { label: 'Festivals', to: '/about/festivals' },
-    { label: 'Administration', to: '/about/administration' },
-    // { label: 'Committee Members', to: '/about/committee' },
-    { label: 'Temple Rules & Timings', to: '/about/rules' },
-  ],
+  About: {
+    to: '/about',
+    sub: [
+      { label: 'About Overview', to: '/about' },
+      { label: 'Temple History', to: '/about/history' },
+      { label: 'Deities', to: '/about/deities' },
+      { label: 'Festivals', to: '/about/festivals' },
+      { label: 'Administration', to: '/about/administration' },
+      // { label: 'Committee Members', to: '/about/committee' },
+      { label: 'Temple Rules & Timings', to: '/about/rules' },
+    ],
+  },
 
-  "Explore Nearby": [
-    { label: 'Tourist Places', to: '/nearby/tourist-places' },
-    { label: 'Beaches', to: '/nearby/beaches' },
-    { label: 'Boating', to: '/nearby/boating' },
-    { label: 'Viewpoints', to: '/nearby/viewpoints' },
-    { label: 'Heritage Sites', to: '/nearby/heritage' },
-    { label: 'Temples Nearby', to: '/nearby/temples' },
-    { label: 'Activities', to: '/nearby/activities' },
-  ],
+  "Explore Nearby": {
+    to: '/nearby',
+    sub: [
+      { label: 'Nearby Overview', to: '/nearby' },
+      { label: 'Tourist Places', to: '/nearby/tourist-places' },
+      { label: 'Beaches', to: '/nearby/beaches' },
+      { label: 'Boating', to: '/nearby/boating' },
+      { label: 'Viewpoints', to: '/nearby/viewpoints' },
+      { label: 'Heritage Sites', to: '/nearby/heritage' },
+      { label: 'Temples Nearby', to: '/nearby/temples' },
+      { label: 'Activities', to: '/nearby/activities' },
+    ],
+  },
 
-  Contact: [
-    { label: 'Contact Info', to: '/contact/info' },
-    { label: 'Map / Directions', to: '/contact/map' },
-    { label: 'Feedback Form', to: '/contact/feedback' },
-    { label: 'Temple Office Numbers', to: '/contact/office' },
-  ],
+  Contact: {
+    to: '/contact',
+    sub: [
+      { label: 'Contact Overview', to: '/contact' },
+      { label: 'Contact Info', to: '/contact/info' },
+      { label: 'Map / Directions', to: '/contact/map' },
+      { label: 'Feedback Form', to: '/contact/feedback' },
+      { label: 'Temple Office Numbers', to: '/contact/office' },
+    ],
+  },
 };
 
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openMobile, setOpenMobile] = useState({});
+  const { cart } = useCart();
+
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   const toggleMobile = (key) => {
     setOpenMobile((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -171,7 +205,7 @@ export default function Header() {
           boxShadow: 'none',
           borderTop: '2px solid #E63946',
           borderBottom: '2px solid #E63946',
-          pb: '16px',
+          pb: '20px',
         }}
       >
         <Container maxWidth="lg" disableGutters sx={{ pl: 0, ml: 0 }}>
@@ -325,6 +359,7 @@ export default function Header() {
                   </Box>
                 );
               })}
+
             </Box>
 
             {/* MOBILE MENU ICON */}
@@ -400,6 +435,29 @@ export default function Header() {
                 </Box>
               );
             })}
+
+            {/* MOBILE CART LINK */}
+            <Divider />
+            <ListItemButton
+              component={RouterLink}
+              to="/cart"
+              onClick={() => setDrawerOpen(false)}
+              sx={{ justifyContent: 'space-between' }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                <Badge badgeContent={totalItems} color="primary" sx={{
+                  '& .MuiBadge-badge': {
+                    backgroundColor: '#1D3557',
+                    color: 'white'
+                  }
+                }}>
+                  <ShoppingCartIcon sx={{ fontSize: '1.3rem', color: '#E63946' }} />
+                </Badge>
+                <ListItemText primary="View Cart" />
+              </Box>
+            </ListItemButton>
+            <Divider />
+
           </List>
         </Box>
       </Drawer>

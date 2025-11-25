@@ -22,6 +22,7 @@ export default function PageBanner({ title, subtitle, imagePath = '/assets/subpa
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        mt: '-24px',
         mb: 0,
       }}
     >
