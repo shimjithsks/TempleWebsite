@@ -9,7 +9,7 @@ export default function HeroVideo() {
       <Box sx={{ position: 'relative', height: 680, overflow: 'hidden', width: '100%' }}>
         <Box
           component="video"
-          src="/assets/hero.mp4"
+          src="https://cdn.jsdelivr.net/gh/shimjithsks/TempleWebsite@media/hero.mp4"
           autoPlay
           muted
           loop
