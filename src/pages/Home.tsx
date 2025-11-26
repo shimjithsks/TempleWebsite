@@ -1,8 +1,7 @@
 import React from 'react';
 import { Box, Grid, Paper, Typography, Button, Stack, Divider } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import ImageSlider from '../components/ImageSlider';
-import FeaturedPoojas from '../components/FeaturedPoojas';
+import HeroVideo from '../components/HeroVideo';
 import LatestAnnouncements from '../components/LatestAnnouncements';
 import GalleryPreview from '../components/GalleryPreview';
 import NearbyPreview from '../components/NearbyPreview';
@@ -15,6 +14,8 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 import GroupsIcon from '@mui/icons-material/Groups';
 import MapIcon from '@mui/icons-material/Map';
+import { colors } from '../theme/colors';
+import ImageSlider from '../components/ImageSlider';
 
 const quickNav = [
   {
@@ -148,9 +149,6 @@ export default function Home() {
   return (
     <Box sx={{ mt: { xs: -4, md: -6 }, pb: 6 }}>
       <ImageSlider />
-
-      
-
       {/* About Temple section (placed above Featured Offerings) */}
       <Box
         sx={{
@@ -158,8 +156,8 @@ export default function Home() {
           mb: 4,
           p: { xs: 2.5, md: 4 },
           borderRadius: 3,
-          bgcolor: '#fff',
-          border: '1px solid rgba(230,57,70,0.12)',
+          bgcolor: colors.white,
+          border: `1px solid ${colors.brandAlpha12}`,
           boxShadow: '0 8px 24px rgba(0,0,0,0.04)',
         }}
       >
@@ -167,7 +165,7 @@ export default function Home() {
           <Grid item xs={12} md={6}>
             <Box
               component="img"
-              src="/assets/header_god_image.png"
+              src="/assets/header_god_image.svg"
               alt="Temple"
               sx={{
                 width: '100%',
@@ -175,31 +173,31 @@ export default function Home() {
                 height: 260,
                 objectFit: 'contain',
                 objectPosition: 'center',
-                bgcolor: '#fff',
+                bgcolor: colors.white,
                 p: 0.5,
               }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Typography variant="overline" sx={{ color: '#E63946', letterSpacing: 2 }}>
+            <Typography variant="overline" sx={{ color: colors.primary, letterSpacing: 2 }}>
               ABOUT TEMPLE
             </Typography>
             <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
               A Brief Introduction
             </Typography>
-            <Typography variant="body1" sx={{ color: '#555', mb: 2 }}>
+            <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 2 }}>
               Muchukunnu Temple is a sacred place of worship with rich traditions, daily rituals, and festival
               celebrations. Explore the temple history, deities, and community programs — whether you're visiting in
               person or connecting from afar.
             </Typography>
-            <Button component={RouterLink} to="/about" variant="contained" sx={{ bgcolor: '#E63946', fontWeight: 700 }}>
+            <Button component={RouterLink} to="/about" variant="contained" sx={{ bgcolor: colors.primary, fontWeight: 700 }}>
               Learn More
             </Button>
           </Grid>
         </Grid>
       </Box>
 
-      <FeaturedPoojas />
+      {/* Featured offerings removed per request */}
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
         <Grid item xs={12} md={6} lg={4}>
@@ -218,13 +216,13 @@ export default function Home() {
       
 
       <Box sx={{ pt: { xs: 5, md: 7 }, pb: 5 }}>
-        <Typography variant="overline" sx={{ color: '#E63946', letterSpacing: 2 }}>
+        <Typography variant="overline" sx={{ color: colors.primary, letterSpacing: 2 }}>
           TEMPLE ESSENTIALS
         </Typography>
         <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
           Navigate to Every Subpage in Moments
         </Typography>
-        <Typography variant="body1" sx={{ color: '#555', maxWidth: 760 }}>
+        <Typography variant="body1" sx={{ color: colors.textSecondary, maxWidth: 760 }}>
           After enjoying the hero slider, jump into the section that matters most—booking poojas, making donations,
           learning temple history, or finding travel support. Each card below opens a dedicated sub page.
         </Typography>
@@ -238,7 +236,7 @@ export default function Home() {
                 p: 3,
                 borderRadius: 3,
                 height: '100%',
-                borderTop: '4px solid #E63946',
+                borderTop: `4px solid ${colors.primary}`,
                 position: 'relative',
                 overflow: 'hidden',
                 transition: 'transform 220ms ease, box-shadow 220ms ease',
@@ -248,7 +246,7 @@ export default function Home() {
               <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
                 {section.title}
               </Typography>
-              <Typography variant="body2" sx={{ color: '#555', mb: 2 }}>
+              <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 2 }}>
                 {section.description}
               </Typography>
 
@@ -260,7 +258,7 @@ export default function Home() {
                     to={link.to}
                     size="small"
                     variant="text"
-                    sx={{ px: 1.2, color: '#E63946', '&:hover': { bgcolor: 'rgba(230,57,70,0.06)' } }}
+                    sx={{ px: 1.2, color: colors.primary, '&:hover': { bgcolor: colors.brandAlpha06 } }}
                   >
                     {link.label}
                   </Button>
@@ -268,7 +266,7 @@ export default function Home() {
               </Stack>
 
               <Box sx={{ mt: 2 }}>
-                <Button component={RouterLink} to={section.primary.to} variant="contained" sx={{ bgcolor: '#E63946', fontWeight: 700 }}>
+                <Button component={RouterLink} to={section.primary.to} variant="contained" sx={{ bgcolor: colors.primary, fontWeight: 700 }}>
                   {section.primary.label}
                 </Button>
               </Box>
@@ -286,10 +284,10 @@ export default function Home() {
               p: { xs: 3, md: 4 },
               borderRadius: 4,
               background:
-                'linear-gradient(130deg, rgba(230,57,70,0.95), rgba(214,40,40,0.85)), url(/assets/slide_3.png)',
+                `linear-gradient(130deg, ${colors.brandAlpha95}, ${colors.brandAlpha85}), url(/assets/slide_3.png)`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              color: '#fff',
+              color: colors.white,
               minHeight: 320,
               display: 'flex',
               flexDirection: 'column',
@@ -313,7 +311,7 @@ export default function Home() {
                 component={RouterLink}
                 to="/donate/online"
                 variant="outlined"
-                sx={{ color: '#fff', borderColor: '#fff', fontWeight: 700 }}
+                sx={{ color: colors.white, borderColor: colors.white, fontWeight: 700 }}
               >
                 Donate Online
               </Button>
@@ -342,10 +340,10 @@ export default function Home() {
                   <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
                     {tile.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#333', mb: 2 }}>
+                  <Typography variant="body2" sx={{ color: colors.textDark, mb: 2 }}>
                     {tile.description}
                   </Typography>
-                  <Button component={RouterLink} to={tile.to} size="small" sx={{ color: '#E63946', fontWeight: 700 }}>
+                  <Button component={RouterLink} to={tile.to} size="small" sx={{ color: colors.primary, fontWeight: 700 }}>
                     Visit Page →
                   </Button>
 
@@ -355,7 +353,7 @@ export default function Home() {
                     right: 0,
                     bottom: 0,
                     height: 6,
-                    bgcolor: 'rgba(230,57,70,0.18)',
+                    bgcolor: colors.brandAlpha18,
                     transform: 'scaleX(0)',
                     transformOrigin: 'left',
                     transition: 'transform 260ms ease'
@@ -372,8 +370,8 @@ export default function Home() {
           mt: 5,
           p: { xs: 3, md: 4 },
           borderRadius: 4,
-          bgcolor: '#ffe9ec',
-          border: '1px solid #ffd4db',
+          bgcolor: colors.brandTint,
+          border: `1px solid ${colors.brandBorder}`,
         }}
       >
         <Grid container spacing={3} alignItems="center">
@@ -381,7 +379,7 @@ export default function Home() {
             <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
               Need human assistance?
             </Typography>
-            <Typography variant="body1" sx={{ color: '#555' }}>
+            <Typography variant="body1" sx={{ color: colors.textSecondary }}>
               The contact section lists office numbers, feedback forms, and the interactive map. Nearby pages help you
               with stay, travel, and amenities around the shrine.
             </Typography>
@@ -391,7 +389,7 @@ export default function Home() {
               <Button component={RouterLink} to="/contact" variant="contained" sx={{ fontWeight: 700 }}>
                 Contact Office
               </Button>
-              <Button component={RouterLink} to="/nearby" variant="text" sx={{ color: '#E63946', fontWeight: 700 }}>
+              <Button component={RouterLink} to="/nearby" variant="text" sx={{ color: colors.primary, fontWeight: 700 }}>
                 Explore Nearby →
               </Button>
             </Stack>

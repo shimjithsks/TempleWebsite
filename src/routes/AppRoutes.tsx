@@ -5,11 +5,9 @@ import Home from '../pages/Home';
 import About from '../pages/About';
 import Poojas from '../pages/Poojas';
 import Gallery from '../pages/Gallery';
-import Donations from '../pages/Donations';
+import Donate from '../pages/Donate';
 import Nearby from '../pages/Nearby';
-import Administration from '../pages/Administration';
 import Contact from '../pages/Contact';
-import Ads from '../pages/Ads';
 
 // Pooja pages
 import DailyPoojas from '../pages/poojas/Daily';
@@ -77,7 +75,7 @@ export default function AppRoutes() {
       <Route path="/poojas/booking" element={<PoojaBooking />} />
       
       {/* Donate Routes */}
-      <Route path="/donate" element={<Donations />} />
+      <Route path="/donate" element={<Donate />} />
       <Route path="/donate/online" element={<OnlineDonation />} />
       <Route path="/donate/annadanam" element={<Annadanam />} />
       <Route path="/donate/renovation" element={<TempleRenovation />} />
@@ -125,10 +123,7 @@ export default function AppRoutes() {
 
       {/* Cart Route */}
       <Route path="/cart" element={<CartPage />} />
-      
-      {/* Legacy Routes */}
-      <Route path="/administration" element={<Administration />} />
-      <Route path="/ads" element={<Ads />} />
+
     </Routes>
     </>
   );

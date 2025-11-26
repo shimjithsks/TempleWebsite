@@ -13,15 +13,15 @@ export default function Footer() {
           {/* Left Section - Logo & Description */}
           <Grid item xs={12} md={3}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Box sx={{ width: 60, height: 60, bgcolor: '#ffffff', borderRadius: 1, mr: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
-                🙏
+              <Box sx={{ width: 60, height: 60, mr: 2 }}>
+                <Box component="img" src="/assets/header_god_image.png" alt="Temple" sx={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 1 }} />
               </Box>
               <Typography variant="h6" sx={{ fontWeight: 700 }}>Muchukunnu Kshethram</Typography>
             </Box>
             <Typography variant="body2" sx={{ lineHeight: 1.6, color: '#ccc' }}>
               Muchukunnu Sri Kotta-Kovilakam Kshethram provides spiritual guidance and services to help devotees with temple poojas, vazhipads, donations, and related needs.
             </Typography>
-            <Link href="#" sx={{ display: 'inline-block', mt: 2, bgcolor: '#1e90ff', color: '#fff', px: 3, py: 1, textDecoration: 'none', borderRadius: 1, fontWeight: 600, '&:hover': { bgcolor: '#1a7acc' } }}>
+            <Link href="/about" sx={{ display: 'inline-block', mt: 2, bgcolor: '#1e90ff', color: '#fff', px: 3, py: 1, textDecoration: 'none', borderRadius: 1, fontWeight: 600, '&:hover': { bgcolor: '#1a7acc' } }}>
               DISCOVER MORE
             </Link>
           </Grid>
@@ -49,33 +49,36 @@ export default function Footer() {
           {/* Temple Info */}
           <Grid item xs={12} md={3}>
             <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#ffffff' }}>Temple Info</Typography>
-            <Link href="#" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
+            <Link href="/about/rules" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
               <span>›</span> Temple Timings
             </Link>
             <Link href="/poojas" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
               <span>›</span> Poojas & Vazhipads
             </Link>
-            <Link href="#" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
-              <span>›</span> Event Management
-            </Link>
-            <Link href="#" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
-              <span>›</span> Marriage Registration
-            </Link>
             <Link href="/donate" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
               <span>›</span> Make a Donation
+            </Link>
+            <Link href="/about/history" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
+              <span>›</span> Temple History
+            </Link>
+            <Link href="/about/deities" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
+              <span>›</span> Deities
+            </Link>
+            <Link href="/about/festivals" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
+              <span>›</span> Festivals
             </Link>
           </Grid>
 
           {/* Quick Links */}
           <Grid item xs={12} md={3}>
             <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#ffffff' }}>Quick Links</Typography>
-            <Link href="#" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
+            <Link href="/nearby/accommodation" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
               <span>›</span> Accommodation Near Temple
             </Link>
-            <Link href="#" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
+            <Link href="/about/food" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
               <span>›</span> Food & Refreshments
             </Link>
-            <Link href="#" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
+            <Link href="/administration" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
               <span>›</span> Temple Administration
             </Link>
             <Link href="/gallery" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
@@ -83,6 +86,12 @@ export default function Footer() {
             </Link>
             <Link href="/nearby" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
               <span>›</span> Nearby Services
+            </Link>
+            <Link href="/news" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
+              <span>›</span> News & Announcements
+            </Link>
+            <Link href="/contact" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#ccc', textDecoration: 'none', mb: 1, '&:hover': { color: '#ffffff' } }}>
+              <span>›</span> Contact & Services
             </Link>
           </Grid>
         </Grid>

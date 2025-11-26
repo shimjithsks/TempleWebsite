@@ -1,11 +1,12 @@
 import { createTheme } from '@mui/material/styles';
+import { colors } from './colors';
 
 const theme = createTheme({
   palette: {
-    primary: { main: '#E63946' }, // rose red
-    secondary: { main: '#ffffff' }, // white
-    background: { default: '#fff' },
-    text: { primary: '#222' }
+    primary: { main: colors.primary },
+    secondary: { main: colors.secondary },
+    background: { default: colors.background },
+    text: { primary: colors.textPrimary }
   },
   typography: {
     fontFamily: "'Jost', 'Roboto', 'Noto Sans Malayalam', sans-serif"
@@ -13,16 +14,16 @@ const theme = createTheme({
   components: {
     MuiAppBar: {
       styleOverrides: {
-        colorPrimary: { backgroundColor: '#E63946' }
+        colorPrimary: { backgroundColor: colors.primary }
       }
     },
     MuiButton: {
       styleOverrides: {
         contained: {
-          backgroundColor: '#E63946',
-          color: '#ffffff',
+          backgroundColor: colors.primary,
+          color: colors.white,
           '&:hover': {
-            backgroundColor: '#d62839'
+            backgroundColor: colors.primaryDark
           }
         }
       }

@@ -2,47 +2,49 @@ import React from 'react';
 import { Card, CardContent, Typography, Box, Chip } from '@mui/material';
 
 interface PoojaDisplayCardProps {
+  id?: number;
   name: string;
   price: number;
   description?: string;
   image: string;
+  deity?: string;
   showPrice?: boolean;
 }
 
-export default function PoojaDisplayCard({ name, price, description, image, showPrice = true }: PoojaDisplayCardProps) {
+const DEITY_COLORS: Record<string, string> = {
+  BHAGAVATHY: '#E76F51',
+  SIVA: '#264653',
+  VISHNU: '#2A9D8F',
+  GANAPATHY: '#E9C46A',
+  AYYAPPA: '#8E7CC3',
+  GENERAL: '#6C757D',
+};
+
+export default function PoojaDisplayCard({ id, name, price, description, image, deity = 'GENERAL', showPrice = true }: PoojaDisplayCardProps) {
+  const color = DEITY_COLORS[deity] || DEITY_COLORS.GENERAL;
+
   return (
-    <Card 
-      variant="outlined" 
-      sx={{ 
-        textAlign: 'center', 
+    <Card
+      variant="outlined"
+      sx={{
+        textAlign: 'center',
         height: '100%',
-        borderColor: 'rgba(0, 0, 0, 0.12)',
-        transition: 'all 0.2s ease-in-out',
+        borderColor: 'rgba(0, 0, 0, 0.08)',
+        position: 'relative',
+        overflow: 'hidden',
+        transition: 'all 0.22s ease-in-out',
         '&:hover': {
-          boxShadow: '0 6px 16px rgba(0,0,0,0.12)',
-          transform: 'translateY(-4px)'
+          boxShadow: '0 12px 30px rgba(0,0,0,0.12)',
+          transform: 'translateY(-6px)'
         }
       }}
     >
-      <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Box
-          sx={{
-            width: 64,
-            height: 64,
-            borderRadius: '50%',
-            overflow: 'hidden',
-            border: '2px solid rgba(230,57,70,0.18)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            bgcolor: '#fff',
-            mb: 1.5,
-          }}
-        >
-          <Box component="img" src={image} alt="pooja icon" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        </Box>
+      <Box sx={{ position: 'absolute', top: 12, left: 12 }}>
+        <Chip label={deity} size="small" sx={{ bgcolor: color, color: '#fff', fontWeight: 700 }} />
+      </Box>
 
-        <Typography variant="h6" sx={{ fontWeight: 600, textAlign: 'center', minHeight: '56px' }}>
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pt: 3 }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, textAlign: 'center', minHeight: '56px' }}>
           {name}
         </Typography>
 
@@ -54,17 +56,17 @@ export default function PoojaDisplayCard({ name, price, description, image, show
 
         {showPrice && (
           <Chip
-            label={`Rs.${price.toFixed(2)}`}
+            label={`Rs ${price.toFixed(0)}`}
             sx={{
               mt: 2,
-              bgcolor: '#E63946',
+              bgcolor: color,
               color: 'white',
-              fontWeight: 'bold',
-              fontSize: '1rem',
+              fontWeight: 700,
             }}
           />
         )}
       </CardContent>
+
     </Card>
   );
 }

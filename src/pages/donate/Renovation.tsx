@@ -2,6 +2,7 @@ import React from 'react';
 import PageBanner from '../../components/PageBanner';
 import SectionSidebar from '../../components/SectionSidebar';
 import { Container, Typography, Box, Paper, Grid, LinearProgress } from '@mui/material';
+import { colors } from '../../theme/colors';
 
 export default function TempleRenovation() {
   const goalAmount = 50000000;
@@ -19,7 +20,7 @@ export default function TempleRenovation() {
                 Our temple is undergoing major renovation to preserve its heritage and improve facilities for devotees. Your support will help us complete this sacred project.
               </Typography>
 
-              <Box sx={{ mb: 4, p: 4, bgcolor: '#ffebee', borderRadius: 2 }}>
+              <Box sx={{ mb: 4, p: 4, bgcolor: colors.lightPink, borderRadius: 2 }}>
                 <Typography variant="h5" sx={{ fontWeight: 600, mb: 3, textAlign: 'center' }}>
                   Fundraising Progress
                 </Typography>
@@ -31,21 +32,21 @@ export default function TempleRenovation() {
                     height: 20,
                     borderRadius: 2,
                     mb: 2,
-                    bgcolor: '#e0e0e0',
-                    '& .MuiLinearProgress-bar': { bgcolor: '#E63946' },
+                    bgcolor: colors.gray200,
+                    '& .MuiLinearProgress-bar': { bgcolor: colors.primary },
                   }}
                 />
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#E63946' }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: colors.primary }}>
                     ₹{(raisedAmount / 10000000).toFixed(1)} Cr
                   </Typography>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#666' }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: colors.textMuted }}>
                     Goal: ₹{goalAmount / 10000000} Cr
                   </Typography>
                 </Box>
 
-                <Typography variant="h6" sx={{ textAlign: 'center', color: '#E63946', fontWeight: 600 }}>
+                <Typography variant="h6" sx={{ textAlign: 'center', color: colors.primary, fontWeight: 600 }}>
                   {progress.toFixed(1)}% Complete
                 </Typography>
               </Box>
@@ -54,8 +55,8 @@ export default function TempleRenovation() {
 
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
-                  <Box sx={{ p: 3, border: '1px solid #ddd', borderRadius: 2 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: '#E63946', mb: 2 }}>
+                  <Box sx={{ p: 3, border: `1px solid ${colors.border}`, borderRadius: 2 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: colors.primary, mb: 2 }}>
                       Main Sanctum Restoration
                     </Typography>
                     <Typography>• Gold plating of the main deity</Typography>
@@ -66,8 +67,8 @@ export default function TempleRenovation() {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={{ p: 3, border: '1px solid #ddd', borderRadius: 2 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: '#E63946', mb: 2 }}>
+                  <Box sx={{ p: 3, border: `1px solid ${colors.border}`, borderRadius: 2 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: colors.primary, mb: 2 }}>
                       Infrastructure Development
                     </Typography>
                     <Typography>• New visitor facilities</Typography>
@@ -78,8 +79,8 @@ export default function TempleRenovation() {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={{ p: 3, border: '1px solid #ddd', borderRadius: 2 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: '#E63946', mb: 2 }}>
+                  <Box sx={{ p: 3, border: `1px solid ${colors.border}`, borderRadius: 2 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: colors.primary, mb: 2 }}>
                       Cultural Center
                     </Typography>
                     <Typography>• Auditorium for events</Typography>
@@ -90,8 +91,8 @@ export default function TempleRenovation() {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={{ p: 3, border: '1px solid #ddd', borderRadius: 2 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: '#E63946', mb: 2 }}>
+                  <Box sx={{ p: 3, border: `1px solid ${colors.border}`, borderRadius: 2 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: colors.primary, mb: 2 }}>
                       Annadanam Hall Expansion
                     </Typography>
                     <Typography>• Larger dining space</Typography>
@@ -102,7 +103,7 @@ export default function TempleRenovation() {
                 </Grid>
               </Grid>
 
-              <Box sx={{ mt: 4, p: 3, bgcolor: '#e3f2fd', borderRadius: 2 }}>
+              <Box sx={{ mt: 4, p: 3, bgcolor: colors.lightBlue, borderRadius: 2 }}>
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Donor Recognition</Typography>
                 <Typography>• Names inscribed on the temple wall of honor</Typography>
                 <Typography>• Special blessings and certificates</Typography>

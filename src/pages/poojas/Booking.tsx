@@ -23,6 +23,7 @@ import PoojaCard from '../../components/PoojaCard';
 import PoojaBookingModal from '../../components/PoojaBookingModal';
 import { poojas as allPoojas, Pooja } from '../../data/pooja-data';
 import { useCart } from '../../context/CartContext';
+import { colors } from '../../theme/colors';
 
 const deities = ['All', 'Devi', 'Ganapathy', 'Vishnu', 'Shiva', 'Ayyappa', 'Murugan', 'Others'];
 
@@ -154,11 +155,11 @@ export default function Booking() {
                 borderRadius: '50px',
                 py: 1.5,
                 px: 3,
-                bgcolor: '#E63946',
-                color: 'white',
+                bgcolor: colors.primary,
+                color: colors.white,
                 boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
                 '&:hover': {
-                  bgcolor: '#D62828',
+                  bgcolor: colors.primaryDark,
                   transform: 'scale(1.05)'
                 },
                 transition: 'all .2s'
@@ -176,11 +177,11 @@ export default function Booking() {
                 borderRadius: '50px',
                 py: 1.5,
                 px: 3,
-                bgcolor: '#1D3557',
-                color: 'white',
+                bgcolor: colors.navy,
+                color: colors.white,
                 boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
                 '&:hover': {
-                  bgcolor: '#457B9D',
+                  bgcolor: colors.navyLight,
                   transform: 'scale(1.05)'
                 },
                 transition: 'all .2s'

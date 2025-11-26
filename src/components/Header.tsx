@@ -38,6 +38,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import { Link as RouterLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { colors } from '../theme/colors';
 
 /* -----------------------------
    ⭐ MENU ICONS MAPPING
@@ -162,7 +163,7 @@ export default function Header() {
       {/* TOP BAR */}
       <Box
         sx={{
-          bgcolor: '#E63946',
+          bgcolor: colors.primary,
           py: 1.1,
           display: 'flex',
           justifyContent: 'space-between',
@@ -172,7 +173,7 @@ export default function Header() {
       >
         <Typography
           sx={{
-            color: '#ffffff',
+            color: colors.white,
             fontWeight: 700,
             fontSize: { xs: '0.72rem', md: '0.95rem' },
           }}
@@ -181,16 +182,16 @@ export default function Header() {
         </Typography>
 
         <Box sx={{ display: 'flex', gap: 1 }}>
-          <IconButton size="small" sx={{ bgcolor: '#1e90ff', color: '#fff' }}>
+          <IconButton size="small" sx={{ bgcolor: colors.sky, color: colors.white }}>
             <FacebookIcon fontSize="small" />
           </IconButton>
-          <IconButton size="small" sx={{ bgcolor: '#e84393', color: '#fff' }}>
+          <IconButton size="small" sx={{ bgcolor: colors.pink, color: colors.white }}>
             <InstagramIcon fontSize="small" />
           </IconButton>
-          <IconButton size="small" sx={{ bgcolor: '#ff0000', color: '#fff' }}>
+          <IconButton size="small" sx={{ bgcolor: colors.pureRed, color: colors.white }}>
             <YouTubeIcon fontSize="small" />
           </IconButton>
-          <IconButton size="small" sx={{ bgcolor: '#1DA1F2', color: '#fff' }}>
+          <IconButton size="small" sx={{ bgcolor: colors.twitter, color: colors.white }}>
             <TwitterIcon fontSize="small" />
           </IconButton>
         </Box>
@@ -201,10 +202,10 @@ export default function Header() {
         position="sticky"
         elevation={0}
         sx={{
-          bgcolor: '#fff',
+          bgcolor: colors.white,
           boxShadow: 'none',
-          borderTop: '2px solid #E63946',
-          borderBottom: '2px solid #E63946',
+          borderTop: `2px solid ${colors.primary}`,
+          borderBottom: `2px solid ${colors.primary}`,
           pb: '20px',
         }}
       >
@@ -229,7 +230,7 @@ export default function Header() {
                   height: 55,
                   borderRadius: '50%',
                   overflow: 'hidden',
-                  border: '2px solid #E63946',
+                  border: `2px solid ${colors.primary}`,
                 }}
               >
                 <Box
@@ -267,7 +268,7 @@ export default function Header() {
                     fontWeight: 700,
                     whiteSpace: 'nowrap',
                     mb: '28px',
-                    color: '#E63946',
+                    color: colors.primary,
                   }}
                 >
                   Muchukunnu Sri Kotta-Kovilakam Kshethram
@@ -299,7 +300,7 @@ export default function Header() {
                       component={sub.length === 0 ? RouterLink : 'button'}
                       to={sub.length === 0 ? linkTo : undefined}
                       sx={{
-                        color: '#E63946',
+                        color: colors.primary,
                         fontWeight: 600,
                         fontSize: '0.85rem',
                         whiteSpace: 'nowrap',
@@ -309,12 +310,12 @@ export default function Header() {
                         alignItems: 'center',
                         gap: 0.3,
                         minWidth: '70px',
-                        '&:hover': { color: '#d62839', transform: 'scale(1.05)' },
+                        '&:hover': { color: colors.primaryDark, transform: 'scale(1.05)' },
                         transition: 'all 0.3s ease',
                       }}
                       className="menu-trigger"
                     >
-                      {IconComponent && <IconComponent sx={{ fontSize: '1.5rem', color: '#804a0aff' }} />}
+                      {IconComponent && <IconComponent sx={{ fontSize: '1.5rem', color: colors.goldBrown }} />}
                       {title}
                     </Button>
 
@@ -328,7 +329,7 @@ export default function Header() {
                           top: '52px',
                           left: 0,
                           minWidth: '210px',
-                          bgcolor: '#E63946',
+                          bgcolor: colors.primary,
                           borderRadius: 2,
                           boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
                           zIndex: 20,
@@ -348,7 +349,7 @@ export default function Header() {
                             sx={{
                               px: 2,
                               py: 0.8,
-                              '&:hover': { bgcolor: '#ffffff', color: '#E63946' },
+                              '&:hover': { bgcolor: colors.white, color: colors.primary },
                             }}
                           >
                             <ListItemText primary={item.label} />
@@ -364,7 +365,7 @@ export default function Header() {
 
             {/* MOBILE MENU ICON */}
             <IconButton
-              sx={{ display: { md: 'none' }, color: '#333' }}
+              sx={{ display: { md: 'none' }, color: colors.textDark }}
               onClick={() => setDrawerOpen(true)}
             >
               <MenuIcon />
@@ -386,8 +387,8 @@ export default function Header() {
       {/* MOBILE DRAWER WITH SUBMENU ACCORDIONS */}
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} anchor="right">
         <Box sx={{ width: 280 }}>
-          <Box sx={{ bgcolor: '#E63946', p: 2 }}>
-            <Typography sx={{ color: '#fff', fontWeight: 700 }}>Menu</Typography>
+          <Box sx={{ bgcolor: colors.primary, p: 2 }}>
+            <Typography sx={{ color: colors.white, fontWeight: 700 }}>Menu</Typography>
           </Box>
 
           <List>
@@ -447,11 +448,11 @@ export default function Header() {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Badge badgeContent={totalItems} color="primary" sx={{
                   '& .MuiBadge-badge': {
-                    backgroundColor: '#1D3557',
-                    color: 'white'
+                    backgroundColor: colors.navy,
+                    color: colors.white
                   }
                 }}>
-                  <ShoppingCartIcon sx={{ fontSize: '1.3rem', color: '#E63946' }} />
+                  <ShoppingCartIcon sx={{ fontSize: '1.3rem', color: colors.primary }} />
                 </Badge>
                 <ListItemText primary="View Cart" />
               </Box>

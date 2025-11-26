@@ -1,44 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { Box, IconButton, Button, Typography, Fade } from '@mui/material';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Box, Button, Typography, Fade } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { colors } from '../theme/colors';
 
 const sliderImages = [
   {
     id: 1,
     title: 'Welcome to Muchukunnu Sri Kotta-Kovilakam Kshethram',
     subtitle: 'Preserving tradition. Serving devotion.',
-    color: '#E63946',
+    color: colors.primary,
     image: '/assets/slider_1.jpg',
     overlay: 'rgba(0,0,0,0.45)',
     isMain: true,
   },
   {
     id: 2,
-    title: 'Temple Main Entrance',
-    color: '#E63946',
+  //  title: 'Temple Main Entrance',
+    color: colors.primary,
     image: '/assets/slider_2.jpg',
     overlay: 'rgba(0,0,0,0.35)',
   },
   {
     id: 3,
-    title: 'Temple Premises',
-    color: '#E63946',
+  //  title: 'Temple Premises',
+    color: colors.primary,
     image: '/assets/slide_3.png',
     overlay: 'rgba(0,0,0,0.35)',
   },
   {
     id: 4,
-    title: 'Festive Moments',
-    color: '#ffffff',
+   // title: 'Festive Moments',
+    color: colors.white,
     image: '/assets/slide_4.png',
     overlay: 'rgba(0,0,0,0.35)',
   },
   {
     id: 5,
     title: 'Devotee Gatherings',
-    color: '#556B2F',
+    color: colors.olive,
     image: '/assets/slide_5.png',
     overlay: 'rgba(0,0,0,0.45)',
   },
@@ -60,16 +59,10 @@ export default function ImageSlider() {
     return () => clearTimeout(fadeTimer);
   }, [currentSlide]);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % sliderImages.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + sliderImages.length) % sliderImages.length);
-  };
+  // Manual navigation removed (prev/next arrows) – auto-advance only.
 
   return (
-    <Box sx={{ position: 'relative', width: '100vw', marginLeft: 'calc(-50vw + 50%)', bgcolor: '#000' }}>
+    <Box sx={{ position: 'relative', width: '100vw', marginLeft: 'calc(-50vw + 50%)', bgcolor: colors.black }}>
       <Box sx={{ position: 'relative', height: 680, overflow: 'hidden', width: '100%' }}>
         {sliderImages.map((image, idx) => (
           <Fade in={idx === visibleSlide} timeout={700} mountOnEnter unmountOnExit key={image.id}>
@@ -80,7 +73,7 @@ export default function ImageSlider() {
                 height: '100%',
                 backgroundColor: image.color,
                 backgroundImage: image.image
-                  ? `linear-gradient(${image.overlay || 'rgba(0,0,0,0.3)'}, ${image.overlay || 'rgba(0,0,0,0.3)'}), url(${image.image})`
+                  ? `linear-gradient(${image.overlay || colors.overlayDark30}, ${image.overlay || colors.overlayDark30}), url(${image.image})`
                   : 'none',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -92,7 +85,7 @@ export default function ImageSlider() {
               }}
             >
               {image.isMain ? (
-                <Box sx={{ textAlign: 'center', color: '#fff', px: 3 }}>
+                <Box sx={{ textAlign: 'center', color: colors.white, px: 3 }}>
                   <Typography variant="h3" sx={{ fontWeight: 700, mb: 2 }}>
                     {image.title}
                   </Typography>
@@ -105,10 +98,10 @@ export default function ImageSlider() {
                       component={RouterLink}
                       to="/donate"
                       sx={{
-                        bgcolor: '#ffffff',
-                        color: '#E63946',
+                        bgcolor: colors.white,
+                        color: colors.primary,
                         fontWeight: 700,
-                        '&:hover': { bgcolor: '#f8f9fa' },
+                        '&:hover': { bgcolor: colors.gray100 },
                       }}
                     >
                       Donate Now
@@ -118,10 +111,10 @@ export default function ImageSlider() {
                       component={RouterLink}
                       to="/poojas"
                       sx={{
-                        color: '#fff',
-                        borderColor: '#fff',
+                        color: colors.white,
+                        borderColor: colors.white,
                         fontWeight: 700,
-                        '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' },
+                        '&:hover': { bgcolor: colors.white10 },
                       }}
                     >
                       Book a Pooja
@@ -129,7 +122,7 @@ export default function ImageSlider() {
                   </Box>
                 </Box>
               ) : (
-                <Box sx={{ textAlign: 'center', color: '#fff' }}>
+                <Box sx={{ textAlign: 'center', color: colors.white }}>
                   <Typography variant="h4" sx={{ fontWeight: 700 }}>
                     {image.title}
                   </Typography>
@@ -139,64 +132,9 @@ export default function ImageSlider() {
           </Fade>
         ))}
 
-        <IconButton
-          onClick={prevSlide}
-          sx={{
-            position: 'absolute',
-            left: 20,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            zIndex: 10,
-            bgcolor: 'rgba(255,255,255,0.25)',
-            color: '#fff',
-            '&:hover': { bgcolor: 'rgba(255,255,255,0.5)' },
-          }}
-        >
-          <ChevronLeftIcon sx={{ fontSize: 40 }} />
-        </IconButton>
+        {/* Arrow buttons removed per request */}
 
-        <IconButton
-          onClick={nextSlide}
-          sx={{
-            position: 'absolute',
-            right: 20,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            zIndex: 10,
-            bgcolor: 'rgba(255,255,255,0.25)',
-            color: '#fff',
-            '&:hover': { bgcolor: 'rgba(255,255,255,0.5)' },
-          }}
-        >
-          <ChevronRightIcon sx={{ fontSize: 40 }} />
-        </IconButton>
-
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: 24,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            display: 'flex',
-            gap: 1,
-            zIndex: 10,
-          }}
-        >
-          {sliderImages.map((_, idx) => (
-            <Box
-              key={idx}
-              onClick={() => setCurrentSlide(idx)}
-              sx={{
-                width: idx === currentSlide ? 28 : 12,
-                height: 8,
-                borderRadius: 4,
-                bgcolor: idx === currentSlide ? '#fff' : 'rgba(255,255,255,0.5)',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-              }}
-            />
-          ))}
-        </Box>
+        {/* Dot indicators removed per request */}
       </Box>
     </Box>
   );
