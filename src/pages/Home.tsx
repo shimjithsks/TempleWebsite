@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Grid, Paper, Typography, Button, Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import ImageSlider from '../components/ImageSlider';
+import Reveal from '../components/Reveal';
 import InfoIcon from '@mui/icons-material/Info';
 import TempleHinduIcon from '@mui/icons-material/TempleHindu';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
@@ -21,6 +22,7 @@ import MapIcon from '@mui/icons-material/Map';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import { colors } from '../theme/colors';
+import SectionOrnament from '../components/SectionOrnament';
 
 
 // Pooja quick-access tiles
@@ -56,13 +58,14 @@ export default function Home() {
     <Box sx={{ mt: { xs: -4, md: -6 }, pb: 6 }}>
       <ImageSlider />
       {/* Enhanced About Temple section */}
+      <Reveal>
       <Box
         sx={{
           mt: 4,
           mb: 5,
           position: 'relative',
           borderRadius: 4,
-          overflow: 'hidden',
+          overflow: 'visible',
           px: { xs: 2.5, md: 5 },
           py: { xs: 3.5, md: 5 },
           background: `linear-gradient(135deg, ${colors.white}, ${colors.brandAlpha06})`,
@@ -70,6 +73,7 @@ export default function Home() {
           boxShadow: '0 10px 28px rgba(0,0,0,0.05)'
         }}
       >
+        <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
         <Box sx={{ height: 3, bgcolor: colors.primary, borderRadius: 1, mb: 2 }} />
         <Box sx={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
           <Box sx={{
@@ -180,10 +184,13 @@ export default function Home() {
           </Grid>
         </Grid>
       </Box>
+      </Reveal>
 
       {/* Sections removed per request: Latest, Gallery, Nearby, Temple Essentials */}
 
-      <Box sx={{ mt: 5, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 } }}>
+      <Reveal delay={80}>
+      <Box sx={{ mt: 5, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, position: 'relative', overflow: 'visible' }}>
+      <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
       <Grid container spacing={3}>
         <Grid item xs={12} md={5}>
           <Paper
@@ -277,9 +284,12 @@ export default function Home() {
         </Grid>
       </Grid>
       </Box>
+      </Reveal>
 
       {/* News Overview: placed above Donation section */}
-      <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 } }}>
+      <Reveal delay={120}>
+      <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, background: `linear-gradient(135deg, ${colors.white}, ${colors.brandAlpha06})`, position: 'relative', overflow: 'visible' }}>
+        <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
         <Typography variant="overline" sx={{ color: colors.primary, letterSpacing: 2 }}>
           NEWS OVERVIEW
         </Typography>
@@ -332,17 +342,36 @@ export default function Home() {
           ))}
         </Grid>
       </Box>
+      </Reveal>
 
       {/* Donation Overview: new approach - ribbon header + stacked cards with progress */}
-      <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 } }}>
-        <Paper sx={{ p: { xs: 2, md: 3 }, borderRadius: 4, overflow: 'hidden' }}>
+      <Reveal delay={160}>
+      <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, background: `linear-gradient(135deg, ${colors.brandAlpha06}, ${colors.brandAlpha12})`, position: 'relative', overflow: 'visible' }}>
+        <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
+        <Paper
+          sx={{
+            p: { xs: 2, md: 3 },
+            borderRadius: 4,
+            overflow: 'hidden',
+            transition: 'transform 220ms ease, box-shadow 220ms ease',
+            '&:hover': {
+              transform: 'translateY(-3px)',
+              boxShadow: '0 10px 24px rgba(0,0,0,0.12)'
+            }
+          }}
+        >
           <Box sx={{
             px: { xs: 2, md: 3 },
             py: 2,
             borderRadius: 3,
             color: colors.white,
             background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
-            position: 'relative'
+            position: 'relative',
+            transition: 'filter 220ms ease, opacity 220ms ease',
+            '.MuiPaper-root:hover &': {
+              filter: 'brightness(1.03)',
+              opacity: 0.98,
+            }
           }}>
             <Typography variant="overline" sx={{ letterSpacing: 2 }}>DONATION OVERVIEW</Typography>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>Support Temple Causes</Typography>
@@ -357,7 +386,20 @@ export default function Home() {
               { key: 'festival', title: 'Festival Support', desc: 'Sponsor arrangements for seasonal utsavams.', to: '/donate/festival', tag: 'Seasonal', tagColor: colors.primary },
             ].map((item) => (
               <Grid item xs={12} md={6} key={item.key}>
-                <Paper sx={{ p: 2.5, borderRadius: 3, border: `1px solid ${colors.brandAlpha12}`, position: 'relative' }}>
+                <Paper
+                  sx={{
+                    p: 2.5,
+                    borderRadius: 3,
+                    border: `1px solid ${colors.brandAlpha12}`,
+                    position: 'relative',
+                    transition: 'transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 12px 28px rgba(0,0,0,0.12)',
+                      borderColor: colors.primary,
+                    },
+                  }}
+                >
                   <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: 6, background: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})` }} />
                   <Grid container spacing={2} alignItems="center">
                     <Grid item>
@@ -393,7 +435,19 @@ export default function Home() {
           <Box sx={{ px: { xs: 2, md: 3 }, pb: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
-                <Paper sx={{ p: 2, borderRadius: 3, border: `1px solid ${colors.brandAlpha12}` }}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    borderRadius: 3,
+                    border: `1px solid ${colors.brandAlpha12}`,
+                    transition: 'transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease',
+                    '&:hover': {
+                      transform: 'translateY(-3px)',
+                      boxShadow: '0 10px 24px rgba(0,0,0,0.12)',
+                      borderColor: colors.primary,
+                    },
+                  }}
+                >
                   <Typography variant="caption" sx={{ color: colors.textSecondary }}>Monthly Annadanam Goal</Typography>
                   <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>₹ 2,50,000 / ₹ 5,00,000</Typography>
                   <Box sx={{ mt: 1.5, height: 8, borderRadius: 4, background: colors.brandAlpha06, overflow: 'hidden' }}>
@@ -402,7 +456,19 @@ export default function Home() {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6}>
-                <Paper sx={{ p: 2, borderRadius: 3, border: `1px solid ${colors.brandAlpha12}` }}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    borderRadius: 3,
+                    border: `1px solid ${colors.brandAlpha12}`,
+                    transition: 'transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease',
+                    '&:hover': {
+                      transform: 'translateY(-3px)',
+                      boxShadow: '0 10px 24px rgba(0,0,0,0.12)',
+                      borderColor: colors.primary,
+                    },
+                  }}
+                >
                   <Typography variant="caption" sx={{ color: colors.textSecondary }}>Renovation Priority</Typography>
                   <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>Sanctum and Roofworks</Typography>
                   <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
@@ -416,11 +482,14 @@ export default function Home() {
           </Box>
         </Paper>
       </Box>
+      </Reveal>
 
       {/* Assistance section removed per request */}
 
       {/* Gallery Overview: modern material section with preview cards */}
-      <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 } }}>
+      <Reveal delay={200}>
+      <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, background: `linear-gradient(135deg, ${colors.white}, ${colors.brandAlpha06})`, position: 'relative', overflow: 'visible' }}>
+        <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
         <Typography variant="overline" sx={{ color: colors.primary, letterSpacing: 2 }}>
           GALLERY OVERVIEW
         </Typography>
@@ -496,9 +565,12 @@ export default function Home() {
           </Paper>
         </Box>
       </Box>
+      </Reveal>
 
       {/* Nearby Overview: next-level design with icon cards */}
-      <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 } }}>
+      <Reveal delay={240}>
+      <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, background: `linear-gradient(135deg, ${colors.brandAlpha06}, ${colors.brandAlpha12})`, position: 'relative', overflow: 'visible' }}>
+        <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
         <Typography variant="overline" sx={{ color: colors.primary, letterSpacing: 2 }}>
           NEARBY OVERVIEW
         </Typography>
@@ -565,9 +637,12 @@ export default function Home() {
           ))}
         </Grid>
       </Box>
+      </Reveal>
 
       {/* Contact Overview: quick access to office, map, info, feedback */}
-      <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 } }}>
+      <Reveal delay={280}>
+      <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, background: `linear-gradient(135deg, ${colors.white}, ${colors.brandAlpha06})`, position: 'relative', overflow: 'visible' }}>
+        <SectionOrnament opacity={0.85} size={88} />
         <Typography variant="overline" sx={{ color: colors.primary, letterSpacing: 2 }}>
           CONTACT OVERVIEW
         </Typography>
@@ -620,6 +695,7 @@ export default function Home() {
           ))}
         </Grid>
       </Box>
+      </Reveal>
     </Box>
   );
 }
