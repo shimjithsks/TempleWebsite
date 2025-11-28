@@ -165,7 +165,7 @@ export default function Home() {
           <Grid item xs={12} md={6}>
             <Box
               component="img"
-              src="/assets/header_god_image.svg"
+              src="/assets/header_god_image.png" // corrected extension from .svg to .png
               alt="Temple"
               sx={{
                 width: '100%',
