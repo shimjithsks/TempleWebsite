@@ -148,7 +148,7 @@ export default function Home() {
             <Box sx={{ position: 'relative' }}>
               <Box
                 component="img"
-                src="/assets/header_god_image.png"
+                src={`${process.env.PUBLIC_URL}/assets/header_god_image.png`}
                 alt="Temple"
                 sx={{
                   width: '100%',
@@ -193,7 +193,7 @@ export default function Home() {
             sx={{
               p: { xs: 3, md: 4 },
               borderRadius: 4,
-              background: `linear-gradient(130deg, ${colors.brandAlpha95}, ${colors.brandAlpha85}), url(/assets/slide_3.png)`,
+              background: `linear-gradient(130deg, ${colors.brandAlpha95}, ${colors.brandAlpha85}), url(${process.env.PUBLIC_URL}/assets/slide_3.png)`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               color: colors.white,
@@ -492,10 +492,10 @@ export default function Home() {
 
         <Grid container spacing={2}>
             {[
-              { key: 'photos', title: 'Photos', to: '/gallery/photos', img: '/assets/header_god_image.png', chip: 'Curated' },
+              { key: 'photos', title: 'Photos', to: '/gallery/photos', img: `${process.env.PUBLIC_URL}/assets/header_god_image.png`, chip: 'Curated' },
             { key: 'videos', title: 'Videos', to: '/gallery/videos', video: 'https://cdn.coverr.co/videos/coverr-hindu-temple-5112/1080p.mp4', chip: 'Highlights' },
-            { key: 'events', title: 'Events', to: '/gallery/events', img: '/assets/slide_3.png', chip: 'Recent' },
-            { key: 'premises', title: 'Premises', to: '/gallery/premises', img: '/assets/slide_4.png', chip: 'Scenic' },
+            { key: 'events', title: 'Events', to: '/gallery/events', img: `${process.env.PUBLIC_URL}/assets/slide_3.png`, chip: 'Recent' },
+            { key: 'premises', title: 'Premises', to: '/gallery/premises', img: `${process.env.PUBLIC_URL}/assets/slide_4.png`, chip: 'Scenic' },
           ].map((item) => (
             <Grid item xs={12} sm={6} md={3} key={item.key}>
               <Paper
@@ -521,7 +521,7 @@ export default function Home() {
                       src={item.img}
                       alt={item.title}
                       sx={{ width: '100%', height: 160, objectFit: 'cover', borderBottom: `2px solid ${colors.primary}` }}
-                      onError={(e: any) => { e.currentTarget.src = '/assets/gallery_fallback.png'; }}
+                      onError={(e: any) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/assets/gallery_fallback.png`; }}
                     />
                   )}
                   <Box sx={{ position: 'absolute', top: 10, left: 10, px: 1, py: 0.5, borderRadius: 16, bgcolor: colors.brandAlpha06, border: `1px solid ${colors.brandAlpha12}`, fontSize: 12, fontWeight: 700 }}>
