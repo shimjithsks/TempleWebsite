@@ -124,11 +124,6 @@ export default function NewsOverview() {
 
           <Grid item xs={12} md={4} lg={3}>
             <SectionSidebar sectionKey="news" activePath="/news" />
-            <Paper sx={{ mt: 3, p: 2 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>Media & Press</Typography>
-              <Typography variant="body2" sx={{ color: '#444' }}>Contact the temple office for press inquiries and event coverage.</Typography>
-              <Button component={RouterLink} to="/contact" sx={{ mt: 1 }}>Contact Office →</Button>
-            </Paper>
           </Grid>
         </Grid>
       </Container>

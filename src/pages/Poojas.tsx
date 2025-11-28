@@ -90,16 +90,6 @@ export default function Poojas() {
 
           <Grid item xs={12} md={4} lg={3}>
             <SectionSidebar sectionKey="poojas" activePath="/poojas" />
-
-            <Paper elevation={1} sx={{ p: 2, mt: 3, borderRadius: 2 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1 }}>How to Book</Typography>
-              <Typography variant="body2" sx={{ color: colors.textSubtle, mb: 1 }}>
-                Select a pooja and click "Book Now" to provide devotee details and preferred date. Payment is collected at checkout via secure gateway.
-              </Typography>
-              <Button component={RouterLink} to="/poojas/booking" variant="contained" sx={{ mt: 1, bgcolor: colors.primary }}>
-                Open Booking Desk
-              </Button>
-            </Paper>
           </Grid>
         </Grid>
       </Container>

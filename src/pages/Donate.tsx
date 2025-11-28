@@ -138,12 +138,6 @@ export default function Donate() {
 
           <Grid item xs={12} md={4} lg={3}>
             <SectionSidebar sectionKey="donate" activePath="/donate" />
-            <Paper sx={{ mt: 3, p: 2 }} elevation={1}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1 }}>Contact & Receipts</Typography>
-              <Typography variant="body2">Temple Office: +91-XXXXXXXXXX</Typography>
-              <Typography variant="body2">Email: donations@muchukunnutemple.org</Typography>
-              <Button component={RouterLink} to="/contact" variant="text" sx={{ mt: 1 }}>Contact Office →</Button>
-            </Paper>
           </Grid>
         </Grid>
       </Container>

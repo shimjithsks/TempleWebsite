@@ -199,17 +199,6 @@ export default function Nearby() {
             <SectionSidebar sectionKey="nearby" activePath="/nearby" />
             <Paper sx={{ mt: 3, p: 2 }} elevation={1}>
               <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1 }}>Boat Services</Typography>
-              {boatServices.map((b) => (
-                <Box key={b.name} sx={{ mb: 1 }}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>{b.name}</Typography>
-                  <Typography variant="body2">{b.route}</Typography>
-                  <Typography variant="body2">Timing: {b.timing}</Typography>
-                  <Typography variant="body2">Contact: {b.phone}</Typography>
-                  <Button variant="contained" sx={{ mt: 1 }} href={`tel:${b.phone}`}>
-                    Call to Book
-                  </Button>
-                </Box>
-              ))}
             </Paper>
           </Grid>
         </Grid>

@@ -139,13 +139,6 @@ export default function Contact() {
 
           <Grid item xs={12} md={4} lg={3}>
             <SectionSidebar sectionKey="contact" activePath="/contact" />
-            <Paper sx={{ mt: 3, p: 2 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>Office Contacts</Typography>
-              <Typography variant="body2">Temple Office: +91-XXXXXXXXXX</Typography>
-              <Typography variant="body2">Booking Desk: +91-YYYYYYYYYY</Typography>
-              <Typography variant="body2">Email: info@muchukunnu.org</Typography>
-              <Button component={Link} href="/contact/office" sx={{ mt: 1 }}>View Office Numbers →</Button>
-            </Paper>
           </Grid>
         </Grid>
       </Container>
