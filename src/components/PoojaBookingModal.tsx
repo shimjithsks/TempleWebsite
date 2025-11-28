@@ -109,7 +109,7 @@ export default function PoojaBookingModal({ open, handleClose, pooja }: PoojaBoo
             boxShadow: 2,
             overflow: 'hidden',
           }}>
-            <img src="/assets/header_god_image.png" alt="" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+            <img src={`${process.env.PUBLIC_URL}/assets/header_god_image.png`} alt="" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
           </Box>
         </Box>
         <Grid container spacing={2}>

@@ -7,7 +7,7 @@ interface PageBannerProps {
   imagePath?: string;
 }
 
-export default function PageBanner({ title, subtitle, imagePath = '/assets/subpage_banner.png' }: PageBannerProps) {
+export default function PageBanner({ title, subtitle, imagePath = `${process.env.PUBLIC_URL}/assets/subpage_banner.png` }: PageBannerProps) {
   return (
     <Box
       sx={{

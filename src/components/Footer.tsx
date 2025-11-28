@@ -26,7 +26,7 @@ export default function Footer() {
           <Grid item xs={12} md={3}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
               <Box sx={{ width: 60, height: 60, mr: 2, borderRadius: 2, border: `1px solid ${colors.brandAlpha18}`, overflow: 'hidden' }}>
-                <Box component="img" src="/assets/header_god_image.png" alt="Temple" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <Box component="img" src={`${process.env.PUBLIC_URL}/assets/header_god_image.png`} alt="Temple" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </Box>
               <Typography variant="h6" sx={{ fontWeight: 700 }}>Muchukunnu Kshethram</Typography>
             </Box>

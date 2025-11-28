@@ -66,7 +66,7 @@ export default function PoojaCard({ pooja, onSelect, isSelected }: PoojaCardProp
               justifyContent: 'center',
               overflow: 'hidden',
             }}>
-              <img src="/assets/header_god_image.png" alt="" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+              <img src={`${process.env.PUBLIC_URL}/assets/header_god_image.png`} alt="" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
             </Box>
           </Box>
 

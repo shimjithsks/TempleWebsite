@@ -235,7 +235,7 @@ export default function Header() {
               >
                 <Box
                   component="img"
-                  src="/assets/header_god_image.png"
+                  src={`${process.env.PUBLIC_URL}/assets/header_god_image.png`}
                   sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </Box>
@@ -245,7 +245,7 @@ export default function Header() {
                 {/* Animated Icon */}
                 <Box
                   component="img"
-                  src="/assets/icon_ohm_2.png"
+                  src={`${process.env.PUBLIC_URL}/assets/icon_ohm_2.png`}
                   alt="Temple icon"
                   sx={{
                     width: 28,
