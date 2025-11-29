@@ -6,12 +6,10 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 
 export default function GalleryVideos() {
   const videos = [
-    { title: 'Temple Virtual Tour', duration: '12:45', views: '15K' },
-    { title: 'Morning Pooja Rituals', duration: '8:30', views: '8.5K' },
-    { title: 'Onam Festival Celebrations 2024', duration: '18:22', views: '25K' },
-    { title: 'Shivaratri Special Coverage', duration: '15:40', views: '22K' },
-    { title: 'Annadanam Service', duration: '6:15', views: '5.2K' },
-    { title: 'Temple History Documentary', duration: '25:30', views: '12K' },
+    { title: 'Temple Virtual Tour', youtubeId: 'bFHz3KocQc0' },
+    { title: 'Morning Pooja Rituals', youtubeId: 'bFHz3KocQc0' },
+    { title: 'Festival Celebrations', youtubeId: 'bFHz3KocQc0' },
+    { title: 'Temple Documentary', youtubeId: 'bFHz3KocQc0' },
   ];
 
   return (
@@ -20,73 +18,89 @@ export default function GalleryVideos() {
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8} lg={9}>
-            <Paper elevation={3} sx={{ p: 4 }}>
-              <Typography variant="body1" sx={{ mb: 4, fontSize: '1.1rem' }}>
+            <Paper elevation={0} sx={{ 
+              p: 4,
+              border: `3px solid #d4af37`,
+              borderRadius: 5,
+              boxShadow: '0 20px 60px rgba(212,175,55,0.25)',
+              background: 'linear-gradient(135deg, #fff 0%, #fafaf8 100%)',
+              position: 'relative',
+              overflow: 'hidden',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 6,
+                background: 'linear-gradient(90deg, #d4af37 0%, #e5c158 25%, #d4af37 50%, #e5c158 75%, #d4af37 100%)',
+                animation: 'shimmer 3s linear infinite',
+                backgroundSize: '200% 100%',
+                '@keyframes shimmer': {
+                  '0%': { backgroundPosition: '-200% 0' },
+                  '100%': { backgroundPosition: '200% 0' },
+                },
+              }
+            }}>
+              <Typography variant="body1" sx={{ mb: 4, mt: 2, fontSize: '1.05rem', color: '#555', lineHeight: 1.7 }}>
                 Watch videos of temple rituals, festivals, and special events. Experience the divine atmosphere from anywhere in the world.
               </Typography>
 
               <Grid container spacing={3}>
                 {videos.map((video, index) => (
-                  <Grid item xs={12} md={6} key={index}>
-                    <Card
-                      elevation={2}
+                  <Grid item xs={12} key={index}>
+                    <Box
                       sx={{
-                        cursor: 'pointer',
-                        '&:hover': { boxShadow: 6 },
+                        borderRadius: 4,
+                        overflow: 'hidden',
+                        border: '3px solid #d4af37',
+                        boxShadow: '0 12px 40px rgba(212,175,55,0.3)',
+                        transition: 'all 300ms ease',
+                        '&:hover': {
+                          boxShadow: '0 16px 56px rgba(212,175,55,0.4)',
+                          transform: 'translateY(-4px)',
+                        },
                       }}
                     >
                       <Box
+                        component="iframe"
+                        src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                        title={video.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
                         sx={{
-                          height: 200,
-                          bgcolor: '#333',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          position: 'relative',
+                          width: '100%',
+                          height: 400,
+                          border: 'none',
+                          display: 'block',
                         }}
-                      >
-                        <PlayCircleOutlineIcon
-                          sx={{
-                            fontSize: 80,
-                            color: '#fff',
-                            opacity: 0.8,
-                            '&:hover': { opacity: 1 },
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            position: 'absolute',
-                            bottom: 10,
-                            right: 10,
-                            bgcolor: 'rgba(0,0,0,0.8)',
-                            color: '#fff',
-                            px: 1,
-                            py: 0.5,
-                            borderRadius: 1,
-                            fontSize: '0.9rem',
-                          }}
-                        >
-                          {video.duration}
-                        </Box>
-                      </Box>
-                      <CardContent>
-                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                      />
+                      <Box sx={{ 
+                        p: 2, 
+                        background: 'linear-gradient(135deg, rgba(212,175,55,0.1), rgba(229,193,88,0.1))',
+                        borderTop: '2px solid #d4af37',
+                      }}>
+                        <Typography variant="h6" sx={{ fontWeight: 700, color: '#d4af37' }}>
                           {video.title}
                         </Typography>
-                        <Typography variant="body2" sx={{ color: '#666' }}>
-                          {video.views} views
-                        </Typography>
-                      </CardContent>
-                    </Card>
+                      </Box>
+                    </Box>
                   </Grid>
                 ))}
               </Grid>
 
-              <Box sx={{ mt: 4, p: 3, bgcolor: '#ffebee', borderRadius: 2, textAlign: 'center' }}>
-                <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+              <Box sx={{ 
+                mt: 4, 
+                p: 3, 
+                background: 'linear-gradient(135deg, rgba(212,175,55,0.15), rgba(229,193,88,0.15))', 
+                borderRadius: 4, 
+                textAlign: 'center',
+                border: '2px solid rgba(212,175,55,0.3)',
+              }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: '#d4af37', mb: 1 }}>
                   Subscribe to Our YouTube Channel
                 </Typography>
-                <Typography>Stay updated with live streams of daily poojas and festival celebrations</Typography>
+                <Typography sx={{ color: '#555' }}>Stay updated with live streams of daily poojas and festival celebrations</Typography>
               </Box>
             </Paper>
           </Grid>

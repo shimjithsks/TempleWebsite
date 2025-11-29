@@ -10,8 +10,26 @@ export default function TempleHistory() {
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8} lg={9}>
-            <Paper elevation={3} sx={{ p: 4 }}>
-              <Typography variant="h5" sx={{ mb: 3, color: '#E63946', fontWeight: 600 }}>
+            <Paper elevation={0} sx={{ 
+              p: 4,
+              border: `2px solid #d4af37`,
+              borderRadius: 4,
+              boxShadow: '0 10px 30px rgba(212,175,55,0.15)',
+              background: 'linear-gradient(135deg, #fff 0%, #fafaf8 100%)',
+              position: 'relative',
+              overflow: 'visible',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: -2,
+                left: 20,
+                right: 20,
+                height: 4,
+                background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
+                borderRadius: '2px 2px 0 0',
+              }
+            }}>
+              <Typography variant="h4" sx={{ mb: 3, color: '#d4af37', fontWeight: 800 }}>
                 A Legacy of 150 Years
               </Typography>
 
@@ -25,8 +43,24 @@ export default function TempleHistory() {
 
               <Grid container spacing={3} sx={{ my: 4 }}>
                 <Grid item xs={12} md={6}>
-                  <Box sx={{ p: 3, bgcolor: '#ffebee', borderRadius: 2 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#E63946' }}>
+                  <Box sx={{ 
+                    p: 3, 
+                    background: 'linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.15))', 
+                    borderRadius: 3,
+                    border: '2px solid rgba(212,175,55,0.3)',
+                    boxShadow: '0 6px 16px rgba(212,175,55,0.12)',
+                    position: 'relative',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 4,
+                      background: 'linear-gradient(90deg, #d4af37, #e5c158)',
+                    }
+                  }}>
+                    <Typography variant="h6" sx={{ fontWeight: 800, mb: 2, color: '#d4af37' }}>
                       1874 - Foundation
                     </Typography>
                     <Typography>

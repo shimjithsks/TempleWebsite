@@ -23,8 +23,27 @@ export default function Donate() {
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8} lg={9}>
-            <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
-              <Typography variant="h4" sx={{ fontWeight: 700 }} gutterBottom>
+            <Paper elevation={0} sx={{ 
+              p: 4, 
+              mb: 4,
+              border: `2px solid #d4af37`,
+              borderRadius: 4,
+              boxShadow: '0 10px 30px rgba(212,175,55,0.15)',
+              background: 'linear-gradient(135deg, #fff 0%, #fafaf8 100%)',
+              position: 'relative',
+              overflow: 'visible',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: -2,
+                left: 20,
+                right: 20,
+                height: 4,
+                background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
+                borderRadius: '2px 2px 0 0',
+              }
+            }}>
+              <Typography variant="h4" sx={{ fontWeight: 800, color: '#d4af37' }} gutterBottom>
                 Support the Temple — Overview
               </Typography>
 
@@ -36,12 +55,45 @@ export default function Donate() {
 
               <Grid container spacing={2} sx={{ mb: 3 }}>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Paper sx={{ p: 2 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 700 }}>Annadanam</Typography>
-                    <Typography variant="body2" sx={{ color: '#444', mb: 1 }}>
+                  <Paper elevation={0} sx={{ 
+                    p: 2.5,
+                    border: '2px solid rgba(212,175,55,0.3)',
+                    borderRadius: 3,
+                    boxShadow: '0 6px 16px rgba(212,175,55,0.12)',
+                    background: 'linear-gradient(135deg, #fff, #fafaf8)',
+                    transition: 'all 280ms ease',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 12px 32px rgba(212,175,55,0.25)',
+                      borderColor: '#d4af37',
+                    },
+                    position: 'relative',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 3,
+                      background: 'linear-gradient(90deg, #d4af37, #e5c158)',
+                    }
+                  }}>
+                    <Typography variant="h6" sx={{ fontWeight: 800, color: '#d4af37' }}>Annadanam</Typography>
+                    <Typography variant="body2" sx={{ color: '#555', mb: 1.5 }}>
                       Feed devotees and the community—support daily meals and festival prasadam distribution.
                     </Typography>
-                    <Button component={RouterLink} to="/donate/annadanam" size="small" sx={{ color: '#E63946', fontWeight: 700 }}>
+                    <Button 
+                      component={RouterLink} 
+                      to="/donate/annadanam" 
+                      size="small" 
+                      sx={{ 
+                        color: '#d4af37', 
+                        fontWeight: 800,
+                        '&:hover': {
+                          bgcolor: 'rgba(212,175,55,0.1)',
+                        }
+                      }}
+                    >
                       Learn More →
                     </Button>
                   </Paper>
@@ -97,12 +149,44 @@ export default function Donate() {
 
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
-                  <Paper sx={{ p: 2 }}>
-                    <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>One-time Online Donation</Typography>
-                    <Typography variant="body2" sx={{ color: '#444', mb: 1 }}>
+                  <Paper elevation={0} sx={{ 
+                    p: 3,
+                    border: '2px solid rgba(212,175,55,0.3)',
+                    borderRadius: 3,
+                    boxShadow: '0 6px 16px rgba(212,175,55,0.12)',
+                    background: 'linear-gradient(135deg, #fff, #fafaf8)',
+                    position: 'relative',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 3,
+                      background: 'linear-gradient(90deg, #d4af37, #e5c158)',
+                    }
+                  }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#d4af37' }}>One-time Online Donation</Typography>
+                    <Typography variant="body2" sx={{ color: '#555', mb: 2 }}>
                       Use our secure online gateway to make a single donation. Please include your name and purpose in the form.
                     </Typography>
-                    <Button component={RouterLink} to="/donate/online" variant="contained" sx={{ bgcolor: '#E63946' }}>
+                    <Button 
+                      component={RouterLink} 
+                      to="/donate/online" 
+                      variant="contained" 
+                      sx={{ 
+                        bgcolor: '#d4af37',
+                        color: '#000',
+                        fontWeight: 800,
+                        px: 3,
+                        py: 1,
+                        boxShadow: '0 4px 12px rgba(212,175,55,0.4)',
+                        '&:hover': {
+                          bgcolor: '#e5c158',
+                          boxShadow: '0 6px 20px rgba(212,175,55,0.5)',
+                        }
+                      }}
+                    >
                       Donate Online
                     </Button>
                   </Paper>

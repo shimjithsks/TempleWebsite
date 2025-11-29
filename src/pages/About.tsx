@@ -26,8 +26,26 @@ export default function About() {
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8} lg={9}>
-            <Paper elevation={3} sx={{ p: { xs: 3, md: 4 } }}>
-              <Typography variant="h5" sx={{ fontWeight: 600, color: colors.primary, mb: 2 }}>
+            <Paper elevation={0} sx={{ 
+              p: { xs: 3, md: 4 },
+              border: `2px solid #d4af37`,
+              borderRadius: 4,
+              boxShadow: '0 10px 30px rgba(212,175,55,0.15)',
+              background: 'linear-gradient(135deg, #fff 0%, #fafaf8 100%)',
+              position: 'relative',
+              overflow: 'visible',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: -2,
+                left: 20,
+                right: 20,
+                height: 4,
+                background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
+                borderRadius: '2px 2px 0 0',
+              }
+            }}>
+              <Typography variant="h4" sx={{ fontWeight: 800, color: '#d4af37', mb: 2 }}>
                 Muchukunnu Sri Kotta-Kovilakam Kshethram
               </Typography>
               <Typography variant="body1" sx={{ mb: 3, lineHeight: 1.8 }}>
@@ -37,11 +55,35 @@ export default function About() {
               <Grid container spacing={3}>
                 {highlights.map((item) => (
                   <Grid item xs={12} md={4} key={item.title}>
-                    <Box sx={{ p: 3, bgcolor: colors.lightPink, borderRadius: 2, height: '100%' }}>
-                      <Typography variant="h6" sx={{ fontWeight: 700, color: colors.primary, mb: 1 }}>
+                    <Box sx={{ 
+                      p: 3, 
+                      background: 'linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.15))', 
+                      borderRadius: 3,
+                      height: '100%',
+                      border: '2px solid rgba(212,175,55,0.3)',
+                      boxShadow: '0 6px 16px rgba(212,175,55,0.12)',
+                      transition: 'all 280ms ease',
+                      '&:hover': {
+                        transform: 'translateY(-4px)',
+                        boxShadow: '0 12px 32px rgba(212,175,55,0.25)',
+                        borderColor: '#d4af37',
+                      },
+                      position: 'relative',
+                      overflow: 'hidden',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: 4,
+                        background: 'linear-gradient(90deg, #d4af37, #e5c158)',
+                      }
+                    }}>
+                      <Typography variant="h6" sx={{ fontWeight: 800, color: '#d4af37', mb: 1 }}>
                         {item.title}
                       </Typography>
-                      <Typography variant="body2" sx={{ color: colors.textSubtle }}>
+                      <Typography variant="body2" sx={{ color: colors.textSecondary, lineHeight: 1.7 }}>
                         {item.detail}
                       </Typography>
                     </Box>
@@ -49,9 +91,25 @@ export default function About() {
                 ))}
               </Grid>
 
-              <Box sx={{ mt: 4, display: 'grid', gap: 2 }}>
-                <Paper sx={{ p: 3, bgcolor: colors.lightBlue, borderRadius: 2 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+              <Box sx={{ mt: 4, display: 'grid', gap: 3 }}>
+                <Paper elevation={0} sx={{ 
+                  p: 3, 
+                  background: 'linear-gradient(135deg, rgba(212,175,55,0.06), rgba(212,175,55,0.12))', 
+                  borderRadius: 3,
+                  border: '2px solid rgba(212,175,55,0.25)',
+                  boxShadow: '0 6px 16px rgba(212,175,55,0.1)',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: 3,
+                    background: 'linear-gradient(90deg, #d4af37, #e5c158)',
+                  }
+                }}>
+                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#d4af37', mb: 1 }}>
                     Visitor Snapshot
                   </Typography>
                   <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 0.5 }}>
@@ -65,12 +123,39 @@ export default function About() {
                   </Typography>
                 </Paper>
 
-                <Paper sx={{ p: 3, borderRadius: 2 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Key Deities</Typography>
+                <Paper elevation={0} sx={{ 
+                  p: 3, 
+                  borderRadius: 3,
+                  border: '2px solid rgba(212,175,55,0.3)',
+                  boxShadow: '0 6px 16px rgba(212,175,55,0.12)',
+                  background: 'linear-gradient(135deg, #fff, #fafaf8)',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: 3,
+                    background: 'linear-gradient(90deg, #d4af37, #e5c158)',
+                  }
+                }}>
+                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#d4af37', mb: 1 }}>Key Deities</Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} md={4}>
-                      <Box sx={{ p: 2 }}>
-                        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>Bhagavathy</Typography>
+                      <Box sx={{ 
+                        p: 2.5,
+                        borderRadius: 2,
+                        background: 'rgba(212,175,55,0.05)',
+                        border: '1.5px solid rgba(212,175,55,0.2)',
+                        transition: 'all 250ms ease',
+                        '&:hover': {
+                          background: 'rgba(212,175,55,0.1)',
+                          borderColor: '#d4af37',
+                          transform: 'translateY(-2px)',
+                        }
+                      }}>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#d4af37' }}>Bhagavathy</Typography>
                         <Typography variant="body2" sx={{ color: colors.textSubtle }}>Principal goddess worshipped in the temple with special weekly sevas.</Typography>
                       </Box>
                     </Grid>
@@ -89,8 +174,24 @@ export default function About() {
                   </Grid>
                 </Paper>
 
-                <Paper sx={{ p: 3, borderRadius: 2 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Festivals & Calendar</Typography>
+                <Paper elevation={0} sx={{ 
+                  p: 3, 
+                  borderRadius: 3,
+                  border: '2px solid rgba(212,175,55,0.3)',
+                  boxShadow: '0 6px 16px rgba(212,175,55,0.12)',
+                  background: 'linear-gradient(135deg, #fff, #fafaf8)',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: 3,
+                    background: 'linear-gradient(90deg, #d4af37, #e5c158)',
+                  }
+                }}>
+                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#d4af37', mb: 1 }}>Festivals & Calendar</Typography>
                   <Typography variant="body2" sx={{ color: colors.textSubtle, mb: 1 }}>
                     Major annual festivals include the Annual Utsavam, Navaratri celebrations, and Shivaratri observances.
                   </Typography>

@@ -49,7 +49,26 @@ export default function Deities() {
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8} lg={9}>
-            <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
+            <Paper elevation={0} sx={{ 
+              p: 4, 
+              mb: 4,
+              border: `2px solid #d4af37`,
+              borderRadius: 4,
+              boxShadow: '0 10px 30px rgba(212,175,55,0.15)',
+              background: 'linear-gradient(135deg, #fff 0%, #fafaf8 100%)',
+              position: 'relative',
+              overflow: 'visible',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: -2,
+                left: 20,
+                right: 20,
+                height: 4,
+                background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
+                borderRadius: '2px 2px 0 0',
+              }
+            }}>
               <Typography variant="body1" sx={{ mb: 4, fontSize: '1.1rem' }}>
                 Our temple is blessed with the divine presence of several deities, each with unique significance and the power to bestow specific blessings upon devotees.
               </Typography>
@@ -58,25 +77,48 @@ export default function Deities() {
                 {deities.map((deity, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <Card
-                      elevation={2}
+                      elevation={0}
                       sx={{
                         height: '100%',
-                        borderTop: '4px solid #E63946',
-                        '&:hover': { boxShadow: 6 },
+                        border: '2px solid rgba(212,175,55,0.3)',
+                        borderRadius: 3,
+                        boxShadow: '0 6px 16px rgba(212,175,55,0.12)',
+                        background: 'linear-gradient(135deg, #fff, #fafaf8)',
+                        transition: 'all 280ms ease',
+                        '&:hover': { 
+                          boxShadow: '0 12px 32px rgba(212,175,55,0.25)',
+                          transform: 'translateY(-4px)',
+                          borderColor: '#d4af37',
+                        },
+                        position: 'relative',
+                        '&::before': {
+                          content: '""',
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          height: 4,
+                          background: 'linear-gradient(90deg, #d4af37, #e5c158)',
+                        }
                       }}
                     >
                       <CardContent>
-                        <Typography variant="h5" sx={{ fontWeight: 700, color: '#E63946', mb: 0.5 }}>
+                        <Typography variant="h5" sx={{ fontWeight: 800, color: '#d4af37', mb: 0.5 }}>
                           {deity.name}
                         </Typography>
-                        <Typography variant="subtitle1" sx={{ color: '#E63946', fontWeight: 600, mb: 2 }}>
+                        <Typography variant="subtitle1" sx={{ color: '#d4af37', fontWeight: 700, mb: 2 }}>
                           {deity.title}
                         </Typography>
                         <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.7 }}>
                           {deity.description}
                         </Typography>
-                        <Box sx={{ p: 2, bgcolor: '#ffebee', borderRadius: 1 }}>
-                          <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
+                        <Box sx={{ 
+                          p: 2, 
+                          background: 'linear-gradient(135deg, rgba(212,175,55,0.06), rgba(212,175,55,0.12))', 
+                          borderRadius: 2,
+                          border: '1.5px solid rgba(212,175,55,0.25)'
+                        }}>
+                          <Typography variant="body2" sx={{ fontWeight: 700, mb: 0.5, color: '#d4af37' }}>
                             Significance:
                           </Typography>
                           <Typography variant="body2">{deity.significance}</Typography>

@@ -12,7 +12,9 @@ import { useCart } from '../context/CartContext';
 interface PoojaBookingModalProps {
   open: boolean;
   handleClose: () => void;
+  handleCancel?: () => void;
   pooja: Pooja | null;
+  selectedPoojas?: Pooja[]; // Support multiple poojas
 }
 
 const style = {
@@ -28,7 +30,7 @@ const style = {
   color: 'white',
 };
 
-export default function PoojaBookingModal({ open, handleClose, pooja }: PoojaBookingModalProps) {
+export default function PoojaBookingModal({ open, handleClose, handleCancel, pooja, selectedPoojas = [] }: PoojaBookingModalProps) {
   const { addToCart } = useCart();
   const [name, setName] = useState('');
   const [star, setStar] = useState('ASWATHY');
@@ -36,21 +38,27 @@ export default function PoojaBookingModal({ open, handleClose, pooja }: PoojaBoo
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState('');
 
+  // Use selectedPoojas if available, otherwise fall back to single pooja
+  const poojasToBook = selectedPoojas.length > 0 ? selectedPoojas : (pooja ? [pooja] : []);
+
   const handleAddToCart = () => {
     if (!name.trim()) {
       setError('Please enter a name.');
       return;
     }
-    if (!pooja) return;
+    if (poojasToBook.length === 0) return;
 
-    addToCart({
-      id: pooja.id,
-      name: pooja.name,
-      price: pooja.price,
-      quantity,
-      bookingName: name,
-      bookingStar: star,
-      bookingDate: date,
+    // Add all selected poojas to cart with the same details
+    poojasToBook.forEach(p => {
+      addToCart({
+        id: p.id,
+        name: p.name,
+        price: p.price,
+        quantity,
+        bookingName: name,
+        bookingStar: star,
+        bookingDate: date,
+      });
     });
     
     // Reset form and close modal
@@ -63,16 +71,20 @@ export default function PoojaBookingModal({ open, handleClose, pooja }: PoojaBoo
   };
 
   const onModalClose = () => {
-    // Reset state on close
+    // Reset state on cancel (don't clear selections)
     setName('');
     setStar('ASWATHY');
     setDate(new Date());
     setQuantity(1);
     setError('');
-    handleClose();
+    if (handleCancel) {
+      handleCancel();
+    } else {
+      handleClose();
+    }
   }
 
-  if (!pooja) return null;
+  if (poojasToBook.length === 0) return null;
 
   return (
     <Modal
@@ -96,6 +108,11 @@ export default function PoojaBookingModal({ open, handleClose, pooja }: PoojaBoo
         flexDirection: 'column',
         alignItems: 'stretch',
       }}>
+        {poojasToBook.length > 1 && (
+          <Typography variant="h6" sx={{ mb: 2, textAlign: 'center', fontWeight: 700 }}>
+            Booking {poojasToBook.length} Poojas
+          </Typography>
+        )}
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
           <Box sx={{
             height: 60,

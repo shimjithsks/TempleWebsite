@@ -16,7 +16,26 @@ export default function OnlineDonation() {
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8} lg={9}>
-            <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
+            <Paper elevation={0} sx={{ 
+              p: 4, 
+              mb: 4,
+              border: `2px solid #d4af37`,
+              borderRadius: 4,
+              boxShadow: '0 10px 30px rgba(212,175,55,0.15)',
+              background: 'linear-gradient(135deg, #fff 0%, #fafaf8 100%)',
+              position: 'relative',
+              overflow: 'visible',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: -2,
+                left: 20,
+                right: 20,
+                height: 4,
+                background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
+                borderRadius: '2px 2px 0 0',
+              }
+            }}>
               <Typography variant="body1" sx={{ mb: 4, fontSize: '1.1rem', textAlign: 'center' }}>
                 Your generous contribution helps us maintain the temple and serve the community better.
               </Typography>
@@ -32,10 +51,18 @@ export default function OnlineDonation() {
                         onClick={() => setAmount(amt)}
                         sx={{
                           py: 1.5,
-                          bgcolor: amount === amt ? '#E63946' : 'transparent',
-                          borderColor: '#E63946',
-                          color: amount === amt ? '#fff' : '#E63946',
-                          '&:hover': { bgcolor: '#E63946', color: '#fff' },
+                          bgcolor: amount === amt ? '#d4af37' : 'transparent',
+                          borderColor: '#d4af37',
+                          borderWidth: 2,
+                          color: amount === amt ? '#000' : '#d4af37',
+                          fontWeight: 800,
+                          boxShadow: amount === amt ? '0 4px 12px rgba(212,175,55,0.4)' : 'none',
+                          '&:hover': { 
+                            bgcolor: '#d4af37', 
+                            color: '#000',
+                            borderWidth: 2,
+                            boxShadow: '0 6px 16px rgba(212,175,55,0.5)',
+                          },
                         }}
                       >
                         {amt}

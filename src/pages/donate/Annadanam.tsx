@@ -10,8 +10,27 @@ export default function Annadanam() {
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8} lg={9}>
-            <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
-              <Typography variant="h5" sx={{ mb: 3, color: '#E63946', fontWeight: 600 }}>
+            <Paper elevation={0} sx={{ 
+              p: 4, 
+              mb: 4,
+              border: `2px solid #d4af37`,
+              borderRadius: 4,
+              boxShadow: '0 10px 30px rgba(212,175,55,0.15)',
+              background: 'linear-gradient(135deg, #fff 0%, #fafaf8 100%)',
+              position: 'relative',
+              overflow: 'visible',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: -2,
+                left: 20,
+                right: 20,
+                height: 4,
+                background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
+                borderRadius: '2px 2px 0 0',
+              }
+            }}>
+              <Typography variant="h4" sx={{ mb: 3, color: '#d4af37', fontWeight: 800 }}>
                 "Annadanam Maha Danam" - The Greatest of All Donations
               </Typography>
 
@@ -21,12 +40,30 @@ export default function Annadanam() {
 
               <Grid container spacing={3} sx={{ mb: 4 }}>
                 <Grid item xs={12} md={4}>
-                  <Card elevation={2} sx={{ height: '100%', textAlign: 'center', p: 2 }}>
+                  <Card elevation={0} sx={{ 
+                    height: '100%', 
+                    textAlign: 'center', 
+                    p: 2,
+                    border: '2px solid rgba(212,175,55,0.3)',
+                    borderRadius: 3,
+                    boxShadow: '0 6px 16px rgba(212,175,55,0.12)',
+                    background: 'linear-gradient(135deg, rgba(212,175,55,0.05), rgba(212,175,55,0.12))',
+                    position: 'relative',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 3,
+                      background: 'linear-gradient(90deg, #d4af37, #e5c158)',
+                    }
+                  }}>
                     <CardContent>
-                      <Typography variant="h4" sx={{ color: '#E63946', fontWeight: 700, mb: 2 }}>
+                      <Typography variant="h4" sx={{ color: '#d4af37', fontWeight: 800, mb: 2 }}>
                         500+
                       </Typography>
-                      <Typography variant="h6" sx={{ fontWeight: 600 }}>Devotees Fed Daily</Typography>
+                      <Typography variant="h6" sx={{ fontWeight: 700 }}>Devotees Fed Daily</Typography>
                     </CardContent>
                   </Card>
                 </Grid>
@@ -58,10 +95,21 @@ export default function Annadanam() {
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Donation Options</Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={6}>
-                    <Box sx={{ p: 3, bgcolor: '#ffebee', borderRadius: 2, border: '2px solid #E63946' }}>
-                      <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>One Day Annadanam</Typography>
-                      <Typography sx={{ mb: 2 }}>Sponsor meals for all devotees for one day</Typography>
-                      <Typography variant="h5" sx={{ color: '#E63946', fontWeight: 700 }}>₹25,000</Typography>
+                    <Box sx={{ 
+                      p: 3, 
+                      background: 'linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.15))', 
+                      borderRadius: 3, 
+                      border: '2px solid #d4af37',
+                      boxShadow: '0 6px 16px rgba(212,175,55,0.15)',
+                      transition: 'all 280ms ease',
+                      '&:hover': {
+                        transform: 'translateY(-4px)',
+                        boxShadow: '0 12px 32px rgba(212,175,55,0.3)',
+                      }
+                    }}>
+                      <Typography variant="h6" sx={{ fontWeight: 800, mb: 1, color: '#d4af37' }}>One Day Annadanam</Typography>
+                      <Typography sx={{ mb: 2, color: '#555' }}>Sponsor meals for all devotees for one day</Typography>
+                      <Typography variant="h5" sx={{ color: '#d4af37', fontWeight: 800 }}>₹25,000</Typography>
                     </Box>
                   </Grid>
 

@@ -30,8 +30,27 @@ export default function Nearby() {
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8} lg={9}>
-            <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
-              <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
+            <Paper elevation={0} sx={{ 
+              p: 4, 
+              mb: 4,
+              border: `2px solid #d4af37`,
+              borderRadius: 4,
+              boxShadow: '0 10px 30px rgba(212,175,55,0.15)',
+              background: 'linear-gradient(135deg, #fff 0%, #fafaf8 100%)',
+              position: 'relative',
+              overflow: 'visible',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: -2,
+                left: 20,
+                right: 20,
+                height: 4,
+                background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
+                borderRadius: '2px 2px 0 0',
+              }
+            }}>
+              <Typography variant="h4" gutterBottom sx={{ fontWeight: 800, color: '#d4af37' }}>
                 Explore Nearby — Overview
               </Typography>
 
@@ -43,13 +62,46 @@ export default function Nearby() {
 
               <Grid container spacing={2} sx={{ mb: 3 }}>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Card sx={{ height: '100%' }}>
+                  <Card elevation={0} sx={{ 
+                    height: '100%',
+                    border: '2px solid rgba(212,175,55,0.3)',
+                    borderRadius: 3,
+                    boxShadow: '0 6px 16px rgba(212,175,55,0.12)',
+                    background: 'linear-gradient(135deg, #fff, #fafaf8)',
+                    transition: 'all 280ms ease',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 12px 32px rgba(212,175,55,0.25)',
+                      borderColor: '#d4af37',
+                    },
+                    position: 'relative',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 3,
+                      background: 'linear-gradient(90deg, #d4af37, #e5c158)',
+                    }
+                  }}>
                     <CardContent>
-                      <Typography variant="h6" sx={{ fontWeight: 700 }}>Tourist Places</Typography>
-                      <Typography variant="body2" sx={{ color: colors.textSubtle, mb: 1 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 800, color: '#d4af37' }}>Tourist Places</Typography>
+                      <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 1.5 }}>
                         Handpicked sightseeing spots and cultural points of interest within easy reach of the temple.
                       </Typography>
-                      <Button component={RouterLink} to="/nearby/tourist-places" size="small" sx={{ color: colors.primary, fontWeight: 700 }}>
+                      <Button 
+                        component={RouterLink} 
+                        to="/nearby/tourist-places" 
+                        size="small" 
+                        sx={{ 
+                          color: '#d4af37', 
+                          fontWeight: 800,
+                          '&:hover': {
+                            bgcolor: 'rgba(212,175,55,0.1)',
+                          }
+                        }}
+                      >
                         View List →
                       </Button>
                     </CardContent>

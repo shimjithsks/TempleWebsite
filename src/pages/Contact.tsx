@@ -37,8 +37,26 @@ export default function Contact() {
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8} lg={9}>
-            <Paper elevation={3} sx={{ p: { xs: 3, md: 4 } }}>
-              <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
+            <Paper elevation={0} sx={{ 
+              p: { xs: 3, md: 4 },
+              border: `2px solid #d4af37`,
+              borderRadius: 4,
+              boxShadow: '0 10px 30px rgba(212,175,55,0.15)',
+              background: 'linear-gradient(135deg, #fff 0%, #fafaf8 100%)',
+              position: 'relative',
+              overflow: 'visible',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: -2,
+                left: 20,
+                right: 20,
+                height: 4,
+                background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
+                borderRadius: '2px 2px 0 0',
+              }
+            }}>
+              <Typography variant="h4" gutterBottom sx={{ fontWeight: 800, color: '#d4af37' }}>
                 Contact / Visit Us
               </Typography>
 
@@ -55,7 +73,22 @@ export default function Contact() {
                     <TextField label="Subject" name="subject" value={form.subject} onChange={handleChange} />
                     <TextField label="Message" name="message" value={form.message} onChange={handleChange} multiline rows={4} required />
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                      <Button type="submit" variant="contained" sx={{ bgcolor: '#E63946' }}>
+                      <Button 
+                        type="submit" 
+                        variant="contained" 
+                        sx={{ 
+                          bgcolor: '#d4af37',
+                          color: '#000',
+                          fontWeight: 800,
+                          px: 3,
+                          py: 1,
+                          boxShadow: '0 4px 12px rgba(212,175,55,0.4)',
+                          '&:hover': {
+                            bgcolor: '#e5c158',
+                            boxShadow: '0 6px 20px rgba(212,175,55,0.5)',
+                          }
+                        }}
+                      >
                         Send Message
                       </Button>
                       <Button component={Link} href="tel:+91-XXXXXXXXXX" variant="outlined">

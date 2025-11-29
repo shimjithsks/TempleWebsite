@@ -16,6 +16,8 @@ import {
   Divider,
   Paper,
   Chip,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -28,96 +30,103 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
 import CloseIcon from '@mui/icons-material/Close';
+import LanguageIcon from '@mui/icons-material/Language';
+import CheckIcon from '@mui/icons-material/Check';
+import { useLanguage } from '../context/LanguageContext';
 
 const GOLD = '#d4af37';
 const DARK = 'rgba(10,10,12,0.85)';
 
-const MENU: Array<{
-  label: string;
-  to?: string;
-  sub?: Array<{ label: string; to: string }>; 
-}> = [
-  { label: 'Home', to: '/' },
+// Menu structure with translation keys
+const getMenuStructure = (t: (key: string) => string) => [
+  { labelKey: 'menu.home', label: t('menu.home'), to: '/' },
   {
-    label: 'Poojas',
+    labelKey: 'menu.poojas',
+    label: t('menu.poojas'),
     to: '/poojas',
     sub: [
-      { label: 'Daily Poojas', to: '/poojas/daily' },
-      { label: 'Festival Poojas', to: '/poojas/festival' },
-      { label: 'Special Poojas', to: '/poojas/special' },
-      { label: 'Vazhipad List', to: '/poojas/vazhipad' },
-      { label: 'Booking / Offerings', to: '/poojas/booking' },
+      { labelKey: 'submenu.dailyPoojas', label: t('submenu.dailyPoojas'), to: '/poojas/daily' },
+      { labelKey: 'submenu.festivalPoojas', label: t('submenu.festivalPoojas'), to: '/poojas/festival' },
+      { labelKey: 'submenu.specialPoojas', label: t('submenu.specialPoojas'), to: '/poojas/special' },
+      { labelKey: 'submenu.vazhipadList', label: t('submenu.vazhipadList'), to: '/poojas/vazhipad' },
+      { labelKey: 'submenu.booking', label: t('submenu.booking'), to: '/poojas/booking' },
     ],
   },
   {
-    label: 'Donate',
+    labelKey: 'menu.donate',
+    label: t('menu.donate'),
     to: '/donate',
     sub: [
-      { label: 'Donate Overview', to: '/donate' },
-      { label: 'Online Donation', to: '/donate/online' },
-      { label: 'Annadanam', to: '/donate/annadanam' },
-      { label: 'Temple Renovation Fund', to: '/donate/renovation' },
-      { label: 'Festival Contribution', to: '/donate/festival' },
+      { labelKey: 'submenu.donateOverview', label: t('submenu.donateOverview'), to: '/donate' },
+      { labelKey: 'submenu.onlineDonation', label: t('submenu.onlineDonation'), to: '/donate/online' },
+      { labelKey: 'submenu.annadanam', label: t('submenu.annadanam'), to: '/donate/annadanam' },
+      { labelKey: 'submenu.renovationFund', label: t('submenu.renovationFund'), to: '/donate/renovation' },
+      { labelKey: 'submenu.festivalContribution', label: t('submenu.festivalContribution'), to: '/donate/festival' },
     ],
   },
   {
-    label: 'Gallery',
+    labelKey: 'menu.gallery',
+    label: t('menu.gallery'),
     to: '/gallery',
     sub: [
-      { label: 'Gallery Overview', to: '/gallery' },
-      { label: 'Photos', to: '/gallery/photos' },
-      { label: 'Videos', to: '/gallery/videos' },
-      { label: 'Events', to: '/gallery/events' },
-      { label: 'Temple Premises', to: '/gallery/premises' },
+      { labelKey: 'submenu.galleryOverview', label: t('submenu.galleryOverview'), to: '/gallery' },
+      { labelKey: 'submenu.photos', label: t('submenu.photos'), to: '/gallery/photos' },
+      { labelKey: 'submenu.videos', label: t('submenu.videos'), to: '/gallery/videos' },
+      { labelKey: 'submenu.events', label: t('submenu.events'), to: '/gallery/events' },
+      { labelKey: 'submenu.templePremises', label: t('submenu.templePremises'), to: '/gallery/premises' },
     ],
   },
   {
-    label: 'News / Event',
+    labelKey: 'menu.news',
+    label: t('menu.news'),
     to: '/news',
     sub: [
-      { label: 'News Overview', to: '/news' },
-      { label: 'Temple News', to: '/news/news' },
-      { label: 'Announcements', to: '/news/announcements' },
-      { label: 'Upcoming Events', to: '/news/upcoming' },
-      { label: 'Past Events', to: '/news/past' },
-      { label: 'Notices / Circulars', to: '/news/notices' },
+      { labelKey: 'submenu.newsOverview', label: t('submenu.newsOverview'), to: '/news' },
+      { labelKey: 'submenu.templeNews', label: t('submenu.templeNews'), to: '/news/news' },
+      { labelKey: 'submenu.announcements', label: t('submenu.announcements'), to: '/news/announcements' },
+      { labelKey: 'submenu.upcomingEvents', label: t('submenu.upcomingEvents'), to: '/news/upcoming' },
+      { labelKey: 'submenu.pastEvents', label: t('submenu.pastEvents'), to: '/news/past' },
+      { labelKey: 'submenu.notices', label: t('submenu.notices'), to: '/news/notices' },
     ],
   },
   {
-    label: 'About',
+    labelKey: 'menu.about',
+    label: t('menu.about'),
     to: '/about',
     sub: [
-      { label: 'About Overview', to: '/about' },
-      { label: 'Temple History', to: '/about/history' },
-      { label: 'Deities', to: '/about/deities' },
-      { label: 'Festivals', to: '/about/festivals' },
-      { label: 'Administration', to: '/about/administration' },
-      { label: 'Temple Rules & Timings', to: '/about/rules' },
+      { labelKey: 'submenu.aboutOverview', label: t('submenu.aboutOverview'), to: '/about' },
+      { labelKey: 'submenu.templeHistory', label: t('submenu.templeHistory'), to: '/about/history' },
+      { labelKey: 'submenu.deities', label: t('submenu.deities'), to: '/about/deities' },
+      { labelKey: 'submenu.festivals', label: t('submenu.festivals'), to: '/about/festivals' },
+      { labelKey: 'submenu.administration', label: t('submenu.administration'), to: '/about/administration' },
+      { labelKey: 'submenu.rulesTimings', label: t('submenu.rulesTimings'), to: '/about/rules' },
     ],
   },
   {
-    label: 'Explore Nearby',
+    labelKey: 'menu.nearby',
+    label: t('menu.nearby'),
     to: '/nearby',
     sub: [
-      { label: 'Nearby Overview', to: '/nearby' },
-      { label: 'Tourist Places', to: '/nearby/tourist-places' },
-      { label: 'Beaches', to: '/nearby/beaches' },
-      { label: 'Boating', to: '/nearby/boating' },
-      { label: 'Viewpoints', to: '/nearby/viewpoints' },
-      { label: 'Heritage Sites', to: '/nearby/heritage' },
-      { label: 'Temples Nearby', to: '/nearby/temples' },
-      { label: 'Activities', to: '/nearby/activities' },
+      { labelKey: 'submenu.nearbyOverview', label: t('submenu.nearbyOverview'), to: '/nearby' },
+      { labelKey: 'submenu.touristPlaces', label: t('submenu.touristPlaces'), to: '/nearby/tourist-places' },
+      { labelKey: 'submenu.beaches', label: t('submenu.beaches'), to: '/nearby/beaches' },
+      { labelKey: 'submenu.boating', label: t('submenu.boating'), to: '/nearby/boating' },
+      { labelKey: 'submenu.viewpoints', label: t('submenu.viewpoints'), to: '/nearby/viewpoints' },
+      { labelKey: 'submenu.heritageSites', label: t('submenu.heritageSites'), to: '/nearby/heritage' },
+      { labelKey: 'submenu.templesNearby', label: t('submenu.templesNearby'), to: '/nearby/temples' },
+      { labelKey: 'submenu.activities', label: t('submenu.activities'), to: '/nearby/activities' },
     ],
   },
   {
-    label: 'Contact',
+    labelKey: 'menu.contact',
+    label: t('menu.contact'),
     to: '/contact',
     sub: [
-      { label: 'Contact Overview', to: '/contact' },
-      { label: 'Contact Info', to: '/contact/info' },
-      { label: 'Map / Directions', to: '/contact/map' },
-      { label: 'Feedback Form', to: '/contact/feedback' },
-      { label: 'Temple Office Numbers', to: '/contact/office' },
+      { labelKey: 'submenu.contactOverview', label: t('submenu.contactOverview'), to: '/contact' },
+      { labelKey: 'submenu.contactInfo', label: t('submenu.contactInfo'), to: '/contact/info' },
+      { labelKey: 'submenu.mapDirections', label: t('submenu.mapDirections'), to: '/contact/map' },
+      { labelKey: 'submenu.feedbackForm', label: t('submenu.feedbackForm'), to: '/contact/feedback' },
+      { labelKey: 'submenu.templeOffice', label: t('submenu.templeOffice'), to: '/contact/office' },
     ],
   },
 ];
@@ -128,8 +137,12 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const [langAnchor, setLangAnchor] = useState<null | HTMLElement>(null);
+  const { language, setLanguage, t } = useLanguage();
   const closeTimerRef = React.useRef<number | null>(null);
   const location = useLocation();
+
+  const MENU = getMenuStructure(t);
 
   const isActive = (to?: string) => {
     if (!to) return false;
@@ -197,13 +210,13 @@ export default function Header() {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <AccessTimeIcon sx={{ fontSize: 17, color: GOLD, filter: 'drop-shadow(0 1px 4px rgba(212,175,55,0.8)) drop-shadow(0 0 8px rgba(212,175,55,0.4))' }} />
                 <Typography variant="caption" sx={{ letterSpacing: 0.4, fontWeight: 500, textShadow: '0 2px 6px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8)' }}>
-                  Temple Timings: 5:00 AM – 8:00 PM
+                  {t('header.timings')}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <EmailIcon sx={{ fontSize: 17, color: GOLD, filter: 'drop-shadow(0 1px 4px rgba(212,175,55,0.8)) drop-shadow(0 0 8px rgba(212,175,55,0.4))' }} />
                 <Typography variant="caption" sx={{ letterSpacing: 0.4, fontWeight: 500, textShadow: '0 2px 6px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8)' }}>
-                  info@srikottakovilakamtemple.com
+                  {t('header.email')}
                 </Typography>
               </Box>
             </Box>
@@ -247,6 +260,109 @@ export default function Header() {
             
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              {/* Language Dropdown */}
+              <Button
+                startIcon={<LanguageIcon sx={{ fontSize: 18 }} />}
+                endIcon={<ExpandMoreIcon sx={{ fontSize: 18 }} />}
+                onClick={(e) => setLangAnchor(e.currentTarget)}
+                sx={{
+                  color: '#fff',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: 0.5,
+                  px: 1.5,
+                  py: 0.6,
+                  minWidth: 0,
+                  borderRadius: 2,
+                  border: `1px solid ${GOLD}60`,
+                  bgcolor: 'rgba(212,175,55,0.12)',
+                  backdropFilter: 'blur(8px)',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.8)',
+                  transition: 'all 220ms ease',
+                  '&:hover': {
+                    bgcolor: 'rgba(212,175,55,0.22)',
+                    borderColor: GOLD,
+                    transform: 'translateY(-2px)',
+                    boxShadow: `0 4px 12px ${GOLD}40`,
+                  },
+                }}
+              >
+                {language === 'en' ? 'EN' : 'മലയാളം'}
+              </Button>
+              <Menu
+                anchorEl={langAnchor}
+                open={Boolean(langAnchor)}
+                onClose={() => setLangAnchor(null)}
+                PaperProps={{
+                  sx: {
+                    bgcolor: 'rgba(12,12,16,0.92)',
+                    backdropFilter: 'blur(20px)',
+                    border: `1.5px solid ${GOLD}55`,
+                    borderTop: `3px solid ${GOLD}`,
+                    borderRadius: 3,
+                    mt: 1,
+                    boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.3)`,
+                    minWidth: 160,
+                  },
+                }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    setLanguage('en');
+                    setLangAnchor(null);
+                  }}
+                  sx={{
+                    color: '#fff',
+                    py: 1.2,
+                    px: 2,
+                    fontSize: '0.9rem',
+                    fontWeight: 500,
+                    borderRadius: 2,
+                    mx: 0.5,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    bgcolor: language === 'en' ? 'rgba(212,175,55,0.15)' : 'transparent',
+                    '&:hover': {
+                      bgcolor: 'rgba(212,175,55,0.2)',
+                    },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <LanguageIcon sx={{ fontSize: 18, color: GOLD }} />
+                    English
+                  </Box>
+                  {language === 'en' && <CheckIcon sx={{ fontSize: 18, color: GOLD }} />}
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    setLanguage('ml');
+                    setLangAnchor(null);
+                  }}
+                  sx={{
+                    color: '#fff',
+                    py: 1.2,
+                    px: 2,
+                    fontSize: '0.9rem',
+                    fontWeight: 500,
+                    borderRadius: 2,
+                    mx: 0.5,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    bgcolor: language === 'ml' ? 'rgba(212,175,55,0.15)' : 'transparent',
+                    '&:hover': {
+                      bgcolor: 'rgba(212,175,55,0.2)',
+                    },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <LanguageIcon sx={{ fontSize: 18, color: GOLD }} />
+                    മലയാളം
+                  </Box>
+                  {language === 'ml' && <CheckIcon sx={{ fontSize: 18, color: GOLD }} />}
+                </MenuItem>
+              </Menu>
+              
               <IconButton
                 component="a"
                 href="https://facebook.com"
@@ -316,7 +432,7 @@ export default function Header() {
                 <TwitterIcon sx={{ fontSize: 20 }} />
               </IconButton>
               <Chip
-                label="Donate"
+                label={t('header.donate')}
                 size="small"
                 icon={
                   <FavoriteIcon 
@@ -351,7 +467,7 @@ export default function Header() {
                 }}
               />
               <Chip
-                label="Book Pooja"
+                label={t('header.bookPooja')}
                 size="small"
                 icon={
                   <CardGiftcardIcon 
@@ -435,7 +551,7 @@ export default function Header() {
                     lineHeight: 1.3,
                   }}
                 >
-                Sri Kotta-Kovilakam Kshethram
+                {t('header.templeName')}
                 </Typography>
               </Box>
             </Box>
@@ -501,7 +617,7 @@ export default function Header() {
                     {isActive(item.to) && (
                       <Box sx={{ 
                         position: 'absolute', 
-                        bottom: -6, 
+                        bottom: -4, 
                         left: '50%',
                         transform: 'translateX(-50%)',
                         width: 'calc(100% - 24px)',

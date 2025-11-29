@@ -12,6 +12,13 @@ interface PoojaCardProps {
 export default function PoojaCard({ pooja, onSelect, isSelected }: PoojaCardProps) {
   const [showOverlay, setShowOverlay] = React.useState(false);
 
+  // Sync overlay state with isSelected prop
+  React.useEffect(() => {
+    if (!isSelected) {
+      setShowOverlay(false);
+    }
+  }, [isSelected]);
+
   const handleCheckboxClick = (e: React.MouseEvent) => {
     if (!isSelected) {
       // select immediately and show overlay with green tick
