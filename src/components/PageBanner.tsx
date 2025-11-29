@@ -22,7 +22,7 @@ export default function PageBanner({ title, subtitle, imagePath = `${process.env
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        mt: '-24px',
+        mt: -15,
         mb: 0,
       }}
     >

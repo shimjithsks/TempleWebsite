@@ -28,7 +28,7 @@ export default function Poojas() {
     <>
       <PageBanner title="Poojas & Vazhipads" />
 
-      <Container maxWidth="lg" sx={{ py: 6 }}>
+      <Container maxWidth="lg" sx={{ mt: 0, pt: 0, pb: 6 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8} lg={9}>
             <Paper elevation={3} sx={{ p: { xs: 3, md: 4 } }}>

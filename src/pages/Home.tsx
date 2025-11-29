@@ -54,7 +54,7 @@ const poojaTiles = [
 
 export default function Home() {
   return (
-    <Box sx={{ mt: { xs: -4, md: -6 }, pb: 6 }}>
+    <Box sx={{ mt: 0, pt: 0, pb: 6 }}>
       <ImageSlider />
       {/* Enhanced About Temple section */}
       <Box

@@ -9,7 +9,7 @@ function App() {
   return (
     <CartProvider>
       <Header />
-      <Container maxWidth="lg" sx={{ mt: 3, mb: 8, px: { xs: 2, sm: 3, lg: 0 } }}>
+      <Container maxWidth="lg" sx={{ mt: 0, mb: 8, px: { xs: 0, sm: 0, lg: 0 } }}>
         <AppRoutes />
       </Container>
       <Footer />
