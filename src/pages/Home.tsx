@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, Grid, Paper, Typography, Button, Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import ImageSlider from '../components/ImageSlider';
@@ -52,11 +52,52 @@ const poojaTiles = [
   },
 ];
 
+// Animated section wrapper component
+function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [delay]);
+
+  return (
+    <Box
+      ref={ref}
+      sx={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
+        transition: 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+      }}
+    >
+      {children}
+    </Box>
+  );
+}
+
 export default function Home() {
   return (
     <Box sx={{ mt: 0, pt: 0, pb: 6 }}>
       <ImageSlider />
       {/* Enhanced About Temple section */}
+      <AnimatedSection delay={100}>
       <Box
         sx={{
           mt: 4,
@@ -182,9 +223,11 @@ export default function Home() {
           </Grid>
         </Grid>
       </Box>
+      </AnimatedSection>
 
       {/* Sections removed per request: Latest, Gallery, Nearby, Temple Essentials */}
 
+      <AnimatedSection delay={200}>
       <Box sx={{ mt: 5, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, position: 'relative', overflow: 'visible' }}>
       <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
       <Grid container spacing={3}>
@@ -280,8 +323,10 @@ export default function Home() {
         </Grid>
       </Grid>
       </Box>
+      </AnimatedSection>
 
       {/* News Overview: placed above Donation section */}
+      <AnimatedSection delay={300}>
       <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, background: `linear-gradient(135deg, ${colors.white}, ${colors.brandAlpha06})`, position: 'relative', overflow: 'visible' }}>
         <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
         <Typography variant="overline" sx={{ color: colors.primary, letterSpacing: 2 }}>
@@ -336,8 +381,10 @@ export default function Home() {
           ))}
         </Grid>
       </Box>
+      </AnimatedSection>
 
       {/* Donation Overview: new approach - ribbon header + stacked cards with progress */}
+      <AnimatedSection delay={400}>
       <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, background: `linear-gradient(135deg, ${colors.brandAlpha06}, ${colors.brandAlpha12})`, position: 'relative', overflow: 'visible' }}>
         <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
         <Paper
@@ -474,10 +521,12 @@ export default function Home() {
           </Box>
         </Paper>
       </Box>
+      </AnimatedSection>
 
       {/* Assistance section removed per request */}
 
       {/* Gallery Overview: modern material section with preview cards */}
+      <AnimatedSection delay={500}>
       <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, background: `linear-gradient(135deg, ${colors.white}, ${colors.brandAlpha06})`, position: 'relative', overflow: 'visible' }}>
         <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
         <Typography variant="overline" sx={{ color: colors.primary, letterSpacing: 2 }}>
@@ -555,8 +604,10 @@ export default function Home() {
           </Paper>
         </Box>
       </Box>
+      </AnimatedSection>
 
       {/* Nearby Overview: next-level design with icon cards */}
+      <AnimatedSection delay={600}>
       <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, background: `linear-gradient(135deg, ${colors.brandAlpha06}, ${colors.brandAlpha12})`, position: 'relative', overflow: 'visible' }}>
         <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
         <Typography variant="overline" sx={{ color: colors.primary, letterSpacing: 2 }}>
@@ -625,8 +676,10 @@ export default function Home() {
           ))}
         </Grid>
       </Box>
+      </AnimatedSection>
 
       {/* Contact Overview: quick access to office, map, info, feedback */}
+      <AnimatedSection delay={700}>
       <Box sx={{ mt: 8, border: `1px solid ${colors.primary}`, borderRadius: 4, p: { xs: 2, md: 3 }, background: `linear-gradient(135deg, ${colors.white}, ${colors.brandAlpha06})`, position: 'relative', overflow: 'visible' }}>
         <SectionOrnament opacity={0.85} size={88} />
         <Typography variant="overline" sx={{ color: colors.primary, letterSpacing: 2 }}>
@@ -681,6 +734,7 @@ export default function Home() {
           ))}
         </Grid>
       </Box>
+      </AnimatedSection>
     </Box>
   );
 }

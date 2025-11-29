@@ -15,7 +15,7 @@ const sliderImages = [
   },
   {
     id: 2,
-    title: 'Temple Main Entrance',
+    title: 'Devotee Gatherings',
     color: colors.primary,
     image: `${process.env.PUBLIC_URL}/assets/slider_2.jpg`,
     overlay: 'rgba(0,0,0,0.35)',
@@ -29,14 +29,14 @@ const sliderImages = [
   },
   {
     id: 4,
-    title: 'Festive Moments',
+    title: 'Temple Main Entrance',
     color: colors.white,
     image: `${process.env.PUBLIC_URL}/assets/slide_4.png`,
     overlay: 'rgba(0,0,0,0.35)',
   },
   {
     id: 5,
-    title: 'Devotee Gatherings',
+    title: 'Temple Pond',
     color: colors.olive,
     image: `${process.env.PUBLIC_URL}/assets/slide_5.png`,
     overlay: 'rgba(0,0,0,0.45)',
