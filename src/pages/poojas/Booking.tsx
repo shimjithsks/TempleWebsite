@@ -244,15 +244,28 @@ export default function Booking() {
           )}
 
           {/* POOJA GRID */}
-          <Grid container spacing={3}>
+          <Grid container spacing={{ xs: 3, md: 4 }} sx={{ px: { xs: 0, sm: 1 } }}>
             {filteredPoojas.length > 0 ? (
               filteredPoojas.map(pooja => (
-                <Grid item xs={12} sm={6} md={4} key={pooja.id}>
-                  <PoojaCard
-                    pooja={pooja}
-                    onSelect={handlePoojaSelect}
-                    isSelected={selectedPoojaIds.includes(pooja.id)}
-                  />
+                <Grid 
+                  item 
+                  xs={12} 
+                  sm={6} 
+                  md={4} 
+                  lg={3} 
+                  key={pooja.id}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Box sx={{ width: '100%', maxWidth: 340 }}>
+                    <PoojaCard
+                      pooja={pooja}
+                      onSelect={handlePoojaSelect}
+                      isSelected={selectedPoojaIds.includes(pooja.id)}
+                    />
+                  </Box>
                 </Grid>
               ))
             ) : (

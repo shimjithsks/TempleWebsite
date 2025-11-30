@@ -32,7 +32,7 @@ const translations: Record<Language, Record<string, string>> = {
     'submenu.festivalPoojas': 'Festival Poojas',
     'submenu.specialPoojas': 'Special Poojas',
     'submenu.vazhipadList': 'Vazhipad List',
-    'submenu.booking': 'Booking / Offerings',
+    'submenu.booking': 'Online Booking',
     
     // Submenu - Donate
     'submenu.donateOverview': 'Donate Overview',

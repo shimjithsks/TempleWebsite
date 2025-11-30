@@ -45,11 +45,11 @@ const getMenuStructure = (t: (key: string) => string) => [
     label: t('menu.poojas'),
     to: '/poojas',
     sub: [
+      { labelKey: 'submenu.booking', label: t('submenu.booking'), to: '/poojas/booking' },
       { labelKey: 'submenu.dailyPoojas', label: t('submenu.dailyPoojas'), to: '/poojas/daily' },
       { labelKey: 'submenu.festivalPoojas', label: t('submenu.festivalPoojas'), to: '/poojas/festival' },
       { labelKey: 'submenu.specialPoojas', label: t('submenu.specialPoojas'), to: '/poojas/special' },
       { labelKey: 'submenu.vazhipadList', label: t('submenu.vazhipadList'), to: '/poojas/vazhipad' },
-      { labelKey: 'submenu.booking', label: t('submenu.booking'), to: '/poojas/booking' },
     ],
   },
   {
@@ -613,23 +613,23 @@ export default function Header() {
                       {item.label}
                     </Button>
 
-                    {/* Active indicator with glow */}
+                    {/* Active indicator with glow - sits just below the menu item */}
                     {isActive(item.to) && (
-                      <Box sx={{ 
-                        position: 'absolute', 
-                        bottom: -4, 
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 'calc(100% - 24px)',
-                        height: 3, 
-                        bgcolor: GOLD, 
-                        borderRadius: 999, 
+                      <Box sx={{
+                        position: 'absolute',
+                        bottom: -10, // move underline below the button
+                        left: 0,
+                        width: '100%',
+                        height: 4,
+                        bgcolor: GOLD,
+                        borderRadius: 2,
                         boxShadow: `0 0 12px ${GOLD}, 0 0 24px ${GOLD}70, 0 2px 8px ${GOLD}40`,
                         animation: 'pulse 2.5s ease-in-out infinite',
                         '@keyframes pulse': {
                           '0%, 100%': { opacity: 1, boxShadow: `0 0 12px ${GOLD}, 0 0 24px ${GOLD}70` },
                           '50%': { opacity: 0.7, boxShadow: `0 0 8px ${GOLD}, 0 0 16px ${GOLD}50` },
                         },
+                        pointerEvents: 'none',
                       }} />
                     )}
 

@@ -71,6 +71,71 @@ export default function Administration() {
                 The temple is managed by an elected committee of dedicated volunteers and experienced trustees who ensure smooth operations and upkeep of traditions.
               </Typography>
 
+              {/* Devaswom Manager */}
+              <Typography variant="h4" sx={{ 
+                mb: 3, 
+                fontWeight: 900,
+                background: 'linear-gradient(135deg, #d4af37 0%, #e5c158 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}>
+                Devaswom Manager
+              </Typography>
+
+              <Grid container spacing={3} sx={{ mb: 5 }}>
+                {devaswomManager.map((member, index) => (
+                  <Grid item xs={12} sm={6} md={4} key={index}>
+                    <Card elevation={0} sx={{ 
+                      border: '3px solid #d4af37',
+                      borderRadius: 4,
+                      transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                      '&:hover': { 
+                        transform: 'translateY(-8px)',
+                        boxShadow: '0 16px 48px rgba(212,175,55,0.35)',
+                      } 
+                    }}>
+                      <CardContent sx={{ textAlign: 'center', p: 3 }}>
+                        <Box sx={{ 
+                          display: 'flex', 
+                          justifyContent: 'center',
+                          mb: 2,
+                        }}>
+                          <Avatar
+                            sx={{
+                              width: 80,
+                              height: 80,
+                              bgcolor: '#d4af37',
+                              fontSize: '2rem',
+                              fontWeight: 800,
+                              border: '3px solid #e5c158',
+                              boxShadow: '0 8px 24px rgba(212,175,55,0.4)',
+                            }}
+                          >
+                            {member.name.charAt(0)}
+                          </Avatar>
+                        </Box>
+                        <Typography variant="h6" sx={{ 
+                          fontWeight: 700, 
+                          color: '#d4af37',
+                          mb: 0.5,
+                          fontSize: '1.1rem',
+                        }}>
+                          {member.name}
+                        </Typography>
+                        <Typography variant="body2" sx={{ 
+                          color: '#666', 
+                          fontWeight: 600,
+                          fontSize: '0.95rem',
+                        }}>
+                          {member.position}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+
               {/* Temple Committee Administrators */}
               <Typography variant="h4" sx={{ 
                 mb: 3, 
@@ -259,72 +324,6 @@ export default function Administration() {
                           color: '#666', 
                           fontWeight: 600,
                           fontSize: '0.9rem',
-                        }}>
-                          {member.position}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-
-              {/* Devaswom Manager */}
-              <Typography variant="h4" sx={{ 
-                mb: 3, 
-                mt: 4,
-                fontWeight: 900,
-                background: 'linear-gradient(135deg, #d4af37 0%, #e5c158 100%)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>
-                Devaswom Manager
-              </Typography>
-
-              <Grid container spacing={3}>
-                {devaswomManager.map((member, index) => (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                    <Card elevation={0} sx={{ 
-                      border: '3px solid #d4af37',
-                      borderRadius: 4,
-                      transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
-                      '&:hover': { 
-                        transform: 'translateY(-8px)',
-                        boxShadow: '0 16px 48px rgba(212,175,55,0.35)',
-                      } 
-                    }}>
-                      <CardContent sx={{ textAlign: 'center', p: 3 }}>
-                        <Box sx={{ 
-                          display: 'flex', 
-                          justifyContent: 'center',
-                          mb: 2,
-                        }}>
-                          <Avatar
-                            sx={{
-                              width: 80,
-                              height: 80,
-                              bgcolor: '#d4af37',
-                              fontSize: '2rem',
-                              fontWeight: 800,
-                              border: '3px solid #e5c158',
-                              boxShadow: '0 8px 24px rgba(212,175,55,0.4)',
-                            }}
-                          >
-                            {member.name.charAt(0)}
-                          </Avatar>
-                        </Box>
-                        <Typography variant="h6" sx={{ 
-                          fontWeight: 700, 
-                          color: '#d4af37',
-                          mb: 0.5,
-                          fontSize: '1.1rem',
-                        }}>
-                          {member.name}
-                        </Typography>
-                        <Typography variant="body2" sx={{ 
-                          color: '#666', 
-                          fontWeight: 600,
-                          fontSize: '0.95rem',
                         }}>
                           {member.position}
                         </Typography>

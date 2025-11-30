@@ -31,7 +31,7 @@ export const SIDEBAR_SECTIONS: Record<SectionKey, SidebarSectionConfig> = {
       { label: 'Special Poojas', to: '/poojas/special' },
       { label: 'Festival Poojas', to: '/poojas/festival' },
       { label: 'Vazhipad List', to: '/poojas/vazhipad' },
-      { label: 'Booking / Offerings', to: '/poojas/booking' },
+      { label: 'Online Booking', to: '/poojas/booking' },
     ],
   },
   donate: {

@@ -1,9 +1,13 @@
 import React from 'react';
 import PageBanner from '../../components/PageBanner';
 import SectionSidebar from '../../components/SectionSidebar';
-import { Container, Typography, Box, Paper, Grid, Card, CardContent } from '@mui/material';
+import { Container, Typography, Box, Paper, Grid, Card, CardContent, Avatar, Divider, Chip } from '@mui/material';
+import TempleHinduIcon from '@mui/icons-material/TempleHindu';
+import StarIcon from '@mui/icons-material/Star';
 
 export default function Deities() {
+  const GOLD = '#d4af37';
+
   const deities = [
     {
       name: 'Lord Shiva',
@@ -52,23 +56,49 @@ export default function Deities() {
             <Paper elevation={0} sx={{ 
               p: 4, 
               mb: 4,
-              border: `2px solid #d4af37`,
-              borderRadius: 4,
-              boxShadow: '0 10px 30px rgba(212,175,55,0.15)',
+              border: `3px solid ${GOLD}`,
+              borderRadius: 5,
+              boxShadow: '0 20px 60px rgba(212,175,55,0.25)',
               background: 'linear-gradient(135deg, #fff 0%, #fafaf8 100%)',
               position: 'relative',
-              overflow: 'visible',
+              overflow: 'hidden',
               '&::before': {
                 content: '""',
                 position: 'absolute',
-                top: -2,
-                left: 20,
-                right: 20,
-                height: 4,
-                background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
-                borderRadius: '2px 2px 0 0',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 6,
+                background: `linear-gradient(90deg, ${GOLD} 0%, #e5c158 25%, ${GOLD} 50%, #e5c158 75%, ${GOLD} 100%)`,
+                animation: 'shimmer 3s linear infinite',
+                backgroundSize: '200% 100%',
+                '@keyframes shimmer': {
+                  '0%': { backgroundPosition: '-200% 0' },
+                  '100%': { backgroundPosition: '200% 0' },
+                },
               }
             }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3, mt: 2 }}>
+                <Avatar sx={{ 
+                  width: 70, 
+                  height: 70, 
+                  bgcolor: '#ff9800',
+                  background: 'linear-gradient(135deg, #ff9800 0%, #ffb74d 100%)',
+                  boxShadow: '0 4px 20px rgba(255,152,0,0.4)'
+                }}>
+                  <TempleHinduIcon sx={{ fontSize: 40, color: '#fff' }} />
+                </Avatar>
+                <Box>
+                  <Typography variant="h5" sx={{ fontWeight: 700, color: GOLD }}>
+                    Deities of Our Temple
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#666', mt: 0.5 }}>
+                    Divine presence and spiritual blessings
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Divider sx={{ mb: 4, borderColor: 'rgba(212,175,55,0.3)' }} />
               <Typography variant="body1" sx={{ mb: 4, fontSize: '1.1rem' }}>
                 Our temple is blessed with the divine presence of several deities, each with unique significance and the power to bestow specific blessings upon devotees.
               </Typography>
@@ -80,48 +110,59 @@ export default function Deities() {
                       elevation={0}
                       sx={{
                         height: '100%',
-                        border: '2px solid rgba(212,175,55,0.3)',
-                        borderRadius: 3,
-                        boxShadow: '0 6px 16px rgba(212,175,55,0.12)',
+                        border: `3px solid ${GOLD}`,
+                        borderRadius: 4,
+                        boxShadow: '0 8px 20px rgba(212,175,55,0.2)',
                         background: 'linear-gradient(135deg, #fff, #fafaf8)',
-                        transition: 'all 280ms ease',
+                        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
                         '&:hover': { 
-                          boxShadow: '0 12px 32px rgba(212,175,55,0.25)',
-                          transform: 'translateY(-4px)',
-                          borderColor: '#d4af37',
+                          transform: 'translateY(-6px)',
+                          boxShadow: '0 16px 48px rgba(212,175,55,0.3)',
                         },
                         position: 'relative',
-                        '&::before': {
-                          content: '""',
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          height: 4,
-                          background: 'linear-gradient(90deg, #d4af37, #e5c158)',
-                        }
                       }}
                     >
-                      <CardContent>
-                        <Typography variant="h5" sx={{ fontWeight: 800, color: '#d4af37', mb: 0.5 }}>
-                          {deity.name}
-                        </Typography>
-                        <Typography variant="subtitle1" sx={{ color: '#d4af37', fontWeight: 700, mb: 2 }}>
-                          {deity.title}
-                        </Typography>
-                        <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.7 }}>
+                      <CardContent sx={{ p: 3 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
+                          <Avatar sx={{ 
+                            width: 50, 
+                            height: 50,
+                            bgcolor: GOLD,
+                            background: `linear-gradient(135deg, ${GOLD} 0%, #e5c158 100%)`,
+                            boxShadow: '0 4px 12px rgba(212,175,55,0.4)'
+                          }}>
+                            <StarIcon sx={{ fontSize: 28, color: '#fff' }} />
+                          </Avatar>
+                          <Box sx={{ flex: 1 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 800, color: GOLD }}>
+                              {deity.name}
+                            </Typography>
+                            <Chip
+                              label={deity.title}
+                              size="small"
+                              sx={{
+                                bgcolor: 'rgba(212,175,55,0.15)',
+                                color: GOLD,
+                                fontWeight: 700,
+                                border: `2px solid ${GOLD}`,
+                                mt: 0.5
+                              }}
+                            />
+                          </Box>
+                        </Box>
+                        <Typography variant="body1" sx={{ mb: 2.5, lineHeight: 1.7, color: '#555' }}>
                           {deity.description}
                         </Typography>
                         <Box sx={{ 
-                          p: 2, 
-                          background: 'linear-gradient(135deg, rgba(212,175,55,0.06), rgba(212,175,55,0.12))', 
-                          borderRadius: 2,
-                          border: '1.5px solid rgba(212,175,55,0.25)'
+                          p: 2.5, 
+                          background: `linear-gradient(135deg, rgba(212,175,55,0.06), rgba(212,175,55,0.12))`,
+                          borderRadius: 3,
+                          border: `2px solid rgba(212,175,55,0.3)`
                         }}>
-                          <Typography variant="body2" sx={{ fontWeight: 700, mb: 0.5, color: '#d4af37' }}>
-                            Significance:
+                          <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: GOLD }}>
+                            ✨ Significance:
                           </Typography>
-                          <Typography variant="body2">{deity.significance}</Typography>
+                          <Typography variant="body2" sx={{ lineHeight: 1.6, color: '#555' }}>{deity.significance}</Typography>
                         </Box>
                       </CardContent>
                     </Card>
@@ -129,13 +170,22 @@ export default function Deities() {
                 ))}
               </Grid>
 
-              <Box sx={{ mt: 4, p: 3, bgcolor: '#e3f2fd', borderRadius: 2 }}>
-                <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Darshan Etiquette</Typography>
-                <Typography>• Remove footwear before entering temple premises</Typography>
-                <Typography>• Maintain silence inside the sanctum</Typography>
-                <Typography>• Photography not allowed inside main shrine</Typography>
-                <Typography>• Follow priest's instructions during poojas</Typography>
-                <Typography>• Dress modestly and traditionally</Typography>
+              <Box sx={{ 
+                mt: 4, 
+                p: 4, 
+                background: `linear-gradient(135deg, rgba(212,175,55,0.15), rgba(229,193,88,0.15))`,
+                borderRadius: 4,
+                border: `3px solid ${GOLD}`,
+                boxShadow: '0 8px 24px rgba(212,175,55,0.2)'
+              }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: GOLD }}>🙏 Darshan Etiquette</Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <Typography sx={{ color: '#555' }}>• Remove footwear before entering temple premises</Typography>
+                  <Typography sx={{ color: '#555' }}>• Maintain silence inside the sanctum</Typography>
+                  <Typography sx={{ color: '#555' }}>• Photography not allowed inside main shrine</Typography>
+                  <Typography sx={{ color: '#555' }}>• Follow priest's instructions during poojas</Typography>
+                  <Typography sx={{ color: '#555' }}>• Dress modestly and traditionally</Typography>
+                </Box>
               </Box>
             </Paper>
           </Grid>

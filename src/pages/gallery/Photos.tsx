@@ -1,9 +1,15 @@
 import React from 'react';
 import PageBanner from '../../components/PageBanner';
 import SectionSidebar from '../../components/SectionSidebar';
-import { Container, Typography, Box, Paper, Grid, Card } from '@mui/material';
+import { Container, Typography, Box, Paper, Grid, Card, Modal, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 export default function GalleryPhotos() {
+  const [previewOpen, setPreviewOpen] = React.useState(false);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+
   const photos = [
     { img: `${process.env.PUBLIC_URL}/assets/header_god_image.png`, title: 'Main Deity', category: 'Architecture' },
     { img: `${process.env.PUBLIC_URL}/assets/slider_1.jpg`, title: 'Temple View 1', category: 'Premises' },
@@ -15,6 +21,23 @@ export default function GalleryPhotos() {
     { img: `${process.env.PUBLIC_URL}/assets/slider_6.jpg`, title: 'Evening View', category: 'Premises' },
     { img: `${process.env.PUBLIC_URL}/assets/slider_1.jpg`, title: 'Morning Rituals', category: 'Rituals' },
   ];
+
+  const handleImageClick = (index: number) => {
+    setCurrentIndex(index);
+    setPreviewOpen(true);
+  };
+
+  const handleClosePreview = () => {
+    setPreviewOpen(false);
+  };
+
+  const handlePrevImage = () => {
+    setCurrentIndex(currentIndex > 0 ? currentIndex - 1 : photos.length - 1);
+  };
+
+  const handleNextImage = () => {
+    setCurrentIndex(currentIndex < photos.length - 1 ? currentIndex + 1 : 0);
+  };
 
   return (
     <>
@@ -54,6 +77,7 @@ export default function GalleryPhotos() {
                 {photos.map((photo, index) => (
                   <Grid item xs={12} sm={6} md={4} key={index}>
                     <Box
+                      onClick={() => handleImageClick(index)}
                       sx={{
                         position: 'relative',
                         borderRadius: 4,
@@ -143,6 +167,106 @@ export default function GalleryPhotos() {
           </Grid>
         </Grid>
       </Container>
+
+      {/* Image Preview Modal */}
+      <Modal
+        open={previewOpen}
+        onClose={handleClosePreview}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: 'rgba(0,0,0,0.9)',
+        }}
+      >
+        <Box sx={{ position: 'relative', outline: 'none' }}>
+          {/* Close Button */}
+          <IconButton
+            onClick={handleClosePreview}
+            sx={{
+              position: 'absolute',
+              top: 20,
+              right: 20,
+              bgcolor: '#d4af37',
+              color: 'white',
+              '&:hover': { bgcolor: '#e5c158' },
+              zIndex: 1,
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+
+          {/* Previous Button */}
+          {photos.length > 1 && (
+            <IconButton
+              onClick={handlePrevImage}
+              sx={{
+                position: 'absolute',
+                left: 20,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                bgcolor: 'rgba(212,175,55,0.8)',
+                color: 'white',
+                '&:hover': { bgcolor: '#d4af37' },
+              }}
+            >
+              <NavigateBeforeIcon />
+            </IconButton>
+          )}
+
+          {/* Next Button */}
+          {photos.length > 1 && (
+            <IconButton
+              onClick={handleNextImage}
+              sx={{
+                position: 'absolute',
+                right: 20,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                bgcolor: 'rgba(212,175,55,0.8)',
+                color: 'white',
+                '&:hover': { bgcolor: '#d4af37' },
+              }}
+            >
+              <NavigateNextIcon />
+            </IconButton>
+          )}
+
+          {/* Image */}
+          <Box
+            component="img"
+            src={photos[currentIndex]?.img}
+            alt={photos[currentIndex]?.title}
+            sx={{
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              objectFit: 'contain',
+              border: '4px solid #d4af37',
+              borderRadius: 2,
+            }}
+          />
+
+          {/* Image Counter */}
+          {photos.length > 1 && (
+            <Box
+              sx={{
+                position: 'absolute',
+                bottom: 20,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                bgcolor: 'rgba(212,175,55,0.9)',
+                color: 'white',
+                px: 3,
+                py: 1,
+                borderRadius: 3,
+                fontWeight: 'bold',
+              }}
+            >
+              {currentIndex + 1} / {photos.length}
+            </Box>
+          )}
+        </Box>
+      </Modal>
     </>
 
 );
