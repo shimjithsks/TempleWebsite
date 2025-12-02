@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Grid, Paper, Typography, Button, Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 import ImageSlider from '../components/ImageSlider';
 import InfoIcon from '@mui/icons-material/Info';
 import TempleHinduIcon from '@mui/icons-material/TempleHindu';
@@ -96,6 +98,197 @@ function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; d
 
 export default function Home() {
   const { t } = useLanguage();
+  const [aboutContent, setAboutContent] = useState({
+    title: t('home.aboutIntro'),
+    subtitle: t('home.aboutTemple'),
+    description: t('home.aboutDescription'),
+    imageUrl: '/assets/header_god_image.png'
+  });
+
+  const [poojaSection, setPoojaSection] = useState({
+    title: 'Plan Your Devotional Day',
+    subtitle: 'POOJA CENTRE',
+    description: 'Browse pooja categories and book your offerings online with instant confirmation.',
+    buttonText: 'Book a Pooja',
+    buttonLink: '/poojas/booking',
+    secondButtonText: 'View Vazhipads',
+    secondButtonLink: '/poojas/vazhipad',
+    tiles: poojaTiles
+  });
+
+  const [newsSection, setNewsSection] = useState({
+    subtitle: 'NEWS OVERVIEW',
+    title: 'Temple Announcements & Updates',
+    description: 'Stay informed on announcements, upcoming events, notices, and recent news.',
+    tiles: [
+      { title: 'Announcements', description: 'Latest official temple announcements and bulletin items.', link: '/news/announcements', chip: 'New' },
+      { title: 'News', description: 'Coverage and updates about temple activities and programs.', link: '/news/news', chip: 'Recent' },
+      { title: 'Upcoming', description: 'Dates and details for scheduled poojas, utsavams, and events.', link: '/news/upcoming', chip: 'Schedule' },
+      { title: 'Notices', description: 'Important notices and office circulars for devotees.', link: '/news/notices', chip: 'Official' }
+    ]
+  });
+
+  const [donationSection, setDonationSection] = useState({
+    subtitle: 'DONATION OVERVIEW',
+    title: 'Support Temple Causes',
+    description: 'Your contributions help maintain our sacred traditions and serve the community',
+    tiles: [
+      { title: 'Online Donation', description: 'Quick, secure contributions with instant receipt.', link: '/donate/online', tag: 'Popular' },
+      { title: 'Annadanam', description: 'Join daily food offering and community welfare.', link: '/donate/annadanam', tag: 'Daily' },
+      { title: 'Renovation', description: 'Help preserve and improve temple infrastructure.', link: '/donate/renovation', tag: 'Urgent' },
+      { title: 'Festival Support', description: 'Sponsor arrangements for seasonal utsavams.', link: '/donate/festival', tag: 'Seasonal' }
+    ]
+  });
+
+  const [gallerySection, setGallerySection] = useState({
+    subtitle: 'GALLERY OVERVIEW',
+    title: 'Explore Photos & Videos',
+    description: 'A glimpse of temple moments — festivals, premises, events and serene views.',
+    tiles: [
+      { title: 'Photos', link: '/gallery/photos', chip: 'Curated', type: 'photo', imageUrl: '/assets/header_god_image.png' },
+      { title: 'Videos', link: '/gallery/videos', chip: 'Highlights', type: 'video', youtubeId: 'bFHz3KocQc0' },
+      { title: 'Events', link: '/gallery/events', chip: 'Recent', type: 'photo', imageUrl: '/assets/slide_3.png' },
+      { title: 'Temple Tour', link: '/gallery/videos', chip: 'Tour', type: 'video', youtubeId: 'bFHz3KocQc0' }
+    ]
+  });
+
+  const [contactSection, setContactSection] = useState({
+    subtitle: 'CONTACT OVERVIEW',
+    title: 'Get In Touch With Us',
+    description: 'Find office details, map, general info, and share feedback easily.',
+    tiles: [
+      { title: 'Office', description: 'Temple office timings and phone numbers.', link: '/contact/office' },
+      { title: 'Map', description: 'Locate the temple and plan your route.', link: '/contact/map' },
+      { title: 'Info', description: 'General information for visitors.', link: '/contact/info' },
+      { title: 'Feedback', description: 'Share suggestions and experiences.', link: '/contact/feedback' }
+    ]
+  });
+
+  const [nearbySection, setNearbySection] = useState({
+    subtitle: 'NEARBY OVERVIEW',
+    title: 'Explore Nearby Attractions',
+    description: 'Beaches, temples, viewpoints and heritage spots around the temple.',
+    tiles: [
+      { title: 'Beaches', description: 'Relax at serene shores and coastal walks.', link: '/nearby/beaches', chip: 'Scenic' },
+      { title: 'Temples', description: 'Visit historic shrines and spiritual centers.', link: '/nearby/temples', chip: 'Pilgrimage' },
+      { title: 'Viewpoints', description: 'Catch sunset vistas and hilltop views.', link: '/nearby/viewpoints', chip: 'Panorama' },
+      { title: 'Heritage', description: 'Discover museums and cultural landmarks.', link: '/nearby/heritage', chip: 'Culture' },
+      { title: 'Boating', description: 'Enjoy backwater rides and boat tours.', link: '/nearby/boating', chip: 'Leisure' },
+      { title: 'Activities', description: 'Try hiking trails and outdoor fun.', link: '/nearby/activities', chip: 'Outdoor' }
+    ]
+  });
+
+  useEffect(() => {
+    const fetchAboutContent = async () => {
+      try {
+        const docRef = doc(db, 'homepage_content', 'about_section');
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setAboutContent({
+            title: data.title || t('home.aboutIntro'),
+            subtitle: data.subtitle || t('home.aboutTemple'),
+            description: data.description || t('home.aboutDescription'),
+            imageUrl: data.imageUrl || '/assets/header_god_image.png'
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching about content:', error);
+      }
+    };
+
+    const fetchPoojaSection = async () => {
+      try {
+        const docRef = doc(db, 'homepage_content', 'pooja_section');
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setPoojaSection({
+            title: data.title || poojaSection.title,
+            subtitle: data.subtitle || poojaSection.subtitle,
+            description: data.description || poojaSection.description,
+            buttonText: data.buttonText || poojaSection.buttonText,
+            buttonLink: data.buttonLink || poojaSection.buttonLink,
+            secondButtonText: data.secondButtonText || poojaSection.secondButtonText,
+            secondButtonLink: data.secondButtonLink || poojaSection.secondButtonLink,
+            tiles: data.tiles || poojaTiles
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching pooja section:', error);
+      }
+    };
+
+    const fetchNewsSection = async () => {
+      try {
+        const docRef = doc(db, 'homepage_content', 'news_section');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setNewsSection(docSnap.data() as any);
+        }
+      } catch (error) {
+        console.error('Error fetching news section:', error);
+      }
+    };
+
+    const fetchDonationSection = async () => {
+      try {
+        const docRef = doc(db, 'homepage_content', 'donation_section');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setDonationSection(docSnap.data() as any);
+        }
+      } catch (error) {
+        console.error('Error fetching donation section:', error);
+      }
+    };
+
+    const fetchGallerySection = async () => {
+      try {
+        const docRef = doc(db, 'homepage_content', 'gallery_section');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setGallerySection(docSnap.data() as any);
+        }
+      } catch (error) {
+        console.error('Error fetching gallery section:', error);
+      }
+    };
+
+    const fetchContactSection = async () => {
+      try {
+        const docRef = doc(db, 'homepage_content', 'contact_section');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setContactSection(docSnap.data() as any);
+        }
+      } catch (error) {
+        console.error('Error fetching contact section:', error);
+      }
+    };
+
+    const fetchNearbySection = async () => {
+      try {
+        const docRef = doc(db, 'homepage_content', 'nearby_section');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setNearbySection(docSnap.data() as any);
+        }
+      } catch (error) {
+        console.error('Error fetching nearby section:', error);
+      }
+    };
+
+    fetchAboutContent();
+    fetchPoojaSection();
+    fetchNewsSection();
+    fetchDonationSection();
+    fetchGallerySection();
+    fetchContactSection();
+    fetchNearbySection();
+  }, [t]);
   
   return (
     <Box sx={{ mt: 0, pt: 0, pb: 6 }}>
@@ -162,7 +355,7 @@ export default function Home() {
                   fontSize: 14,
                   textShadow: '0 1px 2px rgba(0,0,0,0.1)'
                 }}>
-                  {t('home.aboutTemple')}
+                  {aboutContent.subtitle}
                 </Typography>
                 <Typography variant="h2" sx={{ 
                   fontWeight: 900, 
@@ -174,7 +367,7 @@ export default function Home() {
                   textShadow: '0 2px 4px rgba(0,0,0,0.05)',
                   letterSpacing: -0.5
                 }}>
-                  {t('home.aboutIntro')}
+                  {aboutContent.title}
                 </Typography>
                 <Box sx={{ 
                   width: 80, 
@@ -195,7 +388,7 @@ export default function Home() {
                 fontWeight: 400,
                 maxWidth: 560
               }}>
-                {t('home.aboutDescription')}
+                {aboutContent.description}
               </Typography>
               
               {/* Premium feature chips */}
@@ -362,7 +555,15 @@ export default function Home() {
               {/* Premium image container with multiple effects */}
               <Box
                 component="img"
-                src={`${process.env.PUBLIC_URL}/assets/header_god_image.png`}
+                src={
+                  aboutContent.imageUrl 
+                    ? (aboutContent.imageUrl.startsWith('data:') 
+                        ? aboutContent.imageUrl 
+                        : aboutContent.imageUrl.startsWith('http') 
+                          ? aboutContent.imageUrl 
+                          : `${process.env.PUBLIC_URL}${aboutContent.imageUrl}`)
+                    : `${process.env.PUBLIC_URL}/assets/header_god_image.png`
+                }
                 alt="Temple"
                 sx={{
                   width: '100%',
@@ -499,19 +700,19 @@ export default function Home() {
             }}
           >
             <Typography variant="overline" sx={{ letterSpacing: 2 }}>
-              POOJA CENTRE
+              {poojaSection.subtitle}
             </Typography>
             <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
-              Plan Your Devotional Day
+              {poojaSection.title}
             </Typography>
             <Typography variant="body1" sx={{ mb: 3 }}>
-              Browse pooja categories and book your offerings online with instant confirmation.
+              {poojaSection.description}
             </Typography>
             <Box sx={{ height: 3, bgcolor: colors.secondary, borderRadius: 1, mb: 2, opacity: 0.6 }} />
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <Button 
                 component={RouterLink} 
-                to="/poojas/booking" 
+                to={poojaSection.buttonLink}
                 variant="contained" 
                 sx={{ 
                   fontWeight: 700,
@@ -527,29 +728,32 @@ export default function Home() {
                   }
                 }}
               >
-                Book a Pooja
+                {poojaSection.buttonText}
               </Button>
               <Button
                 component={RouterLink}
-                to="/poojas/vazhipad"
+                to={poojaSection.secondButtonLink}
                 variant="outlined"
                 sx={{ color: colors.white, borderColor: colors.white, fontWeight: 700 }}
               >
-                View Vazhipads
+                {poojaSection.secondButtonText}
               </Button>
             </Stack>
           </Paper>
         </Grid>
         <Grid item xs={12} md={7}>
           <Grid container spacing={2}>
-            {poojaTiles.map((tile) => (
-              <Grid item xs={12} sm={6} key={tile.title}>
+            {poojaSection.tiles.map((tile, index) => (
+              <Grid item xs={12} sm={6} key={tile.title || index}>
                 <Paper
                   sx={{
                     p: 3,
                     borderRadius: 3,
                     height: '100%',
-                    background: tile.color,
+                    background: index === 0 ? 'linear-gradient(135deg, #e8fff2, #ccf5e0)' : 
+                                index === 1 ? 'linear-gradient(135deg, #f3f6ff, #e8ecff)' : 
+                                index === 2 ? 'linear-gradient(135deg, #ffe1e7, #ffd6a5)' : 
+                                'linear-gradient(135deg, #fef3d9, #ffe8ba)',
                     position: 'relative',
                     overflow: 'hidden',
                     border: `2px solid rgba(212,175,55,0.3)`,
@@ -568,7 +772,7 @@ export default function Home() {
                   <Typography variant="body2" sx={{ color: colors.textDark, mb: 2 }}>
                     {tile.description}
                   </Typography>
-                  <Button component={RouterLink} to={tile.to} size="small" sx={{ color: colors.primary, fontWeight: 700 }}>
+                  <Button component={RouterLink} to={(tile as any).link || tile.to} size="small" sx={{ color: colors.primary, fontWeight: 700 }}>
                     Open →
                   </Button>
 
@@ -619,23 +823,18 @@ export default function Home() {
       }}>
         <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
         <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
-          NEWS OVERVIEW
+          {newsSection.subtitle}
         </Typography>
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-          Temple Announcements & Updates
+          {newsSection.title}
         </Typography>
         <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
-          Stay informed on announcements, upcoming events, notices, and recent news.
+          {newsSection.description}
         </Typography>
 
         <Grid container spacing={2}>
-          {[
-            { key: 'announcements', title: 'Announcements', to: '/news/announcements', chip: 'New' },
-            { key: 'news', title: 'News', to: '/news/news', chip: 'Recent' },
-            { key: 'upcoming', title: 'Upcoming', to: '/news/upcoming', chip: 'Schedule' },
-            { key: 'notices', title: 'Notices', to: '/news/notices', chip: 'Official' },
-          ].map((item) => (
-            <Grid item xs={12} sm={6} md={3} key={item.key}>
+          {newsSection.tiles.map((item, index) => (
+            <Grid item xs={12} sm={6} md={3} key={item.title || index}>
               <Paper
                 sx={{
                   p: 2.5,
@@ -661,10 +860,7 @@ export default function Home() {
                 }} />
                 <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{item.title}</Typography>
                 <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 2 }}>
-                  {item.key === 'announcements' && 'Latest official temple announcements and bulletin items.'}
-                  {item.key === 'news' && 'Coverage and updates about temple activities and programs.'}
-                  {item.key === 'upcoming' && 'Dates and details for scheduled poojas, utsavams, and events.'}
-                  {item.key === 'notices' && 'Important notices and office circulars for devotees.'}
+                  {item.description}
                 </Typography>
                 <Stack direction="row" spacing={1.5} alignItems="center">
                   <Box sx={{ 
@@ -681,7 +877,7 @@ export default function Home() {
                   </Box>
                   <Button 
                     component={RouterLink} 
-                    to={item.to} 
+                    to={item.link}
                     size="small" 
                     variant="contained" 
                     sx={{ 
@@ -695,7 +891,7 @@ export default function Home() {
                   >
                     Open
                   </Button>
-                  <Button component={RouterLink} to={item.to} size="small" variant="text" sx={{ color: colors.primary, fontWeight: 700 }}>
+                  <Button component={RouterLink} to={item.link} size="small" variant="text" sx={{ color: colors.primary, fontWeight: 700 }}>
                     Read More →
                   </Button>
                 </Stack>
@@ -776,21 +972,16 @@ export default function Home() {
             }
           }}>
             <Box sx={{ position: 'relative', zIndex: 1 }}>
-              <Typography variant="overline" sx={{ letterSpacing: 3, fontWeight: 800, fontSize: 13, opacity: 0.95 }}>DONATION OVERVIEW</Typography>
-              <Typography variant="h3" sx={{ fontWeight: 800, mt: 0.5, textShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>Support Temple Causes</Typography>
-              <Typography variant="body1" sx={{ mt: 1, opacity: 0.95, fontWeight: 500 }}>Your contributions help maintain our sacred traditions and serve the community</Typography>
+              <Typography variant="overline" sx={{ letterSpacing: 3, fontWeight: 800, fontSize: 13, opacity: 0.95 }}>{donationSection.subtitle}</Typography>
+              <Typography variant="h3" sx={{ fontWeight: 800, mt: 0.5, textShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>{donationSection.title}</Typography>
+              <Typography variant="body1" sx={{ mt: 1, opacity: 0.95, fontWeight: 500 }}>{donationSection.description}</Typography>
             </Box>
             <Box sx={{ position: 'absolute', right: -20, top: -20, width: 160, height: 160, borderRadius: '50%', bgcolor: 'rgba(255,255,255,0.1)', filter: 'blur(40px)' }} />
           </Box>
 
           <Grid container spacing={2} sx={{ mt: 2, px: { xs: 1, md: 2 }, pb: 2 }}>
-            {[
-              { key: 'online', title: 'Online Donation', desc: 'Quick, secure contributions with instant receipt.', to: '/donate/online', tag: 'Popular', tagColor: colors.secondary },
-              { key: 'annadanam', title: 'Annadanam', desc: 'Join daily food offering and community welfare.', to: '/donate/annadanam', tag: 'Daily', tagColor: colors.primary },
-              { key: 'renovation', title: 'Renovation', desc: 'Help preserve and improve temple infrastructure.', to: '/donate/renovation', tag: 'Urgent', tagColor: colors.primaryDark },
-              { key: 'festival', title: 'Festival Support', desc: 'Sponsor arrangements for seasonal utsavams.', to: '/donate/festival', tag: 'Seasonal', tagColor: colors.primary },
-            ].map((item) => (
-              <Grid item xs={12} md={6} key={item.key}>
+            {donationSection.tiles.map((item, index) => (
+              <Grid item xs={12} md={6} key={item.title || index}>
                 <Paper
                   sx={{
                     p: 3,
@@ -839,10 +1030,10 @@ export default function Home() {
                           background: 'radial-gradient(circle at top left, rgba(255,255,255,0.4), transparent 70%)',
                         }
                       }}>
-                        {item.key === 'online' && <PaymentIcon sx={{ color: '#d4af37', fontSize: 32, position: 'relative', zIndex: 1 }} />}
-                        {item.key === 'annadanam' && <FastfoodIcon sx={{ color: '#d4af37', fontSize: 32, position: 'relative', zIndex: 1 }} />}
-                        {item.key === 'renovation' && <BuildIcon sx={{ color: '#d4af37', fontSize: 32, position: 'relative', zIndex: 1 }} />}
-                        {item.key === 'festival' && <CelebrationIcon sx={{ color: '#d4af37', fontSize: 32, position: 'relative', zIndex: 1 }} />}
+                        {index === 0 && <PaymentIcon sx={{ color: '#d4af37', fontSize: 32, position: 'relative', zIndex: 1 }} />}
+                        {index === 1 && <FastfoodIcon sx={{ color: '#d4af37', fontSize: 32, position: 'relative', zIndex: 1 }} />}
+                        {index === 2 && <BuildIcon sx={{ color: '#d4af37', fontSize: 32, position: 'relative', zIndex: 1 }} />}
+                        {index === 3 && <CelebrationIcon sx={{ color: '#d4af37', fontSize: 32, position: 'relative', zIndex: 1 }} />}
                       </Box>
                     </Grid>
                     <Grid item xs>
@@ -863,11 +1054,11 @@ export default function Home() {
                           {item.tag}
                         </Box>
                       </Box>
-                      <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 1.5, lineHeight: 1.6 }}>{item.desc}</Typography>
+                      <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 1.5, lineHeight: 1.6 }}>{item.description}</Typography>
                       <Box sx={{ position: 'relative' }}>
                         <Box sx={{ height: 8, borderRadius: 4, background: 'rgba(212,175,55,0.15)', overflow: 'hidden', border: '1px solid rgba(212,175,55,0.2)' }}>
                           <Box sx={{ 
-                            width: item.key === 'annadanam' ? '50%' : item.key === 'renovation' ? '30%' : item.key === 'festival' ? '40%' : '60%', 
+                            width: index === 1 ? '50%' : index === 2 ? '30%' : index === 3 ? '40%' : '60%', 
                             height: '100%', 
                             background: `linear-gradient(90deg, #d4af37, #e5c158)`,
                             boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.3)',
@@ -884,7 +1075,7 @@ export default function Home() {
                           }} />
                         </Box>
                         <Typography variant="caption" sx={{ display: 'block', mt: 0.5, color: '#d4af37', fontWeight: 700, fontSize: 11 }}>
-                          {item.key === 'annadanam' ? '50%' : item.key === 'renovation' ? '30%' : item.key === 'festival' ? '40%' : '60%'} of goal reached
+                          {index === 1 ? '50%' : index === 2 ? '30%' : index === 3 ? '40%' : '60%'} of goal reached
                         </Typography>
                       </Box>
                     </Grid>
@@ -892,7 +1083,7 @@ export default function Home() {
                   <Box sx={{ mt: 2.5, display: 'flex', gap: 2, pt: 2, borderTop: '1px solid rgba(212,175,55,0.15)' }}>
                     <Button 
                       component={RouterLink} 
-                      to={item.to} 
+                      to={item.link}
                       variant="contained" 
                       size="medium" 
                       sx={{ 
@@ -916,7 +1107,7 @@ export default function Home() {
                     </Button>
                     <Button 
                       component={RouterLink} 
-                      to={item.to} 
+                      to={item.link}
                       variant="outlined" 
                       size="medium" 
                       sx={{ 
@@ -1077,23 +1268,18 @@ export default function Home() {
       }}>
         <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
         <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
-          GALLERY OVERVIEW
+          {gallerySection.subtitle}
         </Typography>
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-          Explore Photos & Videos
+          {gallerySection.title}
         </Typography>
         <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
-          A glimpse of temple moments — festivals, premises, events and serene views.
+          {gallerySection.description}
         </Typography>
 
         <Grid container spacing={2}>
-            {[
-              { key: 'photos', title: 'Photos', to: '/gallery/photos', img: `${process.env.PUBLIC_URL}/assets/header_god_image.png`, chip: 'Curated' },
-            { key: 'videos', title: 'Videos', to: '/gallery/videos', youtubeId: 'bFHz3KocQc0', chip: 'Highlights' },
-            { key: 'events', title: 'Events', to: '/gallery/events', img: `${process.env.PUBLIC_URL}/assets/slide_3.png`, chip: 'Recent' },
-            { key: 'videos2', title: 'Videos', to: '/gallery/videos', youtubeId: 'bFHz3KocQc0', chip: 'Temple Tour' },
-          ].map((item) => (
-            <Grid item xs={12} sm={6} md={3} key={item.key}>
+            {gallerySection.tiles.map((item, index) => (
+              <Grid item xs={12} sm={6} md={3} key={item.title || index}>
               <Paper
                 sx={{
                   borderRadius: 4,
@@ -1109,7 +1295,7 @@ export default function Home() {
                 }}
               >
                 <Box sx={{ position: 'relative' }}>
-                  {(item.key === 'videos' || item.key === 'videos2') && item.youtubeId ? (
+                  {item.type === 'video' && item.youtubeId ? (
                     <Box sx={{ position: 'relative' }}>
                       <Box
                         component="iframe"
@@ -1129,7 +1315,7 @@ export default function Home() {
                   ) : (
                     <Box
                       component="img"
-                      src={item.img}
+                      src={item.imageUrl?.startsWith('http') || item.imageUrl?.startsWith('data:') ? item.imageUrl : `${process.env.PUBLIC_URL}${item.imageUrl}`}
                       alt={item.title}
                       sx={{ width: '100%', height: 160, objectFit: 'cover', borderBottom: `2px solid #d4af37` }}
                       onError={(e: any) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/assets/gallery_fallback.png`; }}
@@ -1144,7 +1330,7 @@ export default function Home() {
                   <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
                     <Button 
                       component={RouterLink} 
-                      to={item.to} 
+                      to={item.link}
                       size="small" 
                       variant="contained" 
                       sx={{ 
@@ -1158,7 +1344,7 @@ export default function Home() {
                     >
                       Open
                     </Button>
-                    <Button component={RouterLink} to={item.to} size="small" variant="text" sx={{ color: colors.primary, fontWeight: 700 }}>
+                    <Button component={RouterLink} to={item.link} size="small" variant="text" sx={{ color: colors.primary, fontWeight: 700 }}>
                       View More →
                     </Button>
                   </Stack>
@@ -1205,25 +1391,20 @@ export default function Home() {
       }}>
         <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
         <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
-          NEARBY OVERVIEW
+          {nearbySection.subtitle}
         </Typography>
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-          Explore Nearby Attractions
+          {nearbySection.title}
         </Typography>
         <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
-          Beaches, temples, viewpoints and heritage spots around the temple.
+          {nearbySection.description}
         </Typography>
 
         <Grid container spacing={2}>
-          {[
-            { key: 'beaches', title: 'Beaches', to: '/nearby/beaches', icon: BeachAccessIcon, chip: 'Scenic' },
-            { key: 'temples', title: 'Temples', to: '/nearby/temples', icon: TempleIcon, chip: 'Pilgrimage' },
-            { key: 'viewpoints', title: 'Viewpoints', to: '/nearby/viewpoints', icon: LandscapeIcon, chip: 'Panorama' },
-            { key: 'heritage', title: 'Heritage', to: '/nearby/heritage', icon: MuseumIcon, chip: 'Culture' },
-            { key: 'boating', title: 'Boating', to: '/nearby/boating', icon: DirectionsBoatIcon, chip: 'Leisure' },
-            { key: 'activities', title: 'Activities', to: '/nearby/activities', icon: HikingIcon, chip: 'Outdoor' },
-          ].map((item) => (
-            <Grid item xs={12} sm={6} md={4} key={item.key}>
+          {nearbySection.tiles.map((item, index) => {
+            const IconComp = index === 0 ? BeachAccessIcon : index === 1 ? TempleIcon : index === 2 ? LandscapeIcon : index === 3 ? MuseumIcon : index === 4 ? DirectionsBoatIcon : HikingIcon;
+            return (
+            <Grid item xs={12} sm={6} md={4} key={item.title || index}>
               <Paper
                 sx={{
                   p: 2.5,
@@ -1250,21 +1431,13 @@ export default function Home() {
                 <Grid container spacing={2} alignItems="center">
                   <Grid item>
                     <Box sx={{ width: 56, height: 56, borderRadius: 3, bgcolor: 'rgba(212,175,55,0.1)', border: `1.5px solid rgba(212,175,55,0.3)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {(() => {
-                        const IconComp = item.icon as React.ElementType;
-                        return <IconComp sx={{ color: '#d4af37' }} />;
-                      })()}
+                      <IconComp sx={{ color: '#d4af37' }} />
                     </Box>
                   </Grid>
                   <Grid item xs>
                     <Typography variant="h6" sx={{ fontWeight: 700 }}>{item.title}</Typography>
                     <Typography variant="body2" sx={{ color: colors.textSecondary }}>
-                      {item.key === 'beaches' && 'Relax at serene shores and coastal walks.'}
-                      {item.key === 'temples' && 'Visit historic shrines and spiritual centers.'}
-                      {item.key === 'viewpoints' && 'Catch sunset vistas and hilltop views.'}
-                      {item.key === 'heritage' && 'Discover museums and cultural landmarks.'}
-                      {item.key === 'boating' && 'Enjoy backwater rides and boat tours.'}
-                      {item.key === 'activities' && 'Try hiking trails and outdoor fun.'}
+                      {item.description}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1276,7 +1449,7 @@ export default function Home() {
                 <Box sx={{ mt: 2, display: 'flex', gap: 1.5 }}>
                   <Button 
                     component={RouterLink} 
-                    to={item.to} 
+                    to={item.link} 
                     variant="contained" 
                     size="small" 
                     sx={{ 
@@ -1288,11 +1461,12 @@ export default function Home() {
                       }
                     }}
                   >Open</Button>
-                  <Button component={RouterLink} to={item.to} variant="text" size="small" sx={{ color: colors.primary, fontWeight: 700 }}>View Map →</Button>
+                  <Button component={RouterLink} to={item.link} variant="text" size="small" sx={{ color: colors.primary, fontWeight: 700 }}>Learn More →</Button>
                 </Box>
               </Paper>
             </Grid>
-          ))}
+            );
+          })}
         </Grid>
       </Box>
       </AnimatedSection>
@@ -1321,23 +1495,20 @@ export default function Home() {
       }}>
         <SectionOrnament opacity={0.85} size={88} />
         <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
-          CONTACT OVERVIEW
+          {contactSection.subtitle}
         </Typography>
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-          Get In Touch With Us
+          {contactSection.title}
         </Typography>
         <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
-          Find office details, map, general info, and share feedback easily.
+          {contactSection.description}
         </Typography>
 
         <Grid container spacing={2}>
-          {[
-            { key: 'office', title: 'Office', to: '/contact/office', icon: PhoneIcon, desc: 'Temple office timings and phone numbers.' },
-            { key: 'map', title: 'Map', to: '/contact/map', icon: MapIcon, desc: 'Locate the temple and plan your route.' },
-            { key: 'info', title: 'Info', to: '/contact/info', icon: InfoOutlinedIcon, desc: 'General information for visitors.' },
-            { key: 'feedback', title: 'Feedback', to: '/contact/feedback', icon: FeedbackIcon, desc: 'Share suggestions and experiences.' },
-          ].map((item) => (
-            <Grid item xs={12} sm={6} md={3} key={item.key}>
+          {contactSection.tiles.map((item, index) => {
+            const IconComp = index === 0 ? PhoneIcon : index === 1 ? MapIcon : index === 2 ? InfoOutlinedIcon : FeedbackIcon;
+            return (
+              <Grid item xs={12} sm={6} md={3} key={item.title || index}>
               <Paper
                 sx={{
                   p: 2.5,
@@ -1364,21 +1535,18 @@ export default function Home() {
                 <Grid container spacing={2} alignItems="center">
                   <Grid item>
                     <Box sx={{ width: 56, height: 56, borderRadius: 3, bgcolor: 'rgba(212,175,55,0.1)', border: `1.5px solid rgba(212,175,55,0.3)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {(() => {
-                        const IconComp = item.icon as React.ElementType;
-                        return <IconComp sx={{ color: '#d4af37' }} />;
-                      })()}
+                      <IconComp sx={{ color: '#d4af37' }} />
                     </Box>
                   </Grid>
                   <Grid item xs>
                     <Typography variant="h6" sx={{ fontWeight: 700 }}>{item.title}</Typography>
-                    <Typography variant="body2" sx={{ color: colors.textSecondary }}>{item.desc}</Typography>
+                    <Typography variant="body2" sx={{ color: colors.textSecondary }}>{item.description}</Typography>
                   </Grid>
                 </Grid>
                 <Box sx={{ mt: 2, display: 'flex', gap: 1.5 }}>
                   <Button 
                     component={RouterLink} 
-                    to={item.to} 
+                    to={item.link} 
                     variant="contained" 
                     size="small" 
                     sx={{ 
@@ -1390,11 +1558,12 @@ export default function Home() {
                       }
                     }}
                   >Open</Button>
-                  <Button component={RouterLink} to={item.to} variant="text" size="small" sx={{ color: colors.primary, fontWeight: 700 }}>Learn More →</Button>
+                  <Button component={RouterLink} to={item.link} variant="text" size="small" sx={{ color: colors.primary, fontWeight: 700 }}>Learn More →</Button>
                 </Box>
               </Paper>
             </Grid>
-          ))}
+            );
+          })}
         </Grid>
       </Box>
       </AnimatedSection>

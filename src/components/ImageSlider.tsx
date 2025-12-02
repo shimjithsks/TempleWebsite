@@ -1,51 +1,106 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Typography, Fade } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 import { colors } from '../theme/colors';
 
-const sliderImages = [
+interface SliderImage {
+  id: string;
+  imageUrl: string;
+  title?: string;
+  description?: string;
+  order: number;
+}
+
+const defaultSliderImages = [
   {
-    id: 1,
+    id: 'default_1',
     title: 'Welcome to Muchukunnu Sri Kotta-Kovilakam Kshethram',
     subtitle: 'Preserving tradition. Serving devotion.',
     color: colors.primary,
     image: `${process.env.PUBLIC_URL}/assets/slider_1.jpg`,
     overlay: 'rgba(0,0,0,0.45)',
     isMain: true,
+    order: 0,
   },
   {
-    id: 2,
+    id: 'default_2',
     title: 'Temple Main Entrance',
     color: colors.primary,
     image: `${process.env.PUBLIC_URL}/assets/slider_2.jpg`,
     overlay: 'rgba(0,0,0,0.35)',
+    order: 1,
   },
   {
-    id: 3,
+    id: 'default_3',
     title: 'Temple Premises',
     color: colors.primary,
     image: `${process.env.PUBLIC_URL}/assets/slide_3.png`,
     overlay: 'rgba(0,0,0,0.35)',
+    order: 2,
   },
   {
-    id: 4,
+    id: 'default_4',
     title: 'Festive Moments',
     color: colors.white,
     image: `${process.env.PUBLIC_URL}/assets/slide_4.png`,
     overlay: 'rgba(0,0,0,0.35)',
+    order: 3,
   },
   {
-    id: 5,
+    id: 'default_5',
     title: 'Devotee Gatherings',
     color: colors.olive,
     image: `${process.env.PUBLIC_URL}/assets/slide_5.png`,
     overlay: 'rgba(0,0,0,0.45)',
+    order: 4,
   },
 ];
 
 export default function ImageSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleSlide, setVisibleSlide] = useState(0);
+  const [sliderImages, setSliderImages] = useState(defaultSliderImages);
+
+  useEffect(() => {
+    fetchSliderImages();
+  }, []);
+
+  const fetchSliderImages = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'slider_images'));
+      if (!querySnapshot.empty) {
+        const fetchedImages: any[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data() as SliderImage;
+          fetchedImages.push({
+            id: doc.id,
+            title: data.title || '',
+            subtitle: data.description || '',
+            color: colors.primary,
+            image: data.imageUrl.startsWith('data:') 
+              ? data.imageUrl 
+              : data.imageUrl.startsWith('http') 
+                ? data.imageUrl 
+                : `${process.env.PUBLIC_URL}${data.imageUrl}`,
+            overlay: 'rgba(0,0,0,0.45)',
+            isMain: data.order === 0, // First image is main
+            order: data.order,
+          });
+        });
+        
+        // Sort by order and update state
+        const sortedImages = fetchedImages.sort((a, b) => a.order - b.order);
+        if (sortedImages.length > 0) {
+          setSliderImages(sortedImages);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching slider images:', error);
+      // Keep default images on error
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
