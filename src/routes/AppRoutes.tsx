@@ -130,6 +130,7 @@ export default function AppRoutes() {
       {/* Admin Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/admin" element={<ProtectedRoute />}>
+        <Route index element={<AdminDashboard />} />
         <Route path="dashboard" element={<AdminDashboard />} />
       </Route>
 

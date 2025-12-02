@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, Container, Grid, IconButton, Divider, Stack, Chip } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import { colors } from '../theme/colors';
+// import { colors } from '../theme/colors';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';

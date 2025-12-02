@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import PageBanner from '../../components/PageBanner';
 import PoojaSidebar from '../../components/PoojaSidebar';

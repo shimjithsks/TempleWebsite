@@ -78,6 +78,7 @@ const GallerySectionManager = () => {
 
   useEffect(() => {
     fetchContent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchContent = async () => {

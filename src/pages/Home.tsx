@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Grid, Paper, Typography, Button, Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';

@@ -10,8 +10,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Collapse,
-  Divider
+  Collapse
 } from '@mui/material';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
@@ -19,8 +18,6 @@ import { useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import HomeIcon from '@mui/icons-material/Home';
-import ImageIcon from '@mui/icons-material/Image';
-import InfoIcon from '@mui/icons-material/Info';
 import TempleHinduIcon from '@mui/icons-material/TempleHindu';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
@@ -29,10 +26,6 @@ import PlaceIcon from '@mui/icons-material/Place';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import PaymentIcon from '@mui/icons-material/Payment';
-import PhotoIcon from '@mui/icons-material/Photo';
-import MapIcon from '@mui/icons-material/Map';
 
 // Import CMS components
 import ImageSliderManager from '../components/ImageSliderManager';
@@ -152,20 +145,20 @@ interface TabPanelProps {
   value: number;
 }
 
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`admin-tabpanel-${index}`}
-      aria-labelledby={`admin-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
-    </div>
-  );
-}
+// function TabPanel(props: TabPanelProps) {
+//   const { children, value, index, ...other } = props;
+//   return (
+//     <div
+//       role="tabpanel"
+//       hidden={value !== index}
+//       id={`admin-tabpanel-${index}`}
+//       aria-labelledby={`admin-tab-${index}`}
+//       {...other}
+//     >
+//       {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
+//     </div>
+//   );
+// }
 
 const AdminDashboard = () => {
   const navigate = useNavigate();

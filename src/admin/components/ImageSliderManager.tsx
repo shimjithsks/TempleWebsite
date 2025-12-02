@@ -15,7 +15,6 @@ import {
 import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
@@ -36,6 +35,7 @@ const ImageSliderManager = () => {
 
   useEffect(() => {
     fetchImages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchImages = async () => {
@@ -85,16 +85,16 @@ const ImageSliderManager = () => {
     }
   };
 
-  const handleAddImage = () => {
-    const newImage: SliderImage = {
-      id: `temp_${Date.now()}`,
-      imageUrl: '',
-      title: '',
-      description: '',
-      order: images.length
-    };
-    setImages([...images, newImage]);
-  };
+  // const handleAddImage = () => {
+  //   const newImage: SliderImage = {
+  //     id: `temp_${Date.now()}`,
+  //     imageUrl: '',
+  //     title: '',
+  //     description: '',
+  //     order: images.length
+  //   };
+  //   setImages([...images, newImage]);
+  // };
 
   const handleUpdateImage = (id: string, field: keyof SliderImage, value: string | number) => {
     setImages(images.map(img => 

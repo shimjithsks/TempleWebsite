@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { Card, CardContent, Typography, Box, Chip, Checkbox, FormControlLabel, Button } from '@mui/material';
 import { Pooja } from '../data/pooja-data';

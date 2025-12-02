@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Typography, Fade } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';

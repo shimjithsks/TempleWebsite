@@ -32,6 +32,7 @@ const AnnouncementsManager = () => {
 
   useEffect(() => {
     fetchAnnouncements();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchAnnouncements = async () => {
@@ -105,14 +106,14 @@ const AnnouncementsManager = () => {
     setSnackbar({ open: true, message, severity });
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'error';
-      case 'medium': return 'warning';
-      case 'low': return 'info';
-      default: return 'default';
-    }
-  };
+  // const getPriorityColor = (priority: string) => {
+  //   switch (priority) {
+  //     case 'high': return 'error';
+  //     case 'medium': return 'warning';
+  //     case 'low': return 'info';
+  //     default: return 'default';
+  //   }
+  // };
 
   return (
     <Box>
