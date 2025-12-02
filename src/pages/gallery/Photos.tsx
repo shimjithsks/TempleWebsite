@@ -11,15 +11,17 @@ export default function GalleryPhotos() {
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
   const photos = [
-    { img: `${process.env.PUBLIC_URL}/assets/header_god_image.png`, title: 'Main Deity', category: 'Architecture' },
-    { img: `${process.env.PUBLIC_URL}/assets/slider_1.jpg`, title: 'Temple View 1', category: 'Premises' },
-    { img: `${process.env.PUBLIC_URL}/assets/slider_2.jpg`, title: 'Temple View 2', category: 'Premises' },
-    { img: `${process.env.PUBLIC_URL}/assets/slide_3.png`, title: 'Festival Scene', category: 'Events' },
-    { img: `${process.env.PUBLIC_URL}/assets/slide_4.png`, title: 'Sacred Space', category: 'Architecture' },
-    { img: `${process.env.PUBLIC_URL}/assets/slide_5.png`, title: 'Temple Grounds', category: 'Premises' },
-    { img: `${process.env.PUBLIC_URL}/assets/header_god_image.png`, title: 'Deity Close-up', category: 'Rituals' },
-    { img: `${process.env.PUBLIC_URL}/assets/slider_6.jpg`, title: 'Evening View', category: 'Premises' },
-    { img: `${process.env.PUBLIC_URL}/assets/slider_1.jpg`, title: 'Morning Rituals', category: 'Rituals' },
+    { img: `${process.env.PUBLIC_URL}/assets/img_1.jpeg`, title: 'Temple Entrance', category: 'Premises' },
+    { img: `${process.env.PUBLIC_URL}/assets/img_2.jpeg`, title: 'Sanctum View', category: 'Architecture' },
+    { img: `${process.env.PUBLIC_URL}/assets/img_3.jpeg`, title: 'Festival Gathering', category: 'Events' },
+    { img: `${process.env.PUBLIC_URL}/assets/img_4.jpeg`, title: 'Devotees Offering Prayers', category: 'Rituals' },
+    { img: `${process.env.PUBLIC_URL}/assets/img_5.jpeg`, title: 'Temple Corridor', category: 'Premises' },
+    { img: `${process.env.PUBLIC_URL}/assets/img_6.jpeg`, title: 'Evening Lighting', category: 'Premises' },
+    { img: `${process.env.PUBLIC_URL}/assets/img_7.jpeg`, title: 'Sacred Pond', category: 'Premises' },
+    { img: `${process.env.PUBLIC_URL}/assets/img_8.jpeg`, title: 'Cultural Program', category: 'Events' },
+    { img: `${process.env.PUBLIC_URL}/assets/img_9.jpeg`, title: 'Temple Decorations', category: 'Premises' },
+    { img: `${process.env.PUBLIC_URL}/assets/img_10.jpeg`, title: 'Traditional Rituals', category: 'Rituals' },
+    { img: `${process.env.PUBLIC_URL}/assets/img_11.jpeg`, title: 'Festive Night', category: 'Events' },
   ];
 
   const handleImageClick = (index: number) => {

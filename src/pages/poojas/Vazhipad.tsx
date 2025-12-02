@@ -22,21 +22,58 @@ export default function VazhipadList() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const vazhipads = [
-    { name: 'Archana', price: '₹50', description: 'Simple offering with devotee name chanting', icon: <SpaIcon sx={{ fontSize: 28 }} />, color: '#43A047' },
-    { name: 'Ganapathi Homam', price: '₹500', description: 'Special fire ritual for Lord Ganesha', icon: <AutoAwesomeIcon sx={{ fontSize: 28 }} />, color: '#F4511E' },
-    { name: 'Sahasranamarchana', price: '₹200', description: 'Chanting of 1000 divine names', icon: <SpaIcon sx={{ fontSize: 28 }} />, color: '#8E24AA' },
-    { name: 'Kalabhabhishekam', price: '₹300', description: 'Sacred bathing ritual of deity', icon: <SpaIcon sx={{ fontSize: 28 }} />, color: '#1E88E5' },
-    { name: 'Pushpanjali', price: '₹100', description: 'Devotional flower offering ceremony', icon: <LocalFloristIcon sx={{ fontSize: 28 }} />, color: '#E91E63' },
-    { name: 'Palpayasam', price: '₹250', description: 'Sweet milk offering to deity', icon: <CakeIcon sx={{ fontSize: 28 }} />, color: '#FB8C00' },
-    { name: 'Nivedyam', price: '₹150', description: 'Traditional food offering ritual', icon: <RestaurantIcon sx={{ fontSize: 28 }} />, color: '#00897B' },
-    { name: 'Vilakku', price: '₹75', description: 'Sacred lamp offering for blessings', icon: <LightbulbIcon sx={{ fontSize: 28 }} />, color: '#FDD835' },
-    { name: 'Appam', price: '₹200', description: 'Special sweet preparation offering', icon: <CakeIcon sx={{ fontSize: 28 }} />, color: '#D32F2F' },
-    { name: 'Aravana', price: '₹180', description: 'Traditional prasadam offering', icon: <CakeIcon sx={{ fontSize: 28 }} />, color: '#5D4037' },
+     { name: 'മലർ നിവേദ്യം', price: '₹30' },
+     { name: 'വെള്ളനിവേദ്യം', price: '₹30' },
+     { name: 'അപ്പനിവേദ്യം', price: '₹600' },
+     { name: 'ഒറ്റനിവേദ്യം', price: '₹250' },
+     { name: 'വിളക്ക്', price: '₹25' },
+     { name: 'നെയ്‌വിളക്ക്', price: '₹30' },
+     { name: 'കെടാവിളക്ക്', price: '₹50' },
+     { name: 'ചുറ്റുവിളക്ക്', price: '₹1000' },
+     { name: 'നവരാത്രി വിളക്ക്', price: '₹19000' },
+     { name: 'പായസം', price: '₹60' },
+     { name: 'ഇരട്ടിപ്പായസം', price: '₹500' },
+     { name: 'പാൽപ്പായസം', price: '₹100' },
+     { name: 'തുളസിമാല', price: '₹25' },
+     { name: 'തെച്ചിമാല', price: '₹125' },
+     { name: 'ഉണ്ടമാല', price: '₹150' },
+     { name: 'പൂക്കുലമാല', price: '₹100' },
+     { name: 'മഞ്ഞ ചോറ്', price: '₹50' },
+     { name: 'മഞ്ഞപ്പൊടി ആടൽ', price: '₹50' },
+     { name: 'മാല പൂജ', price: '₹10' },
+     { name: 'താക്കോൽ പൂജ', price: '₹25' },
+     { name: 'ഒരു ദിവസപൂജ', price: '₹750' },
+     { name: 'ത്രികാല പൂജ', price: '₹3500' },
+     { name: 'വാഹന പൂജ', price: '₹30/40/60' },
+     { name: 'നക്ഷത്രപൂജ', price: '₹250' },
+     { name: 'ഗണപതിഹോമം', price: '₹100' },
+     { name: 'അഷ്ടദ്രവ്യ ഗണപതിഹോമം', price: '₹400' },
+     { name: 'സുദർശന ഹോമം', price: '₹1000' },
+     { name: 'പുഷ്പാഞ്ജലി', price: '₹20' },
+     { name: 'വലിയ പുഷ്പാഞ്ജലി', price: '₹3000' },
+     { name: 'പുഷ്‌പാർച്ചന', price: '₹20' },
+     { name: 'കളഭം ചാർത്തൽ', price: '₹400' },
+     { name: 'ത്രിമധുരം', price: '₹10' },
+     { name: 'ഭഗവതി സേവ', price: '₹250' },
+     { name: 'അരിയിലെഴുത്ത്', price: '₹100' },
+     { name: 'തോറ്റം', price: '₹750' },
+     { name: 'ഇളനീർ അഭിഷേകം', price: '₹50' },
+     { name: 'പാൽ അഭിഷേകം', price: '₹50' },
+     { name: 'ശംഖ് അഭിഷേകം', price: '₹30' },
+     { name: 'കെട്ടുനിറ', price: '₹20' },
+     { name: 'ചോറൂണ്', price: '₹250' },
+     { name: 'സ്വയംവരപുഷ്പാഞ്ജലി', price: '₹100' },
+     { name: 'ഭാഗ്യസൂക്തപുഷ്പാഞ്ജലി', price: '₹50' },
+     { name: 'സഹസ്രനാമപുഷ്പാഞ്ജലി', price: '₹50' },
+     { name: 'ഐക്യമത്യസൂക്ത പുഷ്പാഞ്ജലി', price: '₹50' },
+     { name: 'രക്തപുഷ്പാഞ്ജലി', price: '₹50' },
+     { name: 'രക്ഷസിനുപൂജ', price: '₹200' },
+     { name: 'രക്ഷസിനു പാൽപായസം', price: '₹150' },
+     { name: 'രക്ഷസിനു വിളക്ക്', price: '₹30' },
   ];
 
   const filteredVazhipads = vazhipads.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.description.toLowerCase().includes(searchTerm.toLowerCase())
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -136,64 +173,108 @@ export default function VazhipadList() {
               </Box>
 
               <Grid container spacing={3} sx={{ mb: 4 }}>
-                {filteredVazhipads.map((item, index) => (
-                  <Grid item xs={12} sm={6} key={index}>
-                    <Card elevation={0} sx={{ 
-                      border: `3px solid ${GOLD}`,
-                      borderRadius: 4,
-                      transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
-                      height: '100%',
-                      background: 'linear-gradient(135deg, #fff 0%, #fffef8 100%)',
-                      '&:hover': { 
-                        transform: 'translateY(-8px)',
-                        boxShadow: '0 16px 48px rgba(212,175,55,0.35)',
-                        borderColor: '#e5c158',
-                      } 
-                    }}>
-                      <CardContent sx={{ p: 3 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'start', gap: 2, mb: 2 }}>
-                          <Avatar sx={{ 
-                            width: 48, 
-                            height: 48, 
-                            bgcolor: item.color,
-                            boxShadow: `0 6px 18px ${item.color}50`,
-                          }}>
-                            {item.icon}
-                          </Avatar>
-                          <Box sx={{ flex: 1 }}>
-                            <Typography variant="h6" sx={{ 
-                              fontWeight: 700, 
-                              color: GOLD,
-                              fontSize: '1.1rem',
-                              mb: 0.5,
-                            }}>
-                              {item.name}
-                            </Typography>
-                            <Chip
-                              label={item.price}
-                              size="small"
-                              sx={{
-                                bgcolor: GOLD,
-                                color: '#000',
-                                fontWeight: 800,
-                                fontSize: '0.85rem',
-                                height: 24,
-                                borderRadius: 2,
-                              }}
-                            />
+                {/* Render all non-Brahmarakshas vazhipads first */}
+                {filteredVazhipads
+                  .filter(item => item.name !== 'രക്ഷസിനുപൂജ' && item.name !== 'രക്ഷസിനു പാൽപായസം' && item.name !== 'രക്ഷസിനു വിളക്ക്')
+                  .map((item, index) => (
+                    <Grid item xs={12} sm={6} key={item.name}>
+                      <Card elevation={0} sx={{ 
+                        border: `3px solid ${GOLD}`,
+                        borderRadius: 4,
+                        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                        height: '100%',
+                        background: 'linear-gradient(135deg, #fff 0%, #fffef8 100%)',
+                        '&:hover': { 
+                          transform: 'translateY(-8px)',
+                          boxShadow: '0 16px 48px rgba(212,175,55,0.35)',
+                          borderColor: '#e5c158',
+                        } 
+                      }}>
+                        <CardContent sx={{ p: 3 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                            <Box sx={{ flex: 1 }}>
+                              <Typography variant="h6" sx={{ 
+                                fontWeight: 700, 
+                                color: GOLD,
+                                fontSize: '1.1rem',
+                                mb: 0.5,
+                              }}>
+                                {item.name}
+                              </Typography>
+                              <Chip
+                                label={item.price}
+                                size="small"
+                                sx={{
+                                  bgcolor: GOLD,
+                                  color: '#000',
+                                  fontWeight: 800,
+                                  fontSize: '0.85rem',
+                                  height: 24,
+                                  borderRadius: 2,
+                                }}
+                              />
+                            </Box>
                           </Box>
-                        </Box>
-                        <Typography variant="body2" sx={{ 
-                          color: '#666',
-                          lineHeight: 1.7,
-                          fontWeight: 500,
-                        }}>
-                          {item.description}
-                        </Typography>
-                      </CardContent>
-                    </Card>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+
+                {/* Brahmarakshas section title */}
+                {filteredVazhipads.some(item => item.name === 'രക്ഷസിനുപൂജ') && (
+                  <Grid item xs={12}>
+                    <Typography variant="h6" sx={{ fontWeight: 900, color: GOLD, mb: 2, mt: 2, fontSize: '1.15rem', letterSpacing: 1 }}>
+                      ബ്രഹ്മരക്ഷസിനുള്ള വഴിപാടുകൾ
+                    </Typography>
                   </Grid>
-                ))}
+                )}
+
+                {/* Render Brahmarakshas vazhipads */}
+                {filteredVazhipads
+                  .filter(item => item.name === 'രക്ഷസിനുപൂജ' || item.name === 'രക്ഷസിനു പാൽപായസം' || item.name === 'രക്ഷസിനു വിളക്ക്')
+                  .map((item, index) => (
+                    <Grid item xs={12} sm={6} key={item.name}>
+                      <Card elevation={0} sx={{ 
+                        border: `3px solid ${GOLD}`,
+                        borderRadius: 4,
+                        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                        height: '100%',
+                        background: 'linear-gradient(135deg, #fff 0%, #fffef8 100%)',
+                        '&:hover': { 
+                          transform: 'translateY(-8px)',
+                          boxShadow: '0 16px 48px rgba(212,175,55,0.35)',
+                          borderColor: '#e5c158',
+                        } 
+                      }}>
+                        <CardContent sx={{ p: 3 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                            <Box sx={{ flex: 1 }}>
+                              <Typography variant="h6" sx={{ 
+                                fontWeight: 700, 
+                                color: GOLD,
+                                fontSize: '1.1rem',
+                                mb: 0.5,
+                              }}>
+                                {item.name}
+                              </Typography>
+                              <Chip
+                                label={item.price}
+                                size="small"
+                                sx={{
+                                  bgcolor: GOLD,
+                                  color: '#000',
+                                  fontWeight: 800,
+                                  fontSize: '0.85rem',
+                                  height: 24,
+                                  borderRadius: 2,
+                                }}
+                              />
+                            </Box>
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
               </Grid>
 
               {filteredVazhipads.length === 0 && (

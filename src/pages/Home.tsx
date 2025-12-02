@@ -23,6 +23,7 @@ import FeedbackIcon from '@mui/icons-material/Feedback';
 import { colors } from '../theme/colors';
 import SectionOrnament from '../components/SectionOrnament';
 import { useLanguage } from '../context/LanguageContext';
+import HeroVideo from '../components/HeroVideo';
 
 
 // Pooja quick-access tiles

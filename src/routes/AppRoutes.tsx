@@ -58,6 +58,9 @@ import ContactMap from '../pages/contact/Map';
 import Feedback from '../pages/contact/Feedback';
 import OfficeNumbers from '../pages/contact/Office';
 import CartPage from '../pages/Cart';
+import Login from '../admin/pages/Login';
+import AdminDashboard from '../admin/pages/AdminDashboard';
+import ProtectedRoute from '../admin/routes/ProtectedRoute';
 
 export default function AppRoutes() {
   return (
@@ -123,6 +126,12 @@ export default function AppRoutes() {
 
       {/* Cart Route */}
       <Route path="/cart" element={<CartPage />} />
+
+      {/* Admin Routes */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/admin" element={<ProtectedRoute />}>
+        <Route path="dashboard" element={<AdminDashboard />} />
+      </Route>
 
     </Routes>
     </>

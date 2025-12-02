@@ -5,25 +5,37 @@ import { colors } from '../theme/colors';
 
 export default function HeroVideo() {
   return (
-    <Box sx={{ position: 'relative', width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}>
-      <Box sx={{ position: 'relative', height: 680, overflow: 'hidden', width: '100%' }}>
-        <Box
-          component="video"
-          src="https://cdn.jsdelivr.net/gh/shimjithsks/TempleWebsite@media/hero.mp4"
+    <Box sx={{ position: 'relative', width: '100vw', marginLeft: 'calc(-50vw + 50%)', mt: -15, bgcolor: colors.black }}>
+      <Box sx={{ position: 'relative', height: 790, overflow: 'hidden', width: '100%' }}>
+        <video
+          src={process.env.PUBLIC_URL + '/assets/hero.mp4'}
           autoPlay
           muted
           loop
           playsInline
-          sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
 
-        <Box
-          sx={{
+        {/* Overlay scrims and chips */}
+        <Box sx={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+          {/* Top gradient for header readability */}
+          <Box sx={{
             position: 'absolute',
-            inset: 0,
-            background: `linear-gradient(130deg, ${colors.overlayDark45}, ${colors.overlayDark35})`,
-          }}
-        />
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 140,
+            background: 'linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.0))',
+          }} />
+          {/* Main overlay */}
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              background: `linear-gradient(130deg, ${colors.overlayDark45}, ${colors.overlayDark35})`,
+            }}
+          />
+        </Box>
 
         <Box
           sx={{
