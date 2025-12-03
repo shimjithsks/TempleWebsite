@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/TempleWebsite/static/css/main.3982bb5f.css",
-    "main.js": "/TempleWebsite/static/js/main.a546070b.js",
+    "main.js": "/TempleWebsite/static/js/main.413b2236.js",
     "index.html": "/TempleWebsite/index.html",
     "main.3982bb5f.css.map": "/TempleWebsite/static/css/main.3982bb5f.css.map",
-    "main.a546070b.js.map": "/TempleWebsite/static/js/main.a546070b.js.map"
+    "main.413b2236.js.map": "/TempleWebsite/static/js/main.413b2236.js.map"
   },
   "entrypoints": [
     "static/css/main.3982bb5f.css",
-    "static/js/main.a546070b.js"
+    "static/js/main.413b2236.js"
   ]
 }
