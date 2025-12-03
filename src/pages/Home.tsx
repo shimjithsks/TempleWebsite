@@ -58,19 +58,20 @@ const poojaTiles = [
   },
 ];
 
-// Animated section wrapper component
-function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+// Animated section wrapper component with staggered children animation
+function AnimatedSection({ children, delay = 0, staggerChildren = false }: { children: React.ReactNode; delay?: number; staggerChildren?: boolean }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !isVisible) {
           setTimeout(() => setIsVisible(true), delay);
+          observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+      { threshold: 0.15, rootMargin: '0px 0px -80px 0px' }
     );
 
     if (ref.current) {
@@ -82,15 +83,73 @@ function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; d
         observer.unobserve(ref.current);
       }
     };
-  }, [delay]);
+  }, [delay, isVisible]);
 
   return (
     <Box
       ref={ref}
       sx={{
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
-        transition: 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+        transform: isVisible ? 'translateY(0)' : 'translateY(80px)',
+        transition: 'opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        willChange: 'opacity, transform',
+        ...(staggerChildren && {
+          '& > *': {
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.96)',
+            transition: 'opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            willChange: 'opacity, transform',
+          },
+          '& > *:nth-of-type(1)': { transitionDelay: '0.15s' },
+          '& > *:nth-of-type(2)': { transitionDelay: '0.25s' },
+          '& > *:nth-of-type(3)': { transitionDelay: '0.35s' },
+          '& > *:nth-of-type(4)': { transitionDelay: '0.45s' },
+          '& > *:nth-of-type(5)': { transitionDelay: '0.55s' },
+          '& > *:nth-of-type(6)': { transitionDelay: '0.65s' },
+          '& > *:nth-of-type(7)': { transitionDelay: '0.75s' },
+          '& > *:nth-of-type(8)': { transitionDelay: '0.85s' },
+        }),
+      }}
+    >
+      {children}
+    </Box>
+  );
+}
+
+// Animated content component for text and images within sections
+function AnimatedContent({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isVisible) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [delay, isVisible]);
+
+  return (
+    <Box
+      ref={ref}
+      sx={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateX(0)' : 'translateX(-30px)',
+        transition: `opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}ms, transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}ms`,
+        willChange: 'opacity, transform',
       }}
     >
       {children}
@@ -100,6 +159,14 @@ function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; d
 
 export default function Home() {
   const { t } = useLanguage();
+  const [pageLoaded, setPageLoaded] = useState(false);
+
+  useEffect(() => {
+    // Trigger page load animation
+    const timer = setTimeout(() => setPageLoaded(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   const [aboutContent, setAboutContent] = useState({
     title: t('home.aboutIntro'),
     subtitle: t('home.aboutTemple'),
@@ -293,10 +360,28 @@ export default function Home() {
   }, [t]);
   
   return (
-    <Box sx={{ mt: 0, pt: 0, pb: 6 }}>
-      <ImageSlider />
+    <Box 
+      sx={{ 
+        mt: 0, 
+        pt: 0, 
+        pb: 6,
+        opacity: pageLoaded ? 1 : 0,
+        transform: pageLoaded ? 'translateY(0)' : 'translateY(20px)',
+        transition: 'opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      }}
+    >
+      <Box 
+        sx={{ 
+          opacity: pageLoaded ? 1 : 0,
+          transform: pageLoaded ? 'scale(1)' : 'scale(0.98)',
+          transition: 'opacity 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s, transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s',
+          willChange: 'opacity, transform',
+        }}
+      >
+        <ImageSlider />
+      </Box>
       {/* Premium About Temple section */}
-      <AnimatedSection delay={100}>
+      <AnimatedSection delay={0}>
       <Box
         sx={{
           mt: 4,
@@ -350,121 +435,132 @@ export default function Home() {
                   borderRadius: 2,
                   boxShadow: '0 0 12px rgba(212,175,55,0.5)'
                 }} />
-                <Typography variant="overline" sx={{ 
-                  color: '#d4af37', 
-                  letterSpacing: 4, 
-                  fontWeight: 900,
-                  fontSize: 14,
-                  textShadow: '0 1px 2px rgba(0,0,0,0.1)'
-                }}>
-                  {aboutContent.subtitle}
-                </Typography>
-                <Typography variant="h2" sx={{ 
-                  fontWeight: 900, 
-                  mb: 0.5,
-                  background: 'linear-gradient(135deg, #333 0%, #000 100%)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  textShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                  letterSpacing: -0.5
-                }}>
-                  {aboutContent.title}
-                </Typography>
-                <Box sx={{ 
-                  width: 80, 
-                  height: 4, 
-                  background: 'linear-gradient(90deg, #d4af37, #e5c158)', 
-                  borderRadius: 2,
-                  mb: 2,
-                  boxShadow: '0 2px 8px rgba(212,175,55,0.4)'
-                }} />
+                <AnimatedContent delay={200}>
+                  <Typography variant="overline" sx={{ 
+                    color: '#d4af37', 
+                    letterSpacing: 4, 
+                    fontWeight: 900,
+                    fontSize: 14,
+                    textShadow: '0 1px 2px rgba(0,0,0,0.1)'
+                  }}>
+                    {aboutContent.subtitle}
+                  </Typography>
+                </AnimatedContent>
+                <AnimatedContent delay={350}>
+                  <Typography variant="h2" sx={{ 
+                    fontWeight: 900, 
+                    mb: 0.5,
+                    background: 'linear-gradient(135deg, #333 0%, #000 100%)',
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    textShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                    letterSpacing: -0.5
+                  }}>
+                    {aboutContent.title}
+                  </Typography>
+                </AnimatedContent>
+                <AnimatedContent delay={450}>
+                  <Box sx={{ 
+                    width: 80, 
+                    height: 4, 
+                    background: 'linear-gradient(90deg, #d4af37, #e5c158)', 
+                    borderRadius: 2,
+                    mb: 2,
+                    boxShadow: '0 2px 8px rgba(212,175,55,0.4)'
+                  }} />
+                </AnimatedContent>
               </Box>
               
               {/* Enhanced description with better typography */}
-              <Typography variant="body1" sx={{ 
-                color: colors.textSecondary, 
-                mb: 4, 
-                lineHeight: 1.9,
-                fontSize: '1.125rem',
-                fontWeight: 400,
-                maxWidth: 560
-              }}>
-                {aboutContent.description}
-              </Typography>
+              <AnimatedContent delay={550}>
+                <Typography variant="body1" sx={{ 
+                  color: colors.textSecondary, 
+                  mb: 4, 
+                  lineHeight: 1.9,
+                  fontSize: '1.125rem',
+                  fontWeight: 400,
+                  maxWidth: 560
+                }}>
+                  {aboutContent.description}
+                </Typography>
+              </AnimatedContent>
               
               {/* Premium feature chips */}
-              <Stack direction="row" spacing={2} flexWrap="wrap" mb={4} useFlexGap>
-                {[
-                  { label: 'Daily Rituals', icon: TempleHinduIcon, color: '#d4af37' },
-                  { label: 'Festival Utsavams', icon: AnnouncementIcon, color: '#e5c158' },
-                  { label: 'Community Seva', icon: VolunteerActivismIcon, color: '#d4af37' },
-                  { label: 'Historic Legacy', icon: InfoIcon, color: '#e5c158' },
-                ].map((item) => {
-                  const IconComp = item.icon;
-                  return (
-                    <Paper
-                      key={item.label}
-                      elevation={0}
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
-                        px: 2.5,
-                        py: 1.2,
-                        borderRadius: 10,
-                        background: `linear-gradient(135deg, rgba(212,175,55,0.12), rgba(212,175,55,0.2))`,
-                        border: `2px solid rgba(212,175,55,0.4)`,
-                        boxShadow: '0 4px 12px rgba(212,175,55,0.15), inset 0 1px 0 rgba(255,255,255,0.5)',
-                        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        '&::before': {
-                          content: '""',
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          background: 'radial-gradient(circle at top left, rgba(255,255,255,0.3), transparent 70%)',
-                          pointerEvents: 'none',
-                        },
-                        '&:hover': {
-                          transform: 'translateY(-4px) scale(1.02)',
-                          boxShadow: '0 8px 24px rgba(212,175,55,0.35)',
-                          borderColor: item.color,
-                          background: `linear-gradient(135deg, rgba(212,175,55,0.18), rgba(212,175,55,0.28))`,
-                        }
-                      }}
-                    >
-                      <Box sx={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: '50%',
-                        background: `linear-gradient(135deg, ${item.color}, #e5c158)`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 2px 8px rgba(212,175,55,0.3)',
-                      }}>
-                        <IconComp sx={{ color: '#000', fontSize: 18 }} />
-                      </Box>
-                      <Typography variant="body2" sx={{ 
-                        fontWeight: 800, 
-                        letterSpacing: 0.5, 
-                        color: '#333',
-                        fontSize: 13
-                      }}>
-                        {item.label}
-                      </Typography>
-                    </Paper>
-                  );
-                })}
-              </Stack>
+              <AnimatedContent delay={650}>
+                <Stack direction="row" spacing={2} flexWrap="wrap" mb={4} useFlexGap>
+                  {[
+                    { label: 'Daily Rituals', icon: TempleHinduIcon, color: '#d4af37' },
+                    { label: 'Festival Utsavams', icon: AnnouncementIcon, color: '#e5c158' },
+                    { label: 'Community Seva', icon: VolunteerActivismIcon, color: '#d4af37' },
+                    { label: 'Historic Legacy', icon: InfoIcon, color: '#e5c158' },
+                  ].map((item) => {
+                    const IconComp = item.icon;
+                    return (
+                      <Paper
+                        key={item.label}
+                        elevation={0}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1,
+                          px: 2.5,
+                          py: 1.2,
+                          borderRadius: 10,
+                          background: `linear-gradient(135deg, rgba(212,175,55,0.12), rgba(212,175,55,0.2))`,
+                          border: `2px solid rgba(212,175,55,0.4)`,
+                          boxShadow: '0 4px 12px rgba(212,175,55,0.15), inset 0 1px 0 rgba(255,255,255,0.5)',
+                          transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                          position: 'relative',
+                          overflow: 'hidden',
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            background: 'radial-gradient(circle at top left, rgba(255,255,255,0.3), transparent 70%)',
+                            pointerEvents: 'none',
+                          },
+                          '&:hover': {
+                            transform: 'translateY(-4px) scale(1.02)',
+                            boxShadow: '0 8px 24px rgba(212,175,55,0.35)',
+                            borderColor: item.color,
+                            background: `linear-gradient(135deg, rgba(212,175,55,0.18), rgba(212,175,55,0.28))`,
+                          }
+                        }}
+                      >
+                        <Box sx={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: '50%',
+                          background: `linear-gradient(135deg, ${item.color}, #e5c158)`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(212,175,55,0.3)',
+                        }}>
+                          <IconComp sx={{ color: '#000', fontSize: 18 }} />
+                        </Box>
+                        <Typography variant="body2" sx={{ 
+                          fontWeight: 800, 
+                          letterSpacing: 0.5, 
+                          color: '#333',
+                          fontSize: 13
+                        }}>
+                          {item.label}
+                        </Typography>
+                      </Paper>
+                    );
+                  })}
+                </Stack>
+              </AnimatedContent>
               
               {/* Premium action buttons */}
               {/* Premium action buttons */}
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <AnimatedContent delay={750}>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <Button 
                 component={RouterLink} 
                 to="/about" 
@@ -551,9 +647,11 @@ export default function Home() {
                 View Gallery →
               </Button>
             </Stack>
+            </AnimatedContent>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Box sx={{ position: 'relative' }}>
+            <AnimatedContent delay={300}>
+              <Box sx={{ position: 'relative' }}>
               {/* Premium image container with multiple effects */}
               <Box
                 component="img"
@@ -653,6 +751,7 @@ export default function Home() {
                 pointerEvents: 'none',
               }} />
             </Box>
+            </AnimatedContent>
           </Grid>
         </Grid>
         </Box>
@@ -661,7 +760,7 @@ export default function Home() {
 
       {/* Sections removed per request: Latest, Gallery, Nearby, Temple Essentials */}
 
-      <AnimatedSection delay={200}>
+      <AnimatedSection delay={50} staggerChildren={true}>
       <Box sx={{ 
         mt: 5, 
         border: `2px solid #d4af37`, 
@@ -701,17 +800,26 @@ export default function Home() {
               boxShadow: '0 12px 40px rgba(212,175,55,0.3), inset 0 1px 0 rgba(255,255,255,0.2)'
             }}
           >
-            <Typography variant="overline" sx={{ letterSpacing: 2 }}>
-              {poojaSection.subtitle}
-            </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
-              {poojaSection.title}
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 3 }}>
-              {poojaSection.description}
-            </Typography>
-            <Box sx={{ height: 3, bgcolor: colors.secondary, borderRadius: 1, mb: 2, opacity: 0.6 }} />
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <AnimatedContent delay={200}>
+              <Typography variant="overline" sx={{ letterSpacing: 2 }}>
+                {poojaSection.subtitle}
+              </Typography>
+            </AnimatedContent>
+            <AnimatedContent delay={350}>
+              <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
+                {poojaSection.title}
+              </Typography>
+            </AnimatedContent>
+            <AnimatedContent delay={500}>
+              <Typography variant="body1" sx={{ mb: 3 }}>
+                {poojaSection.description}
+              </Typography>
+            </AnimatedContent>
+            <AnimatedContent delay={600}>
+              <Box sx={{ height: 3, bgcolor: colors.secondary, borderRadius: 1, mb: 2, opacity: 0.6 }} />
+            </AnimatedContent>
+            <AnimatedContent delay={700}>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <Button 
                 component={RouterLink} 
                 to={poojaSection.buttonLink}
@@ -741,6 +849,7 @@ export default function Home() {
                 {poojaSection.secondButtonText}
               </Button>
             </Stack>
+            </AnimatedContent>
           </Paper>
         </Grid>
         <Grid item xs={12} md={7}>
@@ -768,15 +877,21 @@ export default function Home() {
                     }
                   }}
                 >
-                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-                    {tile.title}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: colors.textDark, mb: 2 }}>
-                    {tile.description}
-                  </Typography>
-                  <Button component={RouterLink} to={(tile as any).link || tile.to} size="small" sx={{ color: colors.primary, fontWeight: 700 }}>
-                    Open →
-                  </Button>
+                  <AnimatedContent delay={100}>
+                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+                      {tile.title}
+                    </Typography>
+                  </AnimatedContent>
+                  <AnimatedContent delay={200}>
+                    <Typography variant="body2" sx={{ color: colors.textDark, mb: 2 }}>
+                      {tile.description}
+                    </Typography>
+                  </AnimatedContent>
+                  <AnimatedContent delay={300}>
+                    <Button component={RouterLink} to={(tile as any).link || tile.to} size="small" sx={{ color: colors.primary, fontWeight: 700 }}>
+                      Open →
+                    </Button>
+                  </AnimatedContent>
 
                   <Box sx={{
                     position: 'absolute',
@@ -802,7 +917,7 @@ export default function Home() {
       </AnimatedSection>
 
       {/* News Overview: placed above Donation section */}
-      <AnimatedSection delay={300}>
+      <AnimatedSection delay={100} staggerChildren={true}>
       <Box sx={{ 
         mt: 8, 
         border: `2px solid #d4af37`, 
@@ -824,15 +939,21 @@ export default function Home() {
         }
       }}>
         <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
-        <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
-          {newsSection.subtitle}
-        </Typography>
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-          {newsSection.title}
-        </Typography>
-        <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
-          {newsSection.description}
-        </Typography>
+        <AnimatedContent delay={200}>
+          <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
+            {newsSection.subtitle}
+          </Typography>
+        </AnimatedContent>
+        <AnimatedContent delay={350}>
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+            {newsSection.title}
+          </Typography>
+        </AnimatedContent>
+        <AnimatedContent delay={500}>
+          <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
+            {newsSection.description}
+          </Typography>
+        </AnimatedContent>
 
         <Grid container spacing={2}>
           {newsSection.tiles.map((item, index) => (
@@ -860,43 +981,49 @@ export default function Home() {
                   height: 4, 
                   background: `linear-gradient(90deg, #d4af37, #e5c158)` 
                 }} />
-                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{item.title}</Typography>
-                <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 2 }}>
-                  {item.description}
-                </Typography>
-                <Stack direction="row" spacing={1.5} alignItems="center">
-                  <Box sx={{ 
-                    px: 1.2, 
-                    py: 0.5, 
-                    borderRadius: 16, 
-                    bgcolor: 'rgba(212,175,55,0.1)', 
-                    border: `1.5px solid rgba(212,175,55,0.3)`, 
-                    fontSize: 12, 
-                    fontWeight: 700,
-                    color: '#d4af37'
-                  }}>
-                    {item.chip}
-                  </Box>
-                  <Button 
-                    component={RouterLink} 
-                    to={item.link}
-                    size="small" 
-                    variant="contained" 
-                    sx={{ 
+                <AnimatedContent delay={100}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{item.title}</Typography>
+                </AnimatedContent>
+                <AnimatedContent delay={200}>
+                  <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 2 }}>
+                    {item.description}
+                  </Typography>
+                </AnimatedContent>
+                <AnimatedContent delay={300}>
+                  <Stack direction="row" spacing={1.5} alignItems="center">
+                    <Box sx={{ 
+                      px: 1.2, 
+                      py: 0.5, 
+                      borderRadius: 16, 
+                      bgcolor: 'rgba(212,175,55,0.1)', 
+                      border: `1.5px solid rgba(212,175,55,0.3)`, 
+                      fontSize: 12, 
                       fontWeight: 700,
-                      bgcolor: '#d4af37',
-                      color: '#000',
-                      '&:hover': {
-                        bgcolor: '#e5c158',
-                      }
-                    }}
-                  >
-                    Open
-                  </Button>
-                  <Button component={RouterLink} to={item.link} size="small" variant="text" sx={{ color: colors.primary, fontWeight: 700 }}>
-                    Read More →
-                  </Button>
-                </Stack>
+                      color: '#d4af37'
+                    }}>
+                      {item.chip}
+                    </Box>
+                    <Button 
+                      component={RouterLink} 
+                      to={item.link}
+                      size="small" 
+                      variant="contained" 
+                      sx={{ 
+                        fontWeight: 700,
+                        bgcolor: '#d4af37',
+                        color: '#000',
+                        '&:hover': {
+                          bgcolor: '#e5c158',
+                        }
+                      }}
+                    >
+                      Open
+                    </Button>
+                    <Button component={RouterLink} to={item.link} size="small" variant="text" sx={{ color: colors.primary, fontWeight: 700 }}>
+                      Read More →
+                    </Button>
+                  </Stack>
+                </AnimatedContent>
               </Paper>
             </Grid>
           ))}
@@ -905,7 +1032,7 @@ export default function Home() {
       </AnimatedSection>
 
       {/* Donation Overview: new approach - ribbon header + stacked cards with progress */}
-      <AnimatedSection delay={400}>
+      <AnimatedSection delay={150} staggerChildren={true}>
       <Box sx={{ 
         mt: 8, 
         border: `2px solid #d4af37`, 
@@ -974,9 +1101,15 @@ export default function Home() {
             }
           }}>
             <Box sx={{ position: 'relative', zIndex: 1 }}>
-              <Typography variant="overline" sx={{ letterSpacing: 3, fontWeight: 800, fontSize: 13, opacity: 0.95 }}>{donationSection.subtitle}</Typography>
-              <Typography variant="h3" sx={{ fontWeight: 800, mt: 0.5, textShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>{donationSection.title}</Typography>
-              <Typography variant="body1" sx={{ mt: 1, opacity: 0.95, fontWeight: 500 }}>{donationSection.description}</Typography>
+              <AnimatedContent delay={200}>
+                <Typography variant="overline" sx={{ letterSpacing: 3, fontWeight: 800, fontSize: 13, opacity: 0.95 }}>{donationSection.subtitle}</Typography>
+              </AnimatedContent>
+              <AnimatedContent delay={350}>
+                <Typography variant="h3" sx={{ fontWeight: 800, mt: 0.5, textShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>{donationSection.title}</Typography>
+              </AnimatedContent>
+              <AnimatedContent delay={500}>
+                <Typography variant="body1" sx={{ mt: 1, opacity: 0.95, fontWeight: 500 }}>{donationSection.description}</Typography>
+              </AnimatedContent>
             </Box>
             <Box sx={{ position: 'absolute', right: -20, top: -20, width: 160, height: 160, borderRadius: '50%', bgcolor: 'rgba(255,255,255,0.1)', filter: 'blur(40px)' }} />
           </Box>
@@ -1039,50 +1172,57 @@ export default function Home() {
                       </Box>
                     </Grid>
                     <Grid item xs>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 0.5 }}>
-                        <Typography variant="h6" sx={{ fontWeight: 800, color: '#333' }}>{item.title}</Typography>
-                        <Box sx={{ 
-                          px: 1.5, 
-                          py: 0.4, 
-                          borderRadius: 20, 
-                          background: `linear-gradient(135deg, #d4af37, #e5c158)`,
-                          color: '#000',
-                          fontSize: 11, 
-                          fontWeight: 800,
-                          textTransform: 'uppercase',
-                          letterSpacing: 0.5,
-                          boxShadow: '0 2px 8px rgba(212,175,55,0.3)'
-                        }}>
-                          {item.tag}
-                        </Box>
-                      </Box>
-                      <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 1.5, lineHeight: 1.6 }}>{item.description}</Typography>
-                      <Box sx={{ position: 'relative' }}>
-                        <Box sx={{ height: 8, borderRadius: 4, background: 'rgba(212,175,55,0.15)', overflow: 'hidden', border: '1px solid rgba(212,175,55,0.2)' }}>
+                      <AnimatedContent delay={100}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 0.5 }}>
+                          <Typography variant="h6" sx={{ fontWeight: 800, color: '#333' }}>{item.title}</Typography>
                           <Box sx={{ 
-                            width: index === 1 ? '50%' : index === 2 ? '30%' : index === 3 ? '40%' : '60%', 
-                            height: '100%', 
-                            background: `linear-gradient(90deg, #d4af37, #e5c158)`,
-                            boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.3)',
-                            position: 'relative',
-                            '&::after': {
-                              content: '""',
-                              position: 'absolute',
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              height: '50%',
-                              background: 'linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)',
-                            }
-                          }} />
+                            px: 1.5, 
+                            py: 0.4, 
+                            borderRadius: 20, 
+                            background: `linear-gradient(135deg, #d4af37, #e5c158)`,
+                            color: '#000',
+                            fontSize: 11, 
+                            fontWeight: 800,
+                            textTransform: 'uppercase',
+                            letterSpacing: 0.5,
+                            boxShadow: '0 2px 8px rgba(212,175,55,0.3)'
+                          }}>
+                            {item.tag}
+                          </Box>
                         </Box>
-                        <Typography variant="caption" sx={{ display: 'block', mt: 0.5, color: '#d4af37', fontWeight: 700, fontSize: 11 }}>
-                          {index === 1 ? '50%' : index === 2 ? '30%' : index === 3 ? '40%' : '60%'} of goal reached
-                        </Typography>
-                      </Box>
+                      </AnimatedContent>
+                      <AnimatedContent delay={200}>
+                        <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 1.5, lineHeight: 1.6 }}>{item.description}</Typography>
+                      </AnimatedContent>
+                      <AnimatedContent delay={300}>
+                        <Box sx={{ position: 'relative' }}>
+                          <Box sx={{ height: 8, borderRadius: 4, background: 'rgba(212,175,55,0.15)', overflow: 'hidden', border: '1px solid rgba(212,175,55,0.2)' }}>
+                            <Box sx={{ 
+                              width: index === 1 ? '50%' : index === 2 ? '30%' : index === 3 ? '40%' : '60%', 
+                              height: '100%', 
+                              background: `linear-gradient(90deg, #d4af37, #e5c158)`,
+                              boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.3)',
+                              position: 'relative',
+                              '&::after': {
+                                content: '""',
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                height: '50%',
+                                background: 'linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)',
+                              }
+                            }} />
+                          </Box>
+                          <Typography variant="caption" sx={{ display: 'block', mt: 0.5, color: '#d4af37', fontWeight: 700, fontSize: 11 }}>
+                            {index === 1 ? '50%' : index === 2 ? '30%' : index === 3 ? '40%' : '60%'} of goal reached
+                          </Typography>
+                        </Box>
+                      </AnimatedContent>
                     </Grid>
                   </Grid>
-                  <Box sx={{ mt: 2.5, display: 'flex', gap: 2, pt: 2, borderTop: '1px solid rgba(212,175,55,0.15)' }}>
+                  <AnimatedContent delay={400}>
+                    <Box sx={{ mt: 2.5, display: 'flex', gap: 2, pt: 2, borderTop: '1px solid rgba(212,175,55,0.15)' }}>
                     <Button 
                       component={RouterLink} 
                       to={item.link}
@@ -1129,6 +1269,7 @@ export default function Home() {
                       Learn More →
                     </Button>
                   </Box>
+                  </AnimatedContent>
                 </Paper>
               </Grid>
             ))}
@@ -1247,7 +1388,7 @@ export default function Home() {
       {/* Assistance section removed per request */}
 
       {/* Gallery Overview: modern material section with preview cards */}
-      <AnimatedSection delay={500}>
+      <AnimatedSection delay={200} staggerChildren={true}>
       <Box sx={{ 
         mt: 8, 
         border: `2px solid #d4af37`, 
@@ -1269,15 +1410,21 @@ export default function Home() {
         }
       }}>
         <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
-        <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
-          {gallerySection.subtitle}
-        </Typography>
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-          {gallerySection.title}
-        </Typography>
-        <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
-          {gallerySection.description}
-        </Typography>
+        <AnimatedContent delay={200}>
+          <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
+            {gallerySection.subtitle}
+          </Typography>
+        </AnimatedContent>
+        <AnimatedContent delay={350}>
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+            {gallerySection.title}
+          </Typography>
+        </AnimatedContent>
+        <AnimatedContent delay={500}>
+          <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
+            {gallerySection.description}
+          </Typography>
+        </AnimatedContent>
 
         <Grid container spacing={2}>
             {gallerySection.tiles.map((item, index) => (
@@ -1328,28 +1475,32 @@ export default function Home() {
                   </Box>
                 </Box>
                 <Box sx={{ p: 2 }}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{item.title}</Typography>
-                  <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                    <Button 
-                      component={RouterLink} 
-                      to={item.link}
-                      size="small" 
-                      variant="contained" 
-                      sx={{ 
-                        fontWeight: 700,
-                        bgcolor: '#d4af37',
-                        color: '#000',
-                        '&:hover': {
-                          bgcolor: '#e5c158',
-                        }
-                      }}
-                    >
-                      Open
-                    </Button>
-                    <Button component={RouterLink} to={item.link} size="small" variant="text" sx={{ color: colors.primary, fontWeight: 700 }}>
-                      View More →
-                    </Button>
-                  </Stack>
+                  <AnimatedContent delay={100}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{item.title}</Typography>
+                  </AnimatedContent>
+                  <AnimatedContent delay={200}>
+                    <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                      <Button 
+                        component={RouterLink} 
+                        to={item.link}
+                        size="small" 
+                        variant="contained" 
+                        sx={{ 
+                          fontWeight: 700,
+                          bgcolor: '#d4af37',
+                          color: '#000',
+                          '&:hover': {
+                            bgcolor: '#e5c158',
+                          }
+                        }}
+                      >
+                        Open
+                      </Button>
+                      <Button component={RouterLink} to={item.link} size="small" variant="text" sx={{ color: colors.primary, fontWeight: 700 }}>
+                        View More →
+                      </Button>
+                    </Stack>
+                  </AnimatedContent>
                 </Box>
               </Paper>
             </Grid>
@@ -1370,7 +1521,7 @@ export default function Home() {
       </AnimatedSection>
 
       {/* Nearby Overview: next-level design with icon cards */}
-      <AnimatedSection delay={600}>
+      <AnimatedSection delay={250} staggerChildren={true}>
       <Box sx={{ 
         mt: 8, 
         border: `2px solid #d4af37`, 
@@ -1392,15 +1543,21 @@ export default function Home() {
         }
       }}>
         <SectionOrnament variant="om" opacity={0.35} size={140} color={colors.secondary} repeat={3} offset={-80} blendMode="normal" />
-        <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
-          {nearbySection.subtitle}
-        </Typography>
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-          {nearbySection.title}
-        </Typography>
-        <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
-          {nearbySection.description}
-        </Typography>
+        <AnimatedContent delay={200}>
+          <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
+            {nearbySection.subtitle}
+          </Typography>
+        </AnimatedContent>
+        <AnimatedContent delay={350}>
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+            {nearbySection.title}
+          </Typography>
+        </AnimatedContent>
+        <AnimatedContent delay={500}>
+          <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
+            {nearbySection.description}
+          </Typography>
+        </AnimatedContent>
 
         <Grid container spacing={2}>
           {nearbySection.tiles.map((item, index) => {
@@ -1430,41 +1587,45 @@ export default function Home() {
                   height: 4, 
                   background: `linear-gradient(90deg, #d4af37, #e5c158)` 
                 }} />
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item>
-                    <Box sx={{ width: 56, height: 56, borderRadius: 3, bgcolor: 'rgba(212,175,55,0.1)', border: `1.5px solid rgba(212,175,55,0.3)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <IconComp sx={{ color: '#d4af37' }} />
-                    </Box>
+                <AnimatedContent delay={100}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item>
+                      <Box sx={{ width: 56, height: 56, borderRadius: 3, bgcolor: 'rgba(212,175,55,0.1)', border: `1.5px solid rgba(212,175,55,0.3)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <IconComp sx={{ color: '#d4af37' }} />
+                      </Box>
+                    </Grid>
+                    <Grid item xs>
+                      <Typography variant="h6" sx={{ fontWeight: 700 }}>{item.title}</Typography>
+                      <Typography variant="body2" sx={{ color: colors.textSecondary }}>
+                        {item.description}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Box sx={{ px: 1.2, py: 0.5, borderRadius: 16, bgcolor: 'rgba(212,175,55,0.1)', border: `1.5px solid rgba(212,175,55,0.3)`, fontSize: 12, fontWeight: 700, color: '#d4af37' }}>
+                        {item.chip}
+                      </Box>
+                    </Grid>
                   </Grid>
-                  <Grid item xs>
-                    <Typography variant="h6" sx={{ fontWeight: 700 }}>{item.title}</Typography>
-                    <Typography variant="body2" sx={{ color: colors.textSecondary }}>
-                      {item.description}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Box sx={{ px: 1.2, py: 0.5, borderRadius: 16, bgcolor: 'rgba(212,175,55,0.1)', border: `1.5px solid rgba(212,175,55,0.3)`, fontSize: 12, fontWeight: 700, color: '#d4af37' }}>
-                      {item.chip}
-                    </Box>
-                  </Grid>
-                </Grid>
-                <Box sx={{ mt: 2, display: 'flex', gap: 1.5 }}>
-                  <Button 
-                    component={RouterLink} 
-                    to={item.link} 
-                    variant="contained" 
-                    size="small" 
-                    sx={{ 
-                      fontWeight: 700,
-                      bgcolor: '#d4af37',
-                      color: '#000',
-                      '&:hover': {
-                        bgcolor: '#e5c158',
-                      }
-                    }}
-                  >Open</Button>
-                  <Button component={RouterLink} to={item.link} variant="text" size="small" sx={{ color: colors.primary, fontWeight: 700 }}>Learn More →</Button>
-                </Box>
+                </AnimatedContent>
+                <AnimatedContent delay={200}>
+                  <Box sx={{ mt: 2, display: 'flex', gap: 1.5 }}>
+                    <Button 
+                      component={RouterLink} 
+                      to={item.link} 
+                      variant="contained" 
+                      size="small" 
+                      sx={{ 
+                        fontWeight: 700,
+                        bgcolor: '#d4af37',
+                        color: '#000',
+                        '&:hover': {
+                          bgcolor: '#e5c158',
+                        }
+                      }}
+                    >Open</Button>
+                    <Button component={RouterLink} to={item.link} variant="text" size="small" sx={{ color: colors.primary, fontWeight: 700 }}>Learn More →</Button>
+                  </Box>
+                </AnimatedContent>
               </Paper>
             </Grid>
             );
@@ -1474,7 +1635,7 @@ export default function Home() {
       </AnimatedSection>
 
       {/* Contact Overview: quick access to office, map, info, feedback */}
-      <AnimatedSection delay={700}>
+      <AnimatedSection delay={300} staggerChildren={true}>
       <Box sx={{ 
         mt: 8, 
         border: `2px solid #d4af37`, 
@@ -1496,15 +1657,21 @@ export default function Home() {
         }
       }}>
         <SectionOrnament opacity={0.85} size={88} />
-        <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
-          {contactSection.subtitle}
-        </Typography>
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-          {contactSection.title}
-        </Typography>
-        <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
-          {contactSection.description}
-        </Typography>
+        <AnimatedContent delay={200}>
+          <Typography variant="overline" sx={{ color: '#d4af37', letterSpacing: 2, fontWeight: 800 }}>
+            {contactSection.subtitle}
+          </Typography>
+        </AnimatedContent>
+        <AnimatedContent delay={350}>
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+            {contactSection.title}
+          </Typography>
+        </AnimatedContent>
+        <AnimatedContent delay={500}>
+          <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 3 }}>
+            {contactSection.description}
+          </Typography>
+        </AnimatedContent>
 
         <Grid container spacing={2}>
           {contactSection.tiles.map((item, index) => {
@@ -1534,34 +1701,38 @@ export default function Home() {
                   height: 4, 
                   background: `linear-gradient(90deg, #d4af37, #e5c158)` 
                 }} />
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item>
-                    <Box sx={{ width: 56, height: 56, borderRadius: 3, bgcolor: 'rgba(212,175,55,0.1)', border: `1.5px solid rgba(212,175,55,0.3)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <IconComp sx={{ color: '#d4af37' }} />
-                    </Box>
+                <AnimatedContent delay={100}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item>
+                      <Box sx={{ width: 56, height: 56, borderRadius: 3, bgcolor: 'rgba(212,175,55,0.1)', border: `1.5px solid rgba(212,175,55,0.3)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <IconComp sx={{ color: '#d4af37' }} />
+                      </Box>
+                    </Grid>
+                    <Grid item xs>
+                      <Typography variant="h6" sx={{ fontWeight: 700 }}>{item.title}</Typography>
+                      <Typography variant="body2" sx={{ color: colors.textSecondary }}>{item.description}</Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item xs>
-                    <Typography variant="h6" sx={{ fontWeight: 700 }}>{item.title}</Typography>
-                    <Typography variant="body2" sx={{ color: colors.textSecondary }}>{item.description}</Typography>
-                  </Grid>
-                </Grid>
-                <Box sx={{ mt: 2, display: 'flex', gap: 1.5 }}>
-                  <Button 
-                    component={RouterLink} 
-                    to={item.link} 
-                    variant="contained" 
-                    size="small" 
-                    sx={{ 
-                      fontWeight: 700,
-                      bgcolor: '#d4af37',
-                      color: '#000',
-                      '&:hover': {
-                        bgcolor: '#e5c158',
-                      }
-                    }}
-                  >Open</Button>
-                  <Button component={RouterLink} to={item.link} variant="text" size="small" sx={{ color: colors.primary, fontWeight: 700 }}>Learn More →</Button>
-                </Box>
+                </AnimatedContent>
+                <AnimatedContent delay={200}>
+                  <Box sx={{ mt: 2, display: 'flex', gap: 1.5 }}>
+                    <Button 
+                      component={RouterLink} 
+                      to={item.link} 
+                      variant="contained" 
+                      size="small" 
+                      sx={{ 
+                        fontWeight: 700,
+                        bgcolor: '#d4af37',
+                        color: '#000',
+                        '&:hover': {
+                          bgcolor: '#e5c158',
+                        }
+                      }}
+                    >Open</Button>
+                    <Button component={RouterLink} to={item.link} variant="text" size="small" sx={{ color: colors.primary, fontWeight: 700 }}>Learn More →</Button>
+                  </Box>
+                </AnimatedContent>
               </Paper>
             </Grid>
             );

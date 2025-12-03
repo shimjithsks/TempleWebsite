@@ -118,8 +118,8 @@ export default function ImageSlider() {
   // Manual navigation removed (prev/next arrows) – auto-advance only.
 
   return (
-    <Box sx={{ position: 'relative', width: '100vw', marginLeft: 'calc(-50vw + 50%)', bgcolor: colors.black, mt: -15 }}>
-      <Box sx={{ position: 'relative', height: 790, overflow: 'hidden', width: '100%' }}>
+    <Box sx={{ position: 'relative', width: '100vw', marginLeft: 'calc(-50vw + 50%)', bgcolor: '#1a1a1a', mt: -15 }}>
+      <Box sx={{ position: 'relative', height: 790, overflow: 'hidden', width: '100%', bgcolor: '#0a0a0a' }}>
         {sliderImages.map((image, idx) => (
           <Fade in={idx === visibleSlide} timeout={700} mountOnEnter unmountOnExit key={image.id}>
             <Box
@@ -127,7 +127,7 @@ export default function ImageSlider() {
                 position: 'absolute',
                 width: '100%',
                 height: '100%',
-                backgroundColor: image.color,
+                backgroundColor: '#0a0a0a',
                 backgroundImage: image.image
                   ? `linear-gradient(${image.overlay || colors.overlayDark30}, ${image.overlay || colors.overlayDark30}), url(${image.image})`
                   : 'none',
