@@ -112,7 +112,10 @@ export default function PoojaCard({ pooja, onSelect, isSelected }: PoojaCardProp
               color: '#2c3e50',
               mb: 2,
               lineHeight: 1.3,
-              fontSize: '1.15rem'
+              fontSize: '1.05rem',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
+              hyphens: 'auto'
             }}
           >
             {pooja.name}

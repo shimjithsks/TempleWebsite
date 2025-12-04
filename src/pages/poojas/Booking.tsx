@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Container,
   Grid,
@@ -16,75 +16,65 @@ import {
   Badge,
   Avatar,
   Chip,
+  Alert,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { useNavigate } from 'react-router-dom';
+import { doc, getDoc, getDocFromServer } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 import PageBanner from '../../components/PageBanner';
 import PoojaCard from '../../components/PoojaCard';
 import PoojaBookingModal from '../../components/PoojaBookingModal';
-import { poojas as allPoojas, Pooja } from '../../data/pooja-data';
+import { poojas as defaultPoojas, Pooja } from '../../data/pooja-data';
 import { useCart } from '../../context/CartContext';
 import { colors } from '../../theme/colors';
 
 const GOLD = '#d4af37';
 const deities = ['All', 'Devi', 'Ganapathy', 'Vishnu', 'Shiva', 'Ayyappa', 'Murugan', 'Others'];
 
+interface VazhipadPrice {
+  id: string;
+  name: string;
+  price: string;
+  description: string;
+}
+
+interface BookingSettings {
+  enabled: boolean;
+  title: string;
+  subtitle: string;
+  description: string;
+  instructions: string;
+  contactEmail: string;
+  contactPhone: string;
+  minAdvanceDays: number;
+  maxAdvanceDays: number;
+  termsAndConditions: string;
+  vazhipadPrices: VazhipadPrice[];
+}
+
 export default function Booking() {
-    // Malayalam Vazhipad List
-    const vazhipads = [
-      { name: 'മലർ നിവേദ്യം', price: '₹30' },
-      { name: 'വെള്ളനിവേദ്യം', price: '₹30' },
-      { name: 'അപ്പനിവേദ്യം', price: '₹600' },
-      { name: 'ഒറ്റനിവേദ്യം', price: '₹250' },
-      { name: 'വിളക്ക്', price: '₹25' },
-      { name: 'നെയ്‌വിളക്ക്', price: '₹30' },
-      { name: 'കെടാവിളക്ക്', price: '₹50' },
-      { name: 'ചുറ്റുവിളക്ക്', price: '₹1000' },
-      { name: 'നവരാത്രി വിളക്ക്', price: '₹19000' },
-      { name: 'പായസം', price: '₹60' },
-      { name: 'ഇരട്ടിപ്പായസം', price: '₹500' },
-      { name: 'പാൽപ്പായസം', price: '₹100' },
-      { name: 'തുളസിമാല', price: '₹25' },
-      { name: 'തെച്ചിമാല', price: '₹125' },
-      { name: 'ഉണ്ടമാല', price: '₹150' },
-      { name: 'പൂക്കുലമാല', price: '₹100' },
-      { name: 'മഞ്ഞ ചോറ്', price: '₹50' },
-      { name: 'മഞ്ഞപ്പൊടി ആടൽ', price: '₹50' },
-      { name: 'മാല പൂജ', price: '₹10' },
-      { name: 'താക്കോൽ പൂജ', price: '₹25' },
-      { name: 'ഒരു ദിവസപൂജ', price: '₹750' },
-      { name: 'ത്രികാല പൂജ', price: '₹3500' },
-      { name: 'വാഹന പൂജ', price: '₹30/40/60' },
-      { name: 'നക്ഷത്രപൂജ', price: '₹250' },
-      { name: 'ഗണപതിഹോമം', price: '₹100' },
-      { name: 'അഷ്ടദ്രവ്യ ഗണപതിഹോമം', price: '₹400' },
-      { name: 'സുദർശന ഹോമം', price: '₹1000' },
-      { name: 'പുഷ്പാഞ്ജലി', price: '₹20' },
-      { name: 'വലിയ പുഷ്പാഞ്ജലി', price: '₹3000' },
-      { name: 'പുഷ്‌പാർച്ചന', price: '₹20' },
-      { name: 'കളഭം ചാർത്തൽ', price: '₹400' },
-      { name: 'ത്രിമധുരം', price: '₹10' },
-      { name: 'ഭഗവതി സേവ', price: '₹250' },
-      { name: 'അരിയിലെഴുത്ത്', price: '₹100' },
-      { name: 'തോറ്റം', price: '₹750' },
-      { name: 'ഇളനീർ അഭിഷേകം', price: '₹50' },
-      { name: 'പാൽ അഭിഷേകം', price: '₹50' },
-      { name: 'ശംഖ് അഭിഷേകം', price: '₹30' },
-      { name: 'കെട്ടുനിറ', price: '₹20' },
-      { name: 'ചോറൂണ്', price: '₹250' },
-      { name: 'സ്വയംവരപുഷ്പാഞ്ജലി', price: '₹100' },
-      { name: 'ഭാഗ്യസൂക്തപുഷ്പാഞ്ജലി', price: '₹50' },
-      { name: 'സഹസ്രനാമപുഷ്പാഞ്ജലി', price: '₹50' },
-      { name: 'ഐക്യമത്യസൂക്ത പുഷ്പാഞ്ജലി', price: '₹50' },
-      { name: 'രക്തപുഷ്പാഞ്ജലി', price: '₹50' },
-      { name: 'രക്ഷസിനുപൂജ', price: '200' },
-      { name: 'രക്ഷസിനു പാൽപായസം', price: '150' },
-      { name: 'രക്ഷസിനു വിളക്ക്', price: '30' },
-    ];
+  const [settings, setSettings] = useState<BookingSettings>({
+    enabled: true,
+    title: 'Online Pooja Booking',
+    subtitle: 'Book Your Pooja',
+    description: 'Select poojas, add booking details, and complete your reservation',
+    instructions: '',
+    contactEmail: '',
+    contactPhone: '',
+    minAdvanceDays: 2,
+    maxAdvanceDays: 90,
+    termsAndConditions: '',
+    vazhipadPrices: [],
+  });
+  const [allPoojas, setAllPoojas] = useState<Pooja[]>(defaultPoojas);
+  const [loadingPoojas, setLoadingPoojas] = useState(false);
+  const [lastRefreshTime, setLastRefreshTime] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDeity, setSelectedDeity] = useState('All');
   const { cart } = useCart();
@@ -93,6 +83,81 @@ export default function Booking() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPooja, setSelectedPooja] = useState<Pooja[] | null>(null);
   const [selectedPoojaIds, setSelectedPoojaIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    fetchBookingSettings();
+    loadPoojas();
+  }, []);
+
+  const loadPoojas = async () => {
+    setLoadingPoojas(true);
+    console.clear(); // Clear console for easier debugging
+    console.log('🔄 STARTING FRESH DATA LOAD FROM FIREBASE...');
+    console.log('⏰ Current time:', new Date().toLocaleString());
+    
+    try {
+      const docRef = doc(db, 'pooja_data', 'main');
+      
+      // Force fetch from server, bypass all caches
+      console.log('📡 Fetching from Firebase server (bypassing cache)...');
+      const docSnap = await getDocFromServer(docRef);
+      
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.poojas && Array.isArray(data.poojas) && data.poojas.length > 0) {
+          const timestamp = new Date().toLocaleString();
+          console.log('✅ SUCCESS! Loaded', data.poojas.length, 'poojas from Firebase Server');
+          console.log('📊 ALL POOJA PRICES:', data.poojas.map((p: Pooja) => ({ 
+            id: p.id, 
+            name: p.name.substring(0, 30), 
+            price: p.price 
+          })));
+          console.log('🕒 Data loaded at:', timestamp);
+          
+          setAllPoojas(data.poojas);
+          setLastRefreshTime(timestamp);
+          console.log('✅ STATE UPDATED - Poojas now displaying with fresh prices!');
+        } else {
+          console.warn('⚠️ No poojas array in Firebase, using defaults');
+          setAllPoojas(defaultPoojas);
+        }
+      } else {
+        console.warn('⚠️ No pooja_data document in Firebase, using defaults');
+        setAllPoojas(defaultPoojas);
+      }
+    } catch (error) {
+      console.error('❌ Error loading poojas:', error);
+      setAllPoojas(defaultPoojas);
+    } finally {
+      setLoadingPoojas(false);
+      console.log('✅ LOAD COMPLETE - Check pooja cards on page for updated prices');
+    }
+  };
+
+  const fetchBookingSettings = async () => {
+    try {
+      const docRef = doc(db, 'pooja_booking_settings', 'main');
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data() as BookingSettings;
+        setSettings({
+          enabled: data.enabled !== false,
+          title: data.title || 'Online Pooja Booking',
+          subtitle: data.subtitle || 'Book Your Pooja',
+          description: data.description || 'Select poojas, add booking details, and complete your reservation',
+          instructions: data.instructions || '',
+          contactEmail: data.contactEmail || '',
+          contactPhone: data.contactPhone || '',
+          minAdvanceDays: data.minAdvanceDays || 2,
+          maxAdvanceDays: data.maxAdvanceDays || 90,
+          termsAndConditions: data.termsAndConditions || '',
+          vazhipadPrices: data.vazhipadPrices || [],
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching booking settings:', error);
+    }
+  };
 
   const handlePoojaSelect = (poojaId: number) => {
     setSelectedPoojaIds(prev =>
@@ -131,14 +196,20 @@ export default function Booking() {
       const matchesDeity = selectedDeity === 'All' || p.deity === selectedDeity;
       return matchesSearch && matchesDeity;
     });
-  }, [searchTerm, selectedDeity]);
+  }, [searchTerm, selectedDeity, allPoojas]);
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <>
-      <PageBanner title="Book a Pooja / Vazhipad" />
+      <PageBanner title={settings.title} />
       <Container maxWidth="lg" sx={{ py: 6 }}>
+        {!settings.enabled && (
+          <Alert severity="warning" sx={{ mb: 3, borderRadius: 3, fontWeight: 600 }}>
+            Online pooja booking is currently disabled. Please contact the temple office directly for bookings.
+          </Alert>
+        )}
+        
         <Paper elevation={0} sx={{ 
           p: { xs: 3, md: 4 },
           border: `3px solid ${GOLD}`,
@@ -186,17 +257,118 @@ export default function Booking() {
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}>
-                Book Your Pooja
+                {settings.subtitle}
               </Typography>
               <Typography variant="body2" sx={{ color: '#666', fontWeight: 600, mt: 0.5 }}>
-                Select poojas, add booking details, and complete your reservation
+                {settings.description}
               </Typography>
             </Box>
           </Box>
 
+          {/* BOOKING INFORMATION SECTION */}
+          {(settings.instructions || settings.contactEmail || settings.contactPhone || settings.termsAndConditions) && (
+            <Box sx={{ mb: 4, p: 3, bgcolor: 'rgba(212,175,55,0.08)', borderRadius: 3, border: `1px solid ${GOLD}30` }}>
+              {settings.instructions && (
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: GOLD, mb: 1 }}>
+                    Booking Instructions
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#555', lineHeight: 1.8 }}>
+                    {settings.instructions}
+                  </Typography>
+                </Box>
+              )}
+              
+              {(settings.contactEmail || settings.contactPhone) && (
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: GOLD, mb: 1 }}>
+                    Contact Information
+                  </Typography>
+                  <Grid container spacing={2}>
+                    {settings.contactEmail && (
+                      <Grid item xs={12} sm={6}>
+                        <Typography variant="body2" sx={{ color: '#555' }}>
+                          <strong>Email:</strong> {settings.contactEmail}
+                        </Typography>
+                      </Grid>
+                    )}
+                    {settings.contactPhone && (
+                      <Grid item xs={12} sm={6}>
+                        <Typography variant="body2" sx={{ color: '#555' }}>
+                          <strong>Phone:</strong> {settings.contactPhone}
+                        </Typography>
+                      </Grid>
+                    )}
+                  </Grid>
+                </Box>
+              )}
+
+              {settings.minAdvanceDays > 0 && settings.maxAdvanceDays > 0 && (
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: GOLD, mb: 1 }}>
+                    Booking Window
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#555' }}>
+                    Book between {settings.minAdvanceDays} to {settings.maxAdvanceDays} days in advance
+                  </Typography>
+                </Box>
+              )}
+
+              {settings.termsAndConditions && (
+                <Box>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: GOLD, mb: 1 }}>
+                    Terms & Conditions
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#555', lineHeight: 1.8 }}>
+                    {settings.termsAndConditions}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          )}
+
+          {/* VAZHIPAD PRICES */}
+          {settings.vazhipadPrices.length > 0 && (
+            <Box sx={{ mb: 4, p: 3, bgcolor: 'rgba(212,175,55,0.08)', borderRadius: 3, border: `1px solid ${GOLD}30` }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, color: GOLD, mb: 2 }}>
+                Vazhipad Prices
+              </Typography>
+              <Grid container spacing={2}>
+                {settings.vazhipadPrices.map((vazhipad) => (
+                  <Grid item xs={12} sm={6} md={4} key={vazhipad.id}>
+                    <Paper sx={{ 
+                      p: 2, 
+                      bgcolor: '#fff', 
+                      border: `2px solid ${GOLD}40`,
+                      borderRadius: 2,
+                      transition: 'all 0.3s',
+                      '&:hover': {
+                        borderColor: GOLD,
+                        transform: 'translateY(-2px)',
+                        boxShadow: `0 4px 12px ${GOLD}30`,
+                      }
+                    }}>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#333', mb: 0.5 }}>
+                        {vazhipad.name}
+                      </Typography>
+                      <Typography variant="h6" sx={{ fontWeight: 800, color: GOLD, mb: 1 }}>
+                        {vazhipad.price}
+                      </Typography>
+                      {vazhipad.description && (
+                        <Typography variant="body2" sx={{ color: '#666', fontSize: '0.85rem' }}>
+                          {vazhipad.description}
+                        </Typography>
+                      )}
+                    </Paper>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          )}
+
           {/* CONTROLS: SEARCH AND FILTER */}
           <Grid container spacing={2} sx={{ mb: 4 }} alignItems="center">
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={7}>
               <TextField
                 fullWidth
                 variant="outlined"
@@ -228,7 +400,38 @@ export default function Booking() {
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={2}>
+              <Box>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  onClick={loadPoojas}
+                  disabled={loadingPoojas}
+                  startIcon={<RefreshIcon />}
+                  sx={{
+                    height: 56,
+                    borderRadius: 3,
+                    borderColor: GOLD,
+                    borderWidth: 2,
+                    color: GOLD,
+                    fontWeight: 700,
+                    '&:hover': {
+                      borderColor: '#e5c158',
+                      borderWidth: 2,
+                      bgcolor: 'rgba(212,175,55,0.05)',
+                    },
+                  }}
+                >
+                  {loadingPoojas ? 'Loading...' : 'Refresh'}
+                </Button>
+                {lastRefreshTime && (
+                  <Typography variant="caption" sx={{ display: 'block', textAlign: 'center', color: '#666', mt: 0.5, fontSize: '0.7rem' }}>
+                    Last: {lastRefreshTime}
+                  </Typography>
+                )}
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={3}>
               <FormControl fullWidth variant="outlined">
                 <InputLabel sx={{ 
                   '&.Mui-focused': { color: GOLD },
@@ -356,7 +559,7 @@ export default function Booking() {
             animation: 'fadeIn .3s ease-in-out'
           }}
         >
-          {selectedPoojaIds.length > 0 && (
+          {settings.enabled && selectedPoojaIds.length > 0 && (
             <Button
               variant="contained"
               size="large"

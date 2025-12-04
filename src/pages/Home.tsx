@@ -1701,38 +1701,34 @@ export default function Home() {
                   height: 4, 
                   background: `linear-gradient(90deg, #d4af37, #e5c158)` 
                 }} />
-                <AnimatedContent delay={100}>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                      <Box sx={{ width: 56, height: 56, borderRadius: 3, bgcolor: 'rgba(212,175,55,0.1)', border: `1.5px solid rgba(212,175,55,0.3)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <IconComp sx={{ color: '#d4af37' }} />
-                      </Box>
-                    </Grid>
-                    <Grid item xs>
-                      <Typography variant="h6" sx={{ fontWeight: 700 }}>{item.title}</Typography>
-                      <Typography variant="body2" sx={{ color: colors.textSecondary }}>{item.description}</Typography>
-                    </Grid>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item>
+                    <Box sx={{ width: 56, height: 56, borderRadius: 3, bgcolor: 'rgba(212,175,55,0.1)', border: `1.5px solid rgba(212,175,55,0.3)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <IconComp sx={{ color: '#d4af37' }} />
+                    </Box>
                   </Grid>
-                </AnimatedContent>
-                <AnimatedContent delay={200}>
-                  <Box sx={{ mt: 2, display: 'flex', gap: 1.5 }}>
-                    <Button 
-                      component={RouterLink} 
-                      to={item.link} 
-                      variant="contained" 
-                      size="small" 
-                      sx={{ 
-                        fontWeight: 700,
-                        bgcolor: '#d4af37',
-                        color: '#000',
-                        '&:hover': {
-                          bgcolor: '#e5c158',
-                        }
-                      }}
-                    >Open</Button>
-                    <Button component={RouterLink} to={item.link} variant="text" size="small" sx={{ color: colors.primary, fontWeight: 700 }}>Learn More →</Button>
-                  </Box>
-                </AnimatedContent>
+                  <Grid item xs>
+                    <Typography variant="h6" sx={{ fontWeight: 700 }}>{item.title}</Typography>
+                    <Typography variant="body2" sx={{ color: colors.textSecondary }}>{item.description}</Typography>
+                  </Grid>
+                </Grid>
+                <Box sx={{ mt: 2, display: 'flex', gap: 1.5 }}>
+                  <Button 
+                    component={RouterLink} 
+                    to={item.link} 
+                    variant="contained" 
+                    size="small" 
+                    sx={{ 
+                      fontWeight: 700,
+                      bgcolor: '#d4af37',
+                      color: '#000',
+                      '&:hover': {
+                        bgcolor: '#e5c158',
+                      }
+                    }}
+                  >Open</Button>
+                  <Button component={RouterLink} to={item.link} variant="text" size="small" sx={{ color: colors.primary, fontWeight: 700 }}>Learn More →</Button>
+                </Box>
               </Paper>
             </Grid>
             );

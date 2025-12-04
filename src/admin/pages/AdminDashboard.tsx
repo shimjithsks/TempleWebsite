@@ -37,6 +37,11 @@ import DonationSectionManager from '../components/DonationSectionManager';
 import GallerySectionManager from '../components/GallerySectionManager';
 import ContactSectionManager from '../components/ContactSectionManager';
 import NearbySectionManager from '../components/NearbySectionManager';
+import OnlineBookingManager from '../components/OnlineBookingManager';
+import DailyPoojaManager from '../components/DailyPoojaManager';
+import SpecialPoojaManager from '../components/SpecialPoojaManager';
+import FestivalPoojaManager from '../components/FestivalPoojaManager';
+import VazhipadListManager from '../components/VazhipadListManager';
 
 const drawerWidth = 280;
 
@@ -73,6 +78,7 @@ const menuSections: MenuSection[] = [
     label: 'Pooja Section',
     icon: <TempleHinduIcon />,
     subItems: [
+      { id: 'pooja-booking', label: 'Online Booking' },
       { id: 'pooja-daily', label: 'Daily Poojas' },
       { id: 'pooja-special', label: 'Special Poojas' },
       { id: 'pooja-festival', label: 'Festival Poojas' },
@@ -225,6 +231,16 @@ const AdminDashboard = () => {
         return <ContactSectionManager />;
       case 'news-announcements':
         return <AnnouncementsManager />;
+      case 'pooja-booking':
+        return <OnlineBookingManager />;
+      case 'pooja-daily':
+        return <DailyPoojaManager />;
+      case 'pooja-special':
+        return <SpecialPoojaManager />;
+      case 'pooja-festival':
+        return <FestivalPoojaManager />;
+      case 'pooja-vazhipad':
+        return <VazhipadListManager />;
       default:
         return (
           <Box>
