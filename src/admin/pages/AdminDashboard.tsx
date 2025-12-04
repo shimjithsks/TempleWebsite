@@ -145,12 +145,6 @@ const menuSections: MenuSection[] = [
   }
 ];
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
 // function TabPanel(props: TabPanelProps) {
 //   const { children, value, index, ...other } = props;
 //   return (

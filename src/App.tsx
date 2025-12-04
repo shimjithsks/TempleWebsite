@@ -14,7 +14,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const loadingTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const [contentReady, setContentReady] = useState(false);
 
   // Initial page load
   useEffect(() => {
@@ -28,19 +27,13 @@ function App() {
   // Smart page transition - only show loading if page takes time to load
   useEffect(() => {
     if (!isLoading) {
-      // Reset content ready state
-      setContentReady(false);
-      
       // Set a delay before showing loading screen (only if content is slow)
       loadingTimerRef.current = setTimeout(() => {
-        if (!contentReady) {
-          setIsTransitioning(true);
-        }
+        setIsTransitioning(true);
       }, 300); // Wait 300ms before showing loading screen
 
       // Simulate content ready after a short delay
       const readyTimer = setTimeout(() => {
-        setContentReady(true);
         setIsTransitioning(false);
       }, 400); // Content typically ready after 400ms
 
