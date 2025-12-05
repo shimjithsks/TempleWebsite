@@ -204,6 +204,8 @@ export default function OnlineBookingManager() {
     }
   };
 
+
+
   const fetchSettings = async () => {
     try {
       const docRef = doc(db, 'pooja_booking_settings', 'main');

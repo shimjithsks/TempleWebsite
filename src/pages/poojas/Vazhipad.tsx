@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageBanner from '../../components/PageBanner';
 import PoojaSidebar from '../../components/PoojaSidebar';
 import { 
@@ -16,62 +16,71 @@ import CakeIcon from '@mui/icons-material/Cake';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Link as RouterLink } from 'react-router-dom';
+import { doc, getDocFromServer } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { poojas as defaultPoojas } from '../../data/pooja-data';
 
 const GOLD = '#d4af37';
 
 export default function VazhipadList() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [vazhipads, setVazhipads] = useState<Array<{name: string, price: string}>>([]);
+  const [loadingVazhipads, setLoadingVazhipads] = useState(false);
 
-  const vazhipads = [
-     { name: 'മലർ നിവേദ്യം', price: '₹30' },
-     { name: 'വെള്ളനിവേദ്യം', price: '₹30' },
-     { name: 'അപ്പനിവേദ്യം', price: '₹600' },
-     { name: 'ഒറ്റനിവേദ്യം', price: '₹250' },
-     { name: 'വിളക്ക്', price: '₹25' },
-     { name: 'നെയ്‌വിളക്ക്', price: '₹30' },
-     { name: 'കെടാവിളക്ക്', price: '₹50' },
-     { name: 'ചുറ്റുവിളക്ക്', price: '₹1000' },
-     { name: 'നവരാത്രി വിളക്ക്', price: '₹19000' },
-     { name: 'പായസം', price: '₹60' },
-     { name: 'ഇരട്ടിപ്പായസം', price: '₹500' },
-     { name: 'പാൽപ്പായസം', price: '₹100' },
-     { name: 'തുളസിമാല', price: '₹25' },
-     { name: 'തെച്ചിമാല', price: '₹125' },
-     { name: 'ഉണ്ടമാല', price: '₹150' },
-     { name: 'പൂക്കുലമാല', price: '₹100' },
-     { name: 'മഞ്ഞ ചോറ്', price: '₹50' },
-     { name: 'മഞ്ഞപ്പൊടി ആടൽ', price: '₹50' },
-     { name: 'മാല പൂജ', price: '₹10' },
-     { name: 'താക്കോൽ പൂജ', price: '₹25' },
-     { name: 'ഒരു ദിവസപൂജ', price: '₹750' },
-     { name: 'ത്രികാല പൂജ', price: '₹3500' },
-     { name: 'വാഹന പൂജ', price: '₹30/40/60' },
-     { name: 'നക്ഷത്രപൂജ', price: '₹250' },
-     { name: 'ഗണപതിഹോമം', price: '₹100' },
-     { name: 'അഷ്ടദ്രവ്യ ഗണപതിഹോമം', price: '₹400' },
-     { name: 'സുദർശന ഹോമം', price: '₹1000' },
-     { name: 'പുഷ്പാഞ്ജലി', price: '₹20' },
-     { name: 'വലിയ പുഷ്പാഞ്ജലി', price: '₹3000' },
-     { name: 'പുഷ്‌പാർച്ചന', price: '₹20' },
-     { name: 'കളഭം ചാർത്തൽ', price: '₹400' },
-     { name: 'ത്രിമധുരം', price: '₹10' },
-     { name: 'ഭഗവതി സേവ', price: '₹250' },
-     { name: 'അരിയിലെഴുത്ത്', price: '₹100' },
-     { name: 'തോറ്റം', price: '₹750' },
-     { name: 'ഇളനീർ അഭിഷേകം', price: '₹50' },
-     { name: 'പാൽ അഭിഷേകം', price: '₹50' },
-     { name: 'ശംഖ് അഭിഷേകം', price: '₹30' },
-     { name: 'കെട്ടുനിറ', price: '₹20' },
-     { name: 'ചോറൂണ്', price: '₹250' },
-     { name: 'സ്വയംവരപുഷ്പാഞ്ജലി', price: '₹100' },
-     { name: 'ഭാഗ്യസൂക്തപുഷ്പാഞ്ജലി', price: '₹50' },
-     { name: 'സഹസ്രനാമപുഷ്പാഞ്ജലി', price: '₹50' },
-     { name: 'ഐക്യമത്യസൂക്ത പുഷ്പാഞ്ജലി', price: '₹50' },
-     { name: 'രക്തപുഷ്പാഞ്ജലി', price: '₹50' },
-     { name: 'രക്ഷസിനുപൂജ', price: '₹200' },
-     { name: 'രക്ഷസിനു പാൽപായസം', price: '₹150' },
-     { name: 'രക്ഷസിനു വിളക്ക്', price: '₹30' },
-  ];
+  useEffect(() => {
+    loadVazhipads();
+  }, []);
+
+  const loadVazhipads = async () => {
+    try {
+      setLoadingVazhipads(true);
+      console.clear();
+      console.log('🔄 VAZHIPAD PAGE: Loading poojas from Firebase...');
+      
+      // Load from the same pooja_data collection
+      const docRef = doc(db, 'pooja_data', 'main');
+      const docSnap = await getDocFromServer(docRef);
+      
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.poojas && data.poojas.length > 0) {
+          console.log('✅ VAZHIPAD PAGE: Loaded', data.poojas.length, 'poojas from Firebase');
+          
+          // Convert pooja format to vazhipad format (name and price only)
+          const vazhipadList = data.poojas.map((pooja: any) => ({
+            name: pooja.name,
+            price: `₹${pooja.price}`
+          }));
+          
+          console.log('📊 VAZHIPAD PRICES:', vazhipadList.slice(0, 10)); // Show first 10
+          setVazhipads(vazhipadList);
+        } else {
+          console.log('⚠️ Empty poojas in Firebase, using defaults');
+          const defaultVazhipadList = defaultPoojas.map(pooja => ({
+            name: pooja.name,
+            price: `₹${pooja.price}`
+          }));
+          setVazhipads(defaultVazhipadList);
+        }
+      } else {
+        console.log('⚠️ No pooja document found, using defaults');
+        const defaultVazhipadList = defaultPoojas.map(pooja => ({
+          name: pooja.name,
+          price: `₹${pooja.price}`
+        }));
+        setVazhipads(defaultVazhipadList);
+      }
+    } catch (error) {
+      console.error('❌ Error loading poojas for vazhipad page:', error);
+      const defaultVazhipadList = defaultPoojas.map(pooja => ({
+        name: pooja.name,
+        price: `₹${pooja.price}`
+      }));
+      setVazhipads(defaultVazhipadList);
+    } finally {
+      setLoadingVazhipads(false);
+    }
+  };
 
   const filteredVazhipads = vazhipads.filter(item =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -141,36 +150,51 @@ export default function VazhipadList() {
                   </Box>
                 </Box>
 
-                <TextField
-                  size="small"
-                  placeholder="Search offerings..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon sx={{ color: GOLD }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    minWidth: 250,
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: 3,
-                      bgcolor: '#fff',
-                      '& fieldset': {
-                        borderColor: GOLD,
-                        borderWidth: 2,
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <Button
+                    variant="outlined"
+                    onClick={loadVazhipads}
+                    disabled={loadingVazhipads}
+                    sx={{
+                      borderColor: GOLD,
+                      color: GOLD,
+                      fontWeight: 700,
+                      '&:hover': { borderColor: '#e5c158', bgcolor: 'rgba(212,175,55,0.05)' },
+                    }}
+                  >
+                    {loadingVazhipads ? 'Loading...' : 'Refresh List'}
+                  </Button>
+                  <TextField
+                    size="small"
+                    placeholder="Search offerings..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon sx={{ color: GOLD }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                    sx={{
+                      minWidth: 250,
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 3,
+                        bgcolor: '#fff',
+                        '& fieldset': {
+                          borderColor: GOLD,
+                          borderWidth: 2,
+                        },
+                        '&:hover fieldset': {
+                          borderColor: '#e5c158',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: GOLD,
+                        },
                       },
-                      '&:hover fieldset': {
-                        borderColor: '#e5c158',
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: GOLD,
-                      },
-                    },
-                  }}
-                />
+                    }}
+                  />
+                </Box>
               </Box>
 
               <Grid container spacing={3} sx={{ mb: 4 }}>

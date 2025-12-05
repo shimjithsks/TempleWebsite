@@ -41,7 +41,6 @@ import OnlineBookingManager from '../components/OnlineBookingManager';
 import DailyPoojaManager from '../components/DailyPoojaManager';
 import SpecialPoojaManager from '../components/SpecialPoojaManager';
 import FestivalPoojaManager from '../components/FestivalPoojaManager';
-import VazhipadListManager from '../components/VazhipadListManager';
 
 const drawerWidth = 280;
 
@@ -81,8 +80,7 @@ const menuSections: MenuSection[] = [
       { id: 'pooja-booking', label: 'Online Booking' },
       { id: 'pooja-daily', label: 'Daily Poojas' },
       { id: 'pooja-special', label: 'Special Poojas' },
-      { id: 'pooja-festival', label: 'Festival Poojas' },
-      { id: 'pooja-vazhipad', label: 'Vazhipad List' }
+      { id: 'pooja-festival', label: 'Festival Poojas' }
     ]
   },
   {
@@ -233,8 +231,6 @@ const AdminDashboard = () => {
         return <SpecialPoojaManager />;
       case 'pooja-festival':
         return <FestivalPoojaManager />;
-      case 'pooja-vazhipad':
-        return <VazhipadListManager />;
       default:
         return (
           <Box>
